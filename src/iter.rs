@@ -1,4 +1,5 @@
-use std::cmp::min;
+use std::cmp::{max, min};
+use std::num::Bounded;
 
 pub trait IteratorCloneEach<'a, E, It> where E: Clone, It: Iterator<&'a E> {
     /**
@@ -101,6 +102,129 @@ fn test_foldr() {
     let vs = vec!["a", "b", "c"];
     let vs = vs.into_iter().map(|e| e.into_string());
     assert_eq!(Some("(a, (b, c))".into_string()), vs.foldr(|a,b| format!("({}, {})", a, b)));
+}
+
+pub trait IteratorRadialWalk<E, It> where It: RandomAccessIterator<E> {
+    /**
+Creates an iterator that performs a radial walk of the input iterator.
+
+For example:
+
+```
+# use grabbag::iter::{IteratorCloneEach, IteratorRadialWalk};
+let v: Vec<uint> = vec![0, 1, 2, 3, 4];
+
+let w0: Vec<_> = v.iter().radial_walk(0).clone_each().collect();
+let w1: Vec<_> = v.iter().radial_walk(1).clone_each().collect();
+let w2: Vec<_> = v.iter().radial_walk(2).clone_each().collect();
+let w3: Vec<_> = v.iter().radial_walk(3).clone_each().collect();
+let w4: Vec<_> = v.iter().radial_walk(4).clone_each().collect();
+
+assert_eq!(w0, vec![0, 1, 2, 3, 4]);
+assert_eq!(w1, vec![1, 2, 0, 3, 4]);
+assert_eq!(w2, vec![2, 3, 1, 4, 0]);
+assert_eq!(w3, vec![3, 4, 2, 1, 0]);
+assert_eq!(w4, vec![4, 3, 2, 1, 0]);
+```
+    */
+    fn radial_walk(self, start_at: uint) -> RadialWalkItems<It>;
+}
+
+impl<E, It> IteratorRadialWalk<E, It> for It where It: RandomAccessIterator<E> {
+    fn radial_walk(self, start_at: uint) -> RadialWalkItems<It> {
+        RadialWalkItems {
+            iter: self,
+            start_at: start_at,
+            pos: 0,
+        }
+    }
+}
+
+pub struct RadialWalkItems<It> {
+    iter: It,
+    start_at: uint,
+    pos: uint,
+}
+
+impl<E, It> Iterator<E> for RadialWalkItems<It> where E: ::std::fmt::Show, It: RandomAccessIterator<E> {
+    fn next(&mut self) -> Option<E> {
+        // Figure out if we need to stop.  This isn't immediately obvious, due to the way we handle the spiralling.
+        let uint_max: uint = Bounded::max_value();
+        let iter_len = self.iter.indexable();
+        let left_len = iter_len - self.start_at;
+        let stop_pos = (
+            2.checked_mul(&max(left_len, iter_len - left_len)).and_then(|l| l.checked_add(&1))
+        ).unwrap_or(uint_max);
+        if self.pos >= stop_pos { return None }
+
+        // Gives us 0 (jitter left) or 1 (jitter right).
+        let jitter_right: uint = self.pos & 1;
+
+        // Gives us the magnitude of the jitter.
+        let mag = self.pos.checked_add(&1).map(|l| l / 2);
+
+        // If `mag` has overflowed, it's because `self.pos == uint::MAX`.  However, we know the answer to this...
+        let mag: uint = mag.unwrap_or((uint_max / 2) + 1);
+
+        // We can now compute the actual index into `iter` we want to use.  Of course, this may very well be out of bounds!
+        // This could *possibly* be improved by computing when we need to stop doing the radial walk and just continue with a linear one instead.  For now, I'm just going to skip this position.
+
+        if jitter_right == 0 && mag > self.start_at {
+            return match self.pos.checked_add(&1) {
+                None => None,
+                Some(pos) => {
+                    self.pos = pos;
+                    self.next()
+                }
+            }
+        }
+
+        if jitter_right > 0 && mag >= self.iter.indexable() - self.start_at {
+            return match self.pos.checked_add(&1) {
+                None => None,
+                Some(pos) => {
+                    self.pos = pos;
+                    self.next()
+                }
+            }
+        }
+
+        let idx = match jitter_right { 0 => self.start_at - mag, _ => self.start_at + mag };
+        match self.iter.idx(idx) {
+            None => None,
+            e @ _ => {
+                match self.pos.checked_add(&1) {
+                    // Sadly, we can't represent the next position, so we're kinda stuck.
+                    None => None,
+                    Some(pos) => {
+                        self.pos = pos;
+                        e
+                    }
+                }
+            }
+        }
+    }
+
+    fn size_hint(&self) -> (uint, Option<uint>) {
+        self.iter.size_hint()
+    }
+}
+
+#[test]
+fn test_radial_walk() {
+    let v: Vec<uint> = vec![0, 1, 2, 3, 4];
+
+    let w0: Vec<_> = v.iter().radial_walk(0).clone_each().collect();
+    let w1: Vec<_> = v.iter().radial_walk(1).clone_each().collect();
+    let w2: Vec<_> = v.iter().radial_walk(2).clone_each().collect();
+    let w3: Vec<_> = v.iter().radial_walk(3).clone_each().collect();
+    let w4: Vec<_> = v.iter().radial_walk(4).clone_each().collect();
+
+    assert_eq!(w0, vec![0, 1, 2, 3, 4]);
+    assert_eq!(w1, vec![1, 2, 0, 3, 4]);
+    assert_eq!(w2, vec![2, 3, 1, 4, 0]);
+    assert_eq!(w3, vec![3, 4, 2, 1, 0]);
+    assert_eq!(w4, vec![4, 3, 2, 1, 0]);
 }
 
 pub trait IteratorRoundRobin<E, It1> where It1: Iterator<E> {
