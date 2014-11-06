@@ -34,6 +34,16 @@ impl<'a, E, It> Iterator<E> for CloneItems<It> where E: 'a+Clone, It: Iterator<&
     }
 }
 
+impl<'a, E, It> RandomAccessIterator<E> for CloneItems<It> where E: 'a+Clone, It: RandomAccessIterator<&'a E> {
+    fn indexable(&self) -> uint {
+        self.iter.indexable()
+    }
+
+    fn idx(&mut self, index: uint) -> Option<E> {
+        self.iter.idx(index).map(|e| e.clone())
+    }
+}
+
 #[test]
 fn test_clone_each() {
     let it: Vec<int> = vec![1, 2, 3];
@@ -69,6 +79,16 @@ impl<E, It, IndIt> Iterator<Option<E>> for IndexedItems<It, IndIt> where It: Ran
             None => None,
             Some(idx) => Some(self.iter.idx(idx))
         }
+    }
+}
+
+impl<E, It, IndIt> RandomAccessIterator<Option<E>> for IndexedItems<It, IndIt> where It: RandomAccessIterator<E>, IndIt: RandomAccessIterator<uint> {
+    fn indexable(&self) -> uint {
+        self.indices.indexable()
+    }
+
+    fn idx(&mut self, index: uint) -> Option<Option<E>> {
+        self.indices.idx(index).and_then(|i| Some(self.iter.idx(i)))
     }
 }
 
@@ -185,6 +205,20 @@ impl<'a, E, It> Iterator<E> for PadTailToItems<'a, It, E> where It: Iterator<E> 
                 self.pos += 1;
                 e
             }
+        }
+    }
+}
+
+impl<'a, E, It> RandomAccessIterator<E> for PadTailToItems<'a, It, E> where It: RandomAccessIterator<E> {
+    fn indexable(&self) -> uint {
+        max(self.iter.indexable(), self.min)
+    }
+
+    fn idx(&mut self, index: uint) -> Option<E> {
+        match (index < self.iter.indexable(), index < self.min) {
+            (true, _) => self.iter.idx(index),
+            (false, true) => Some((self.filler)(index)),
+            _ => None
         }
     }
 }
@@ -583,6 +617,16 @@ impl<E, It> Iterator<E> for StrideItems<It> where It: Iterator<E> {
     }
 }
 
+impl<E, It> RandomAccessIterator<E> for StrideItems<It> where It: RandomAccessIterator<E> {
+    fn indexable(&self) -> uint {
+        (self.iter.indexable() + self.stride - 1) / self.stride
+    }
+
+    fn idx(&mut self, index: uint) -> Option<E> {
+        index.checked_mul(&self.stride).and_then(|i| self.iter.idx(i))
+    }
+}
+
 #[test]
 fn test_stride() {
     let v = vec![0i, 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -662,6 +706,23 @@ impl<E, It> Iterator<E> for TakeExactlyItems<It> where It: Iterator<E> {
 
     fn size_hint(&self) -> (uint, Option<uint>) {
         (self.left, Some(self.left))
+    }
+}
+
+impl<E, It> RandomAccessIterator<E> for TakeExactlyItems<It> where It: RandomAccessIterator<E> {
+    fn indexable(&self) -> uint {
+        self.left
+    }
+
+    fn idx(&mut self, index: uint) -> Option<E> {
+        if index < self.left {
+            match self.iter.idx(index) {
+                None => panic!("take_exactly expected {} more elements from iterator"),
+                e @ _ => e
+            }
+        } else {
+            None
+        }
     }
 }
 
