@@ -43,6 +43,41 @@ fn test_clone_each() {
     assert_eq!(it.next(), None);
 }
 
+pub trait IteratorIndexed<It, IndIt> {
+    fn indexed(self, indices: IndIt) -> IndexedItems<It, IndIt>;
+}
+
+impl<E, It, IndIt> IteratorIndexed<It, IndIt> for It where It: RandomAccessIterator<E> {
+    fn indexed(self, indices: IndIt) -> IndexedItems<It, IndIt> {
+        IndexedItems {
+            iter: self,
+            indices: indices,
+        }
+    }
+}
+
+pub struct IndexedItems<It, IndIt> {
+    iter: It,
+    indices: IndIt,
+}
+
+impl<E, It, IndIt> Iterator<Option<E>> for IndexedItems<It, IndIt> where It: RandomAccessIterator<E>, IndIt: Iterator<uint> {
+    fn next(&mut self) -> Option<Option<E>> {
+        match self.indices.next() {
+            None => None,
+            Some(idx) => Some(self.iter.idx(idx))
+        }
+    }
+}
+
+#[test]
+fn test_indexed() {
+    let v = vec![0u, 1, 2, 3, 4];
+    let i = vec![2u, 4, 1, 0, 2, 3, 5];
+    let r: Vec<_> = v.iter().indexed(i.into_iter()).map(|e| e.map(|v| *v)).collect();
+    assert_eq!(r, vec![Some(2), Some(4), Some(1), Some(0), Some(2), Some(3), None])
+}
+
 pub trait IteratorFoldl<E> {
     /**
 Folds the elements of the iterator together, from left to right, using `f`.
