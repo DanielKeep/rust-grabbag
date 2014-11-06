@@ -62,3 +62,23 @@ macro_rules! collect {
     // Initialise a map with a fully inferred contained type.
     [$($ks:expr: $vs:expr),+] => { collect![into _: $($ks: $vs),+] };
 }
+
+/**
+Counts the number of comma-delimited expressions passed to it.  The result is a compile-time evaluable expression, suitable for use as a static array size, or the value of a `const`.
+
+Example:
+
+```
+# #![feature(phase)]
+# #[phase(plugin)] extern crate grabbag_macros;
+# fn main() {
+const COUNT: uint = count_exprs!(a, 5+1, "hi there!".into_string());
+assert_eq!(COUNT, 3);
+# }
+```
+*/
+#[macro_export]
+macro_rules! count_exprs {
+    () => { 0 };
+    ($e:expr $(, $es:expr)*) => { 1 + count_exprs!($($es),*) };
+}
