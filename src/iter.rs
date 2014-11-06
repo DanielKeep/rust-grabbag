@@ -431,6 +431,48 @@ fn test_round_robin_longest() {
     assert_eq!(it.next(), None);
 }
 
+#[test]
+fn test_skip() {
+    let v = vec![0i, 1, 2, 3];
+    let r: Vec<_> = v.into_iter().skip(3).collect();
+    assert_eq!(r, vec![3]);
+
+    let v = vec![0i, 1];
+    let r: Vec<_> = v.into_iter().skip(3).collect();
+    assert_eq!(r, vec![]);
+}
+
+pub trait IteratorSkipExactly {
+    fn skip_exactly(self, n: uint) -> Self;
+}
+
+impl<E, It> IteratorSkipExactly for It where It: Iterator<E> {
+    fn skip_exactly(mut self, n: uint) -> It {
+        for i in range(0, n) {
+            match self.next() {
+                None => panic!("skip_exactly asked to skip {} elements, but only got {}", n, i),
+                _ => ()
+            }
+        }
+        self
+    }
+}
+
+#[test]
+fn test_skip_exactly() {
+    use std::task::try;
+
+    let v = vec![0i, 1, 2, 3];
+    let r: Vec<_> = v.into_iter().skip_exactly(3).collect();
+    assert_eq!(r, vec![3]);
+
+    let v = vec![0i, 1];
+    let r: Result<Vec<_>, _> = try(proc() {
+        v.into_iter().skip_exactly(3).collect()
+    });
+    assert!(r.is_err());
+}
+
 pub trait IteratorSorted<E> where E: Ord {
     /**
 Creates an iterator that yields the elements of the input iterator in sorted order.
