@@ -96,3 +96,54 @@ fn test_foldr() {
     let vs = vs.into_iter().map(|e| e.into_string());
     assert_eq!(Some("(a, (b, c))".into_string()), vs.foldr(|a,b| format!("({}, {})", a, b)));
 }
+
+pub trait IteratorStride<E, It> where It: Iterator<E> {
+    /**
+Creates an iterator which yields every `n`th element of the input iterator, including the first.
+    */
+    fn stride(self, n: uint) -> StrideItems<It>;
+}
+
+impl<E, It> IteratorStride<E, It> for It where It: Iterator<E> {
+    fn stride(self, n: uint) -> StrideItems<It> {
+        StrideItems {
+            iter: self,
+            stride: n
+        }
+    }
+}
+
+pub struct StrideItems<It> {
+    iter: It,
+    stride: uint,
+}
+
+impl<E, It> Iterator<E> for StrideItems<It> where It: Iterator<E> {
+    fn next(&mut self) -> Option<E> {
+        let v = match self.iter.next() {
+            Some(v) => v,
+            None => return None
+        };
+
+        for _ in range(0, self.stride - 1) {
+            match self.iter.next() {
+                None => break,
+                _ => ()
+            }
+        }
+
+        Some(v)
+    }
+}
+
+#[test]
+fn test_stride() {
+    let v = vec![0i, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    let mut it = v.iter().clone_each().stride(2);
+    assert_eq!(it.next(), Some(0));
+    assert_eq!(it.next(), Some(2));
+    assert_eq!(it.next(), Some(4));
+    assert_eq!(it.next(), Some(6));
+    assert_eq!(it.next(), Some(8));
+    assert_eq!(it.next(), None);
+}
