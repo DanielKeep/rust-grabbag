@@ -659,6 +659,10 @@ impl<E, It> Iterator<E> for TakeExactlyItems<It> where It: Iterator<E> {
             }
         }
     }
+
+    fn size_hint(&self) -> (uint, Option<uint>) {
+        (self.left, Some(self.left))
+    }
 }
 
 #[test]
