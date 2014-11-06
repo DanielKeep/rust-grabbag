@@ -248,6 +248,28 @@ fn test_round_robin_longest() {
     assert_eq!(it.next(), None);
 }
 
+pub trait IteratorSorted<E> where E: Ord {
+    /**
+Creates an iterator that yields the elements of the input iterator in sorted order.
+    */
+    fn sorted(self) -> Vec<E>;
+}
+
+impl<E, It> IteratorSorted<E> for It where E: Ord, It: Iterator<E> {
+    fn sorted(mut self) -> Vec<E> {
+        let mut v = self.collect::<Vec<_>>();
+        v.sort();
+        v
+    }
+}
+
+#[test]
+fn test_sorted() {
+    let v = vec![1u, 3, 2, 0, 4];
+    let s = v.into_iter().sorted();
+    assert_eq!(s, vec![0u, 1, 2, 3, 4]);
+}
+
 pub trait IteratorStride<E, It> where It: Iterator<E> {
     /**
 Creates an iterator which yields every `n`th element of the input iterator, including the first.
