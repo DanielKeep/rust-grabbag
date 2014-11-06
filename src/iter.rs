@@ -1,6 +1,120 @@
 use std::cmp::{max, min};
 use std::num::Bounded;
 
+pub trait IteratorChunks<E> {
+    /**
+Creates an iterator which yields chunks (as `Vec`s) of the input sequence, each chunk of length `n`.  If the number of elements in the input sequence is not an exact multiple of `n`, the last chunk will have less than `n` elements.
+    */
+    fn chunks(self, n: uint) -> ChunkItems<E, Self>;
+
+    /**
+Creates an iterator which yields chunks (as `Vec`s) of the input sequence, each chunk of length `n`.  If the number of elements in the input sequence is not an exact multiple of `n`, the final "incomplete" chunk is simply omitted.
+    */
+    fn chunks_exact(self, n: uint) -> ChunkExactItems<E, Self>;
+}
+
+impl<E, It> IteratorChunks<E> for It where It: Iterator<E> {
+    fn chunks(self, n: uint) -> ChunkItems<E, It> {
+        ChunkItems {
+            iter: self,
+            size: n,
+        }
+    }
+
+    fn chunks_exact(self, n: uint) -> ChunkExactItems<E, It> {
+        ChunkExactItems {
+            iter: self,
+            size: n,
+        }
+    }
+}
+
+pub struct ChunkItems<E, It> {
+    iter: It,
+    size: uint,
+}
+
+impl<E, It> Iterator<Vec<E>> for ChunkItems<E, It> where It: Iterator<E> {
+    fn next(&mut self) -> Option<Vec<E>> {
+        let mut buffer = Vec::with_capacity(self.size);
+        while buffer.len() < buffer.capacity() {
+            match self.iter.next() {
+                None => {
+                    if buffer.len() > 0 {
+                        return Some(buffer)
+                    } else {
+                        return None
+                    }
+                },
+                Some(e) => buffer.push(e)
+            }
+        }
+        Some(buffer)
+    }
+}
+
+#[test]
+fn test_chunks() {
+    let v = vec![0u, 1, 2, 3, 4, 5];
+    let mut r = v.into_iter().chunks(3);
+    assert_eq!(r.next(), Some(vec![0, 1, 2]));
+    assert_eq!(r.next(), Some(vec![3, 4, 5]));
+    assert_eq!(r.next(), None);
+
+    let v = vec![0u, 1, 2, 3, 4, 5, 6];
+    let mut r = v.into_iter().chunks(3);
+    assert_eq!(r.next(), Some(vec![0, 1, 2]));
+    assert_eq!(r.next(), Some(vec![3, 4, 5]));
+    assert_eq!(r.next(), Some(vec![6]));
+    assert_eq!(r.next(), None);
+
+    let v = vec![0u, 1, 2, 3, 4, 5, 6, 7];
+    let mut r = v.into_iter().chunks(3);
+    assert_eq!(r.next(), Some(vec![0, 1, 2]));
+    assert_eq!(r.next(), Some(vec![3, 4, 5]));
+    assert_eq!(r.next(), Some(vec![6, 7]));
+    assert_eq!(r.next(), None);
+}
+
+pub struct ChunkExactItems<E, It> {
+    iter: It,
+    size: uint,
+}
+
+impl<'a, E, It> Iterator<Vec<E>> for ChunkExactItems<E, It> where It: Iterator<E> {
+    fn next(&mut self) -> Option<Vec<E>> {
+        let mut buffer = Vec::with_capacity(self.size);
+        while buffer.len() < buffer.capacity() {
+            match self.iter.next() {
+                None => return None,
+                Some(e) => buffer.push(e)
+            }
+        }
+        Some(buffer)
+    }
+}
+
+#[test]
+fn test_chunks_exact() {
+    let v = vec![0u, 1, 2, 3, 4, 5];
+    let mut r = v.into_iter().chunks_exact(3);
+    assert_eq!(r.next(), Some(vec![0, 1, 2]));
+    assert_eq!(r.next(), Some(vec![3, 4, 5]));
+    assert_eq!(r.next(), None);
+
+    let v = vec![0u, 1, 2, 3, 4, 5, 6];
+    let mut r = v.into_iter().chunks_exact(3);
+    assert_eq!(r.next(), Some(vec![0, 1, 2]));
+    assert_eq!(r.next(), Some(vec![3, 4, 5]));
+    assert_eq!(r.next(), None);
+
+    let v = vec![0u, 1, 2, 3, 4, 5, 6, 7];
+    let mut r = v.into_iter().chunks_exact(3);
+    assert_eq!(r.next(), Some(vec![0, 1, 2]));
+    assert_eq!(r.next(), Some(vec![3, 4, 5]));
+    assert_eq!(r.next(), None);
+}
+
 pub trait IteratorCloneEach<'a, E, It> where E: Clone, It: Iterator<&'a E> {
     /**
 Creates an iterator which will clone each element of the input iterator.
