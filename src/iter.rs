@@ -473,3 +473,62 @@ fn test_stride() {
     let it = v.iter().clone_each().stride(3);
     assert_eq!(it.size_hint(), (4, Some(4)));
 }
+
+#[test]
+fn test_take() {
+    let v = vec![0i, 1, 2, 3];
+    let r: Vec<_> = v.into_iter().take(3).collect();
+    assert_eq!(r, vec![0, 1, 2]);
+
+    let v = vec![0i, 1];
+    let r: Vec<_> = v.into_iter().take(3).collect();
+    assert_eq!(r, vec![0, 1]);
+}
+
+pub trait IteratorTakeExactly<E, It> where It: Iterator<E> {
+    fn take_exactly(self, n: uint) -> TakeExactlyItems<It>;
+}
+
+impl<E, It> IteratorTakeExactly<E, It> for It where It: Iterator<E> {
+    fn take_exactly(self, n: uint) -> TakeExactlyItems<It> {
+        TakeExactlyItems {
+            iter: self,
+            left: n,
+        }
+    }
+}
+
+pub struct TakeExactlyItems<It> {
+    iter: It,
+    left: uint,
+}
+
+impl<E, It> Iterator<E> for TakeExactlyItems<It> where It: Iterator<E> {
+    fn next(&mut self) -> Option<E> {
+        match self.left {
+            0 => None,
+            _ => match self.iter.next() {
+                None => panic!("take_exactly expected {} more elements from iterator, but ran out", self.left),
+                e @ _ => {
+                    self.left -= 1;
+                    e
+                }
+            }
+        }
+    }
+}
+
+#[test]
+fn test_take_exactly() {
+    use std::task::try;
+
+    let v = vec![0i, 1, 2, 3];
+    let r: Vec<_> = v.into_iter().take_exactly(3).collect();
+    assert_eq!(r, vec![0, 1, 2]);
+
+    let v = vec![0i, 1];
+    let r: Result<Vec<_>, _> = try(proc() {
+        v.into_iter().take_exactly(3).collect()
+    });
+    assert!(r.is_err());
+}
