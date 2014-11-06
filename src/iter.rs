@@ -1,6 +1,60 @@
 use std::cmp::{max, min};
 use std::num::Bounded;
 
+pub trait IteratorAccumulate<E, It> where It: Iterator<E> {
+    /**
+Creates an iterator that scans from left to right over the input sequence, returning the accumulated result of calling `f` on the entire sequence up to that point.
+    */
+    fn accumulate(self, f: |E, E| -> E) -> AccumulateItems<E, It>;
+}
+
+impl<E, It> IteratorAccumulate<E, It> for It where It: Iterator<E> {
+    fn accumulate(self, f: |E, E| -> E) -> AccumulateItems<E, It> {
+        AccumulateItems {
+            iter: self,
+            f: f,
+            accum: None,
+        }
+    }
+}
+
+pub struct AccumulateItems<'a, E, It> {
+    iter: It,
+    f: |E, E|: 'a -> E,
+    accum: Option<E>,
+}
+
+impl<'a, E, It> Iterator<E> for AccumulateItems<'a, E, It> where E: Clone, It: Iterator<E> {
+    fn next(&mut self) -> Option<E> {
+        match ::std::mem::replace(&mut self.accum, None) {
+            None => match self.iter.next() {
+                None => None,
+                e @ _ => {
+                    self.accum = e;
+                    self.accum.clone()
+                }
+            },
+            Some(accum) => match self.iter.next() {
+                None => {
+                    self.accum = None;
+                    None
+                },
+                Some(rhs) => {
+                    self.accum = Some((self.f)(accum, rhs));
+                    self.accum.clone()
+                }
+            }
+        }
+    }
+}
+
+#[test]
+fn test_accumulate() {
+    let v = vec![0u, 1, 2, 3, 4];
+    let r: Vec<_> = v.into_iter().accumulate(|a,b| a+b).collect();
+    assert_eq!(r, vec![0, 1, 3, 6, 10]);
+}
+
 pub trait IteratorCloneEach<'a, E, It> where E: Clone, It: Iterator<&'a E> {
     /**
 Creates an iterator which will clone each element of the input iterator.
