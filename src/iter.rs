@@ -37,6 +37,11 @@ fn test_clone_each() {
 }
 
 pub trait IteratorFoldl<E> {
+    /**
+Folds the elements of the iterator together, from left to right, using `f`.
+
+Returns `None` if the iterator is empty.
+    */
     fn foldl(self, f: |E, E| -> E) -> Option<E>;
 }
 
@@ -59,6 +64,11 @@ fn test_foldl() {
 }
 
 pub trait IteratorFoldr<E> {
+    /**
+Folds the elements of the iterator together, from right to left, using `f`.
+
+Returns `None` if the iterator is empty.
+    */
     fn foldr(self, f: |E, E| -> E) -> Option<E>;
 }
 
