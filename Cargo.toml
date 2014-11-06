@@ -1,0 +1,9 @@
+[package]
+
+name = "grabbag"
+version = "0.0.1"
+authors = ["Daniel Keep <daniel.keep@gmail.com>"]
+
+[dependencies.grabbag_macros]
+
+path = "grabbag_macros"

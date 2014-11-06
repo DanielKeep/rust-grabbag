@@ -1,0 +1,10 @@
+[package]
+
+name = "grabbag_macros"
+version = "0.0.1"
+authors = ["Daniel Keep <daniel.keep@gmail.com>"]
+
+[lib]
+
+name = "grabbag_macros"
+plugin = true

@@ -1,0 +1,19 @@
+{
+	"SublimeLinter":
+	{
+		"linters":
+		{
+			"rust":
+			{
+				"use-cargo": true
+			}
+		}
+	},
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+			"path": "."
+		}
+	]
+}
