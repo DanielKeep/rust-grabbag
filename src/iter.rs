@@ -1,3 +1,41 @@
+pub trait IteratorCloneEach<'a, E, It> where E: Clone, It: Iterator<&'a E> {
+    /**
+Creates an iterator which will clone each element of the input iterator.
+    */
+    fn clone_each(self) -> CloneItems<It>;
+}
+
+impl<'a, E, It> IteratorCloneEach<'a, E, It> for It where E: Clone, It: Iterator<&'a E> {
+    fn clone_each(self) -> CloneItems<It> {
+        CloneItems {
+            iter: self,
+        }
+    }
+}
+
+pub struct CloneItems<It> {
+    iter: It,
+}
+
+impl<'a, E, It> Iterator<E> for CloneItems<It> where E: 'a+Clone, It: Iterator<&'a E> {
+    fn next(&mut self) -> Option<E> {
+        match self.iter.next() {
+            None => None,
+            Some(e) => Some(e.clone())
+        }
+    }
+}
+
+#[test]
+fn test_clone_each() {
+    let it: Vec<int> = vec![1, 2, 3];
+    let mut it = it.iter().clone_each();
+    assert_eq!(it.next(), Some(1));
+    assert_eq!(it.next(), Some(2));
+    assert_eq!(it.next(), Some(3));
+    assert_eq!(it.next(), None);
+}
+
 pub trait IteratorFoldl<E> {
     fn foldl(self, f: |E, E| -> E) -> Option<E>;
 }
