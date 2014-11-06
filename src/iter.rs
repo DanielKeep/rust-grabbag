@@ -104,21 +104,21 @@ fn test_foldr() {
     assert_eq!(Some("(a, (b, c))".into_string()), vs.foldr(|a,b| format!("({}, {})", a, b)));
 }
 
-pub trait IteratorRadialWalk<E, It> where It: RandomAccessIterator<E> {
+pub trait IteratorPacingWalk<E, It> where It: RandomAccessIterator<E> {
     /**
-Creates an iterator that performs a radial walk of the input iterator.
+Creates an iterator that performs a back-and-forth walk of the input iterator.
 
 For example:
 
 ```
-# use grabbag::iter::{IteratorCloneEach, IteratorRadialWalk};
+# use grabbag::iter::{IteratorCloneEach, IteratorPacingWalk};
 let v: Vec<uint> = vec![0, 1, 2, 3, 4];
 
-let w0: Vec<_> = v.iter().radial_walk(0).clone_each().collect();
-let w1: Vec<_> = v.iter().radial_walk(1).clone_each().collect();
-let w2: Vec<_> = v.iter().radial_walk(2).clone_each().collect();
-let w3: Vec<_> = v.iter().radial_walk(3).clone_each().collect();
-let w4: Vec<_> = v.iter().radial_walk(4).clone_each().collect();
+let w0: Vec<_> = v.iter().pacing_walk(0).clone_each().collect();
+let w1: Vec<_> = v.iter().pacing_walk(1).clone_each().collect();
+let w2: Vec<_> = v.iter().pacing_walk(2).clone_each().collect();
+let w3: Vec<_> = v.iter().pacing_walk(3).clone_each().collect();
+let w4: Vec<_> = v.iter().pacing_walk(4).clone_each().collect();
 
 assert_eq!(w0, vec![0, 1, 2, 3, 4]);
 assert_eq!(w1, vec![1, 2, 0, 3, 4]);
@@ -127,12 +127,12 @@ assert_eq!(w3, vec![3, 4, 2, 1, 0]);
 assert_eq!(w4, vec![4, 3, 2, 1, 0]);
 ```
     */
-    fn radial_walk(self, start_at: uint) -> RadialWalkItems<It>;
+    fn pacing_walk(self, start_at: uint) -> PacingWalkItems<It>;
 }
 
-impl<E, It> IteratorRadialWalk<E, It> for It where It: RandomAccessIterator<E> {
-    fn radial_walk(self, start_at: uint) -> RadialWalkItems<It> {
-        RadialWalkItems {
+impl<E, It> IteratorPacingWalk<E, It> for It where It: RandomAccessIterator<E> {
+    fn pacing_walk(self, start_at: uint) -> PacingWalkItems<It> {
+        PacingWalkItems {
             iter: self,
             start_at: start_at,
             pos: 0,
@@ -140,13 +140,13 @@ impl<E, It> IteratorRadialWalk<E, It> for It where It: RandomAccessIterator<E> {
     }
 }
 
-pub struct RadialWalkItems<It> {
+pub struct PacingWalkItems<It> {
     iter: It,
     start_at: uint,
     pos: uint,
 }
 
-impl<E, It> Iterator<E> for RadialWalkItems<It> where E: ::std::fmt::Show, It: RandomAccessIterator<E> {
+impl<E, It> Iterator<E> for PacingWalkItems<It> where E: ::std::fmt::Show, It: RandomAccessIterator<E> {
     fn next(&mut self) -> Option<E> {
         // Figure out if we need to stop.  This isn't immediately obvious, due to the way we handle the spiralling.
         let uint_max: uint = Bounded::max_value();
@@ -211,14 +211,14 @@ impl<E, It> Iterator<E> for RadialWalkItems<It> where E: ::std::fmt::Show, It: R
 }
 
 #[test]
-fn test_radial_walk() {
+fn test_pacing_walk() {
     let v: Vec<uint> = vec![0, 1, 2, 3, 4];
 
-    let w0: Vec<_> = v.iter().radial_walk(0).clone_each().collect();
-    let w1: Vec<_> = v.iter().radial_walk(1).clone_each().collect();
-    let w2: Vec<_> = v.iter().radial_walk(2).clone_each().collect();
-    let w3: Vec<_> = v.iter().radial_walk(3).clone_each().collect();
-    let w4: Vec<_> = v.iter().radial_walk(4).clone_each().collect();
+    let w0: Vec<_> = v.iter().pacing_walk(0).clone_each().collect();
+    let w1: Vec<_> = v.iter().pacing_walk(1).clone_each().collect();
+    let w2: Vec<_> = v.iter().pacing_walk(2).clone_each().collect();
+    let w3: Vec<_> = v.iter().pacing_walk(3).clone_each().collect();
+    let w4: Vec<_> = v.iter().pacing_walk(4).clone_each().collect();
 
     assert_eq!(w0, vec![0, 1, 2, 3, 4]);
     assert_eq!(w1, vec![1, 2, 0, 3, 4]);
