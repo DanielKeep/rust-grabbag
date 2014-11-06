@@ -104,6 +104,65 @@ fn test_foldr() {
     assert_eq!(Some("(a, (b, c))".into_string()), vs.foldr(|a,b| format!("({}, {})", a, b)));
 }
 
+pub trait IteratorPadTailTo<E, It> where It: Iterator<E> {
+    /**
+Creates an iterator that ensures there are at least `n` elements in a sequence.  If the input iterator is too short, the difference is made up with a filler value.
+    */
+    fn pad_tail_to<'a>(self, n: uint, filler: |uint|: 'a -> E) -> PadTailToItems<'a, It, E>;
+}
+
+impl<E, It> IteratorPadTailTo<E, It> for It where It: Iterator<E> {
+    /**
+Creates an iterator that ensures there are at least `n` elements in a sequence.  If the input iterator is too short, the difference is made up with a filler value.
+    */
+    fn pad_tail_to<'a>(self, n: uint, filler: |uint|: 'a -> E) -> PadTailToItems<'a, It, E> {
+        PadTailToItems {
+            iter: self,
+            min: n,
+            pos: 0,
+            filler: filler,
+        }
+    }
+}
+
+pub struct PadTailToItems<'a, It, E> {
+    iter: It,
+    min: uint,
+    pos: uint,
+    filler: |uint|: 'a -> E,
+}
+
+impl<'a, E, It> Iterator<E> for PadTailToItems<'a, It, E> where It: Iterator<E> {
+    fn next(&mut self) -> Option<E> {
+        match self.iter.next() {
+            None => {
+                if self.pos < self.min {
+                    let e = Some((self.filler)(self.pos));
+                    self.pos += 1;
+                    e
+                } else {
+                    None
+                }
+            },
+            e @ _ => {
+                self.pos += 1;
+                e
+            }
+        }
+    }
+}
+
+#[test]
+fn test_pad_tail_to() {
+    let v: Vec<uint> = vec![0, 1, 2];
+    let r: Vec<_> = v.into_iter().pad_tail_to(5, |n| n).collect();
+    assert_eq!(r, vec![0, 1, 2, 3, 4]);
+
+    let v: Vec<uint> = vec![0, 1, 2];
+    let r: Vec<_> = v.into_iter().pad_tail_to(1, |_| panic!()).collect();
+    assert_eq!(r, vec![0, 1, 2]);
+}
+
 pub trait IteratorPacingWalk<E, It> where It: RandomAccessIterator<E> {
     /**
 Creates an iterator that performs a back-and-forth walk of the input iterator.
