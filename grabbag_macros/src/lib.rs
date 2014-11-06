@@ -122,6 +122,10 @@ macro_rules! sequence {
             impl Iterator<$sty> for Sequence {
                 #[inline]
                 fn next(&mut self) -> Option<$sty> {
+                    if self.pos == ::std::uint::MAX {
+                        return None
+                    }
+
                     let next_val: $sty = {
                         let $ind = self.pos;
                         $closed_form
@@ -147,6 +151,10 @@ macro_rules! sequence {
             impl Iterator<$sty> for Sequence {
                 #[inline]
                 fn next(&mut self) -> Option<$sty> {
+                    if self.pos == ::std::uint::MAX {
+                        return None
+                    }
+
                     if self.pos < INITS {
                         let next_val = self.inits[self.pos];
                         self.pos += 1;
@@ -212,6 +220,10 @@ macro_rules! recurrence {
             impl Iterator<$sty> for Recurrence {
                 #[inline]
                 fn next(&mut self) -> Option<$sty> {
+                    if self.pos == ::std::uint::MAX {
+                        return None
+                    }
+
                     if self.pos < MEMORY {
                         let next_val = self.mem[self.pos];
                         self.pos += 1;
