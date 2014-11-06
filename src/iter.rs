@@ -24,6 +24,10 @@ impl<'a, E, It> Iterator<E> for CloneItems<It> where E: 'a+Clone, It: Iterator<&
             Some(e) => Some(e.clone())
         }
     }
+
+    fn size_hint(&self) -> (uint, Option<uint>) {
+        self.iter.size_hint()
+    }
 }
 
 #[test]
@@ -134,16 +138,45 @@ impl<E, It> Iterator<E> for StrideItems<It> where It: Iterator<E> {
 
         Some(v)
     }
+
+    fn size_hint(&self) -> (uint, Option<uint>) {
+        match self.iter.size_hint() {
+            (lb, Some(ub)) => ((lb + self.stride - 1) / self.stride,
+                                Some((ub + self.stride - 1) / self.stride)),
+            (lb, None) => (lb, None)
+        }
+    }
 }
 
 #[test]
 fn test_stride() {
     let v = vec![0i, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     let mut it = v.iter().clone_each().stride(2);
+    assert_eq!(it.size_hint(), (5, Some(5)));
     assert_eq!(it.next(), Some(0));
     assert_eq!(it.next(), Some(2));
     assert_eq!(it.next(), Some(4));
     assert_eq!(it.next(), Some(6));
     assert_eq!(it.next(), Some(8));
     assert_eq!(it.next(), None);
+
+    let v = vec![0i, 1, 2, 3, 4, 5];
+    let it = v.iter().clone_each().stride(3);
+    assert_eq!(it.size_hint(), (2, Some(2)));
+
+    let v = vec![0i, 1, 2, 3, 4, 5, 6];
+    let it = v.iter().clone_each().stride(3);
+    assert_eq!(it.size_hint(), (3, Some(3)));
+
+    let v = vec![0i, 1, 2, 3, 4, 5, 6, 7];
+    let it = v.iter().clone_each().stride(3);
+    assert_eq!(it.size_hint(), (3, Some(3)));
+
+    let v = vec![0i, 1, 2, 3, 4, 5, 6, 7, 8];
+    let it = v.iter().clone_each().stride(3);
+    assert_eq!(it.size_hint(), (3, Some(3)));
+
+    let v = vec![0i, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    let it = v.iter().clone_each().stride(3);
+    assert_eq!(it.size_hint(), (4, Some(4)));
 }
