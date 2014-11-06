@@ -16,6 +16,7 @@ impl<'a, E, It> IteratorCloneEach<'a, E, It> for It where E: Clone, It: Iterator
     }
 }
 
+#[deriving(Clone, Show)]
 pub struct CloneItems<It> {
     iter: It,
 }
@@ -56,6 +57,7 @@ impl<E, It, IndIt> IteratorIndexed<It, IndIt> for It where It: RandomAccessItera
     }
 }
 
+#[deriving(Clone, Show)]
 pub struct IndexedItems<It, IndIt> {
     iter: It,
     indices: IndIt,
@@ -234,6 +236,7 @@ impl<E, It> IteratorPacingWalk<E, It> for It where It: RandomAccessIterator<E> {
     }
 }
 
+#[deriving(Clone, Show)]
 pub struct PacingWalkItems<It> {
     iter: It,
     start_at: uint,
@@ -321,20 +324,20 @@ fn test_pacing_walk() {
     assert_eq!(w4, vec![4, 3, 2, 1, 0]);
 }
 
-pub trait IteratorRoundRobin<E, It1> where It1: Iterator<E> {
+pub trait IteratorRoundRobin<It1> {
     /**
 Creates an iterator that alternates between yielding elements of the two input iterators.  It stops as soon as either iterator is exhausted.
     */
-    fn round_robin(self, it1: It1) -> RoundRobinItems<E, Self, It1>;
+    fn round_robin(self, it1: It1) -> RoundRobinItems<Self, It1>;
 
     /**
 Creates an iterator that alternates between yielding elements of the two input iterators.  If one iterator stops before the other, it is simply skipped.
     */
-    fn round_robin_longest(self, it1: It1) -> RoundRobinLongestItems<E, Self, It1>;
+    fn round_robin_longest(self, it1: It1) -> RoundRobinLongestItems<Self, It1>;
 }
 
-impl<E, It0, It1> IteratorRoundRobin<E, It1> for It0 where It0: Iterator<E>, It1: Iterator<E> {
-    fn round_robin(self, it1: It1) -> RoundRobinItems<E, It0, It1> {
+impl<E, It0, It1> IteratorRoundRobin<It1> for It0 where It0: Iterator<E> {
+    fn round_robin(self, it1: It1) -> RoundRobinItems<It0, It1> {
         RoundRobinItems {
             it0: self,
             it1: it1,
@@ -342,7 +345,7 @@ impl<E, It0, It1> IteratorRoundRobin<E, It1> for It0 where It0: Iterator<E>, It1
         }
     }
 
-    fn round_robin_longest(self, it1: It1) -> RoundRobinLongestItems<E, It0, It1> {
+    fn round_robin_longest(self, it1: It1) -> RoundRobinLongestItems<It0, It1> {
         RoundRobinLongestItems {
             it0: self,
             it1: it1,
@@ -352,13 +355,14 @@ impl<E, It0, It1> IteratorRoundRobin<E, It1> for It0 where It0: Iterator<E>, It1
     }
 }
 
-pub struct RoundRobinItems<E, It0, It1> where It0: Iterator<E>, It1: Iterator<E> {
+#[deriving(Clone, Show)]
+pub struct RoundRobinItems<It0, It1> {
     it0: It0,
     it1: It1,
     phase: u8,
 }
 
-impl<E, It0, It1> Iterator<E> for RoundRobinItems<E, It0, It1> where It0: Iterator<E>, It1: Iterator<E> {
+impl<E, It0, It1> Iterator<E> for RoundRobinItems<It0, It1> where It0: Iterator<E>, It1: Iterator<E> {
     fn next(&mut self) -> Option<E> {
         match self.phase {
             0 => match self.it0.next() {
@@ -386,14 +390,15 @@ impl<E, It0, It1> Iterator<E> for RoundRobinItems<E, It0, It1> where It0: Iterat
     }
 }
 
-pub struct RoundRobinLongestItems<E, It0, It1> where It0: Iterator<E>, It1: Iterator<E> {
+#[deriving(Clone, Show)]
+pub struct RoundRobinLongestItems<It0, It1> {
     it0: It0,
     it1: It1,
     phase: u8,
     fused: bool,
 }
 
-impl<E, It0, It1> Iterator<E> for RoundRobinLongestItems<E, It0, It1> where It0: Iterator<E>, It1: Iterator<E> {
+impl<E, It0, It1> Iterator<E> for RoundRobinLongestItems<It0, It1> where It0: Iterator<E>, It1: Iterator<E> {
     fn next(&mut self) -> Option<E> {
         match (self.phase, self.fused) {
             (0, true) => match self.it0.next() {
@@ -546,6 +551,7 @@ impl<E, It> IteratorStride<E, It> for It where It: Iterator<E> {
     }
 }
 
+#[deriving(Clone, Show)]
 pub struct StrideItems<It> {
     iter: It,
     stride: uint,
@@ -634,6 +640,7 @@ impl<E, It> IteratorTakeExactly<E, It> for It where It: Iterator<E> {
     }
 }
 
+#[deriving(Clone, Show)]
 pub struct TakeExactlyItems<It> {
     iter: It,
     left: uint,
