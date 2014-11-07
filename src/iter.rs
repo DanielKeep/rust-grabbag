@@ -918,15 +918,26 @@ fn test_skip_exactly() {
 
 pub trait IteratorSorted<E> where E: Ord {
     /**
-Creates an iterator that yields the elements of the input iterator in sorted order.
+Returns a `Vec` with the elements of the input iterator in sorted order.
     */
     fn sorted(self) -> Vec<E>;
+
+    /**
+Returns a `Vec` with the elements of the input iterator in sorted order, as specified by a comparison function.
+    */
+    fn sorted_by(self, compare: |&E, &E| -> Ordering) -> Vec<E>;
 }
 
 impl<E, It> IteratorSorted<E> for It where E: Ord, It: Iterator<E> {
     fn sorted(mut self) -> Vec<E> {
         let mut v = self.collect::<Vec<_>>();
         v.sort();
+        v
+    }
+
+    fn sorted_by(mut self, compare: |&E, &E| -> Ordering) -> Vec<E> {
+        let mut v = self.collect::<Vec<_>>();
+        v.sort_by(compare);
         v
     }
 }
@@ -936,6 +947,13 @@ fn test_sorted() {
     let v = vec![1u, 3, 2, 0, 4];
     let s = v.into_iter().sorted();
     assert_eq!(s, vec![0u, 1, 2, 3, 4]);
+}
+
+#[test]
+fn test_sorted_by() {
+    let v = vec![1u, 3, 2, 0, 4];
+    let s = v.into_iter().sorted_by(|a,b| (!*a).cmp(&!*b));
+    assert_eq!(s, vec![4, 3, 2, 1, 0u]);
 }
 
 pub trait IteratorStride<E, It> where It: Iterator<E> {
