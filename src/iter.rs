@@ -1,6 +1,8 @@
+use std::cell::RefCell;
 use std::cmp::{max, min};
 use std::mem::replace;
 use std::num::Bounded;
+use std::rc::Rc;
 
 pub trait IteratorAccumulate<E, It> where It: Iterator<E> {
     /**
@@ -107,6 +109,236 @@ fn test_clone_each() {
     assert_eq!(it.next(), Some(2));
     assert_eq!(it.next(), Some(3));
     assert_eq!(it.next(), None);
+}
+
+pub trait IteratorGroupBy<E> {
+    /**
+Creates an iterator that yields a succession of `(group, sub_iterator)` pairs.  Each `sub_iterator` yields successive elements of the input iterator that have the same `group`.  An element's `group` is computed using the `f` closure.
+
+For example:
+
+```
+# extern crate grabbag;
+# use grabbag::iter::IteratorGroupBy;
+# fn main () {
+let v = vec![7u, 5, 6, 2, 4, 7, 6, 1, 6, 4, 4, 6, 0, 0, 8, 8, 6, 1, 8, 7];
+let is_even: |&uint| -> bool = |&n| if n & 1 == 0 { true } else { false };
+for (even, mut ns) in v.into_iter().group_by(is_even) {
+    println!("{}...", if even { "Evens" } else { "Odds" });
+    for n in ns {
+        println!(" - {}", n);
+    }
+}
+# }
+```
+    */
+    fn group_by<'a, G>(self, f: |&E|: 'a -> G) -> GroupByItems<'a, E, Self, G>;
+}
+
+impl<E, It> IteratorGroupBy<E> for It where It: Iterator<E> {
+    fn group_by<'a, G>(self, f: |&E|: 'a -> G) -> GroupByItems<'a, E, It, G> {
+        GroupByItems {
+            state: Rc::new(RefCell::new(GroupByItemsShared {
+                iter: self,
+                group: f,
+                last_group: None,
+                push_back: None,
+            })),
+        }
+    }
+}
+
+pub struct GroupByItems<'a, E, It, G> {
+    state: Rc<RefCell<GroupByItemsShared<'a, E, It, G>>>,
+}
+
+pub struct GroupByItemsShared<'a, E, It, G> {
+    iter: It,
+    group: |&E|: 'a -> G,
+    last_group: Option<G>,
+    push_back: Option<(G, E)>,
+}
+
+impl<'a, E, It, G> Iterator<(G, GroupBySubItems<'a, E, It, G>)> for GroupByItems<'a, E, It, G> where It: Iterator<E>, G: Clone+Eq {
+    fn next(&mut self) -> Option<(G, GroupBySubItems<'a, E, It, G>)> {
+        // First, get a mutable borrow to the underlying state.
+        let mut state = self.state.deref().borrow_mut();
+        let state = state.deref_mut();
+
+        // If we have a push-back element, immediately construct a sub iterator.
+        if let Some((g, e)) = replace(&mut state.push_back, None) {
+            return Some((
+                g.clone(),
+                GroupBySubItems {
+                    state: self.state.clone(),
+                    group_value: g,
+                    first_value: Some(e),
+                }
+            ));
+        }
+
+        // Otherwise, try to pull the next element from the input iterator.
+        // Complication: a sub iterator *might* stop *before* the group is exhausted.  We need to account for this (so that users can easily skip groups).
+        let (e, g) = match replace(&mut state.last_group, None) {
+            None => {
+                // We don't *have* a previous group, just grab the next element.
+                let e = match state.iter.next() {
+                    Some(e) => e,
+                    None => return None
+                };
+                let g = (state.group)(&e);
+                (e, g)
+            },
+            Some(last_g) => {
+                // We have to keep pulling elements until the group changes.
+                let mut e;
+                let mut g;
+                loop {
+                    e = match state.iter.next() {
+                        Some(e) => e,
+                        None => return None
+                    };
+                    g = (state.group)(&e);
+                    if g != last_g { break; }
+                }
+                (e, g)
+            }
+        };
+
+        // Remember this group.
+        state.last_group = Some(g.clone());
+
+        // Construct the sub-iterator and yield it.
+        Some((
+            g.clone(),
+            GroupBySubItems {
+                state: self.state.clone(),
+                group_value: g,
+                first_value: Some(e),
+            }
+        ))
+    }
+
+    fn size_hint(&self) -> (uint, Option<uint>) {
+        let (lb, mub) = self.state.deref().borrow().iter.size_hint();
+        let lb = min(lb, 1);
+        (lb, mub)
+    }
+}
+
+pub struct GroupBySubItems<'a, E, It, G> {
+    state: Rc<RefCell<GroupByItemsShared<'a, E, It, G>>>,
+    group_value: G,
+    first_value: Option<E>,
+}
+
+impl<'a, E, It, G> Iterator<E> for GroupBySubItems<'a, E, It, G> where It: Iterator<E>, G: Eq {
+    fn next(&mut self) -> Option<E> {
+        // If we have a first_value, consume and yield that.
+        if let Some(e) = replace(&mut self.first_value, None) {
+            return Some(e)
+        }
+
+        // Get a mutable borrow to the shared state.
+        let mut state = self.state.deref().borrow_mut();
+        let state = state.deref_mut();
+
+        let e = match state.iter.next() {
+            Some(e) => e,
+            None => return None
+        };
+
+        let g = (state.group)(&e);
+
+        match g == self.group_value {
+            true => {
+                // Still in the same group.
+                Some(e)
+            },
+            false => {
+                // Different group!  We need to push (g, e) back into the master iterator.
+                state.push_back = Some((g, e));
+                None
+            }
+        }
+    }
+
+    fn size_hint(&self) -> (uint, Option<uint>) {
+        let state = self.state.deref().borrow();
+
+        let lb = if self.first_value.is_some() { 1 } else { 0 };
+        let (_, mub) = state.iter.size_hint();
+        (lb, mub)
+    }
+}
+
+#[test]
+fn test_group_by() {
+    {
+        let v = vec![0u, 1, 2, 3, 5, 4, 6, 8, 7];
+        let mut oi = v.into_iter().group_by(|&e| e & 1);
+
+        let (g, mut ii) = oi.next().unwrap();
+        assert_eq!(g, 0);
+        assert_eq!(ii.next(), Some(0));
+        assert_eq!(ii.next(), None);
+
+        let (g, mut ii) = oi.next().unwrap();
+        assert_eq!(g, 1);
+        assert_eq!(ii.next(), Some(1));
+        assert_eq!(ii.next(), None);
+
+        let (g, mut ii) = oi.next().unwrap();
+        assert_eq!(g, 0);
+        assert_eq!(ii.next(), Some(2));
+        assert_eq!(ii.next(), None);
+
+        let (g, mut ii) = oi.next().unwrap();
+        assert_eq!(g, 1);
+        assert_eq!(ii.next(), Some(3));
+        assert_eq!(ii.next(), Some(5));
+        assert_eq!(ii.next(), None);
+
+        let (g, mut ii) = oi.next().unwrap();
+        assert_eq!(g, 0);
+        assert_eq!(ii.next(), Some(4));
+        assert_eq!(ii.next(), Some(6));
+        assert_eq!(ii.next(), Some(8));
+        assert_eq!(ii.next(), None);
+
+        let (g, mut ii) = oi.next().unwrap();
+        assert_eq!(g, 1);
+        assert_eq!(ii.next(), Some(7));
+        assert_eq!(ii.next(), None);
+
+        assert!(oi.next().is_none());
+    }
+    {
+        let v = vec![0u, 1, 2, 3, 5, 4, 6, 8, 7];
+        let mut oi = v.into_iter().group_by(|&e| e & 1);
+
+        let (g, _) = oi.next().unwrap();
+        assert_eq!(g, 0);
+
+        let (g, _) = oi.next().unwrap();
+        assert_eq!(g, 1);
+
+        let (g, _) = oi.next().unwrap();
+        assert_eq!(g, 0);
+
+        let (g, _) = oi.next().unwrap();
+        assert_eq!(g, 1);
+
+        let (g, mut ii) = oi.next().unwrap();
+        assert_eq!(g, 0);
+        assert_eq!(ii.next(), Some(4));
+        assert_eq!(ii.next(), Some(6));
+
+        let (g, _) = oi.next().unwrap();
+        assert_eq!(g, 1);
+
+        assert!(oi.next().is_none());
+    }
 }
 
 pub trait IteratorIndexed<It, IndIt> {
