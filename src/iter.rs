@@ -1027,3 +1027,77 @@ fn test_take_exactly() {
     });
     assert!(r.is_err());
 }
+
+pub trait IteratorZipLongest {
+    /**
+Creates an iterator which yields elements from both input iterators in lockstep.  If one iterator ends before the other, the elements from that iterator will be replaced with `None`.
+    */
+    fn zip_longest<It1>(self, it1: It1) -> ZipLongestItems<Self, It1>;
+}
+
+impl<E0, It0> IteratorZipLongest for It0 where It0: Iterator<E0> {
+    fn zip_longest<It1>(self, it1: It1) -> ZipLongestItems<It0, It1> {
+        ZipLongestItems {
+            it0: self,
+            it1: it1,
+        }
+    }
+}
+
+#[deriving(Clone)]
+pub struct ZipLongestItems<It0, It1> {
+    it0: It0,
+    it1: It1,
+}
+
+impl<E0, E1, It0, It1> Iterator<(Option<E0>, Option<E1>)> for ZipLongestItems<It0, It1> where It0: Iterator<E0>, It1: Iterator<E1> {
+    fn next(&mut self) -> Option<(Option<E0>, Option<E1>)> {
+        match (self.it0.next(), self.it1.next()) {
+            (None, None) => None,
+            e @ _ => Some(e)
+        }
+    }
+
+    fn size_hint(&self) -> (uint, Option<uint>) {
+        let (l0, mu0) = self.it0.size_hint();
+        let (l1, mu1) = self.it1.size_hint();
+        let l = max(l0, l1);
+        let mu = match (mu0, mu1) {
+            (None, _) | (_, None) => None,
+            (Some(u0), Some(u1)) => Some(max(u0, u1))
+        };
+        (l, mu)
+    }
+}
+
+#[test]
+fn test_zip_longest() {
+    let a = vec![0u, 1, 2, 3];
+    let b = vec!["a", "b", "c"];
+    let r: Vec<_> = a.into_iter().zip_longest(b.into_iter()).collect();
+    assert_eq!(r, vec![
+        (Some(0), Some("a")),
+        (Some(1), Some("b")),
+        (Some(2), Some("c")),
+        (Some(3), None),
+    ]);
+
+    let a = vec![0u, 1, 2];
+    let b = vec!["a", "b", "c"];
+    let r: Vec<_> = a.into_iter().zip_longest(b.into_iter()).collect();
+    assert_eq!(r, vec![
+        (Some(0), Some("a")),
+        (Some(1), Some("b")),
+        (Some(2), Some("c")),
+    ]);
+
+    let a = vec![0u, 1, 2];
+    let b = vec!["a", "b", "c", "d"];
+    let r: Vec<_> = a.into_iter().zip_longest(b.into_iter()).collect();
+    assert_eq!(r, vec![
+        (Some(0), Some("a")),
+        (Some(1), Some("b")),
+        (Some(2), Some("c")),
+        (None, Some("d")),
+    ]);
+}
