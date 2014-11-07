@@ -1,4 +1,5 @@
 use std::cmp::{max, min};
+use std::mem::replace;
 use std::num::Bounded;
 
 pub trait IteratorAccumulate<E, It> where It: Iterator<E> {
@@ -26,7 +27,7 @@ pub struct AccumulateItems<'a, E, It> {
 
 impl<'a, E, It> Iterator<E> for AccumulateItems<'a, E, It> where E: Clone, It: Iterator<E> {
     fn next(&mut self) -> Option<E> {
-        match ::std::mem::replace(&mut self.accum, None) {
+        match replace(&mut self.accum, None) {
             None => match self.iter.next() {
                 None => None,
                 e @ _ => {
