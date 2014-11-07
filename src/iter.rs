@@ -646,6 +646,87 @@ fn test_pacing_walk() {
     assert_eq!(w4, vec![4, 3, 2, 1, 0]);
 }
 
+pub trait IteratorCombinations<E0, It1> {
+    /**
+Creates an iterator that yields all combinations, including duplicates, of two input iterators.
+
+The element type of the first input iterator must implement Clone, as must the second iterator type.
+    */
+    fn combinations(self, it1: It1) -> CombinationsItems<E0, Self, It1>;
+}
+
+impl<E0, It0, It1> IteratorCombinations<E0, It1> for It0 where E0: Clone, It0: Iterator<E0>, It1: Clone {
+    fn combinations(self, it1: It1) -> CombinationsItems<E0, It0, It1> {
+        CombinationsItems {
+            it0: self,
+            it1: it1.clone(),
+            it1_checkpoint: it1,
+            left_value: None,
+        }
+    }
+}
+
+#[deriving(Clone)]
+pub struct CombinationsItems<E0, It0, It1> {
+    it0: It0,
+    it1: It1,
+    it1_checkpoint: It1,
+    left_value: Option<E0>,
+}
+
+impl<E0, E1, It0, It1> Iterator<(E0, E1)> for CombinationsItems<E0, It0, It1> where E0: Clone, It0: Iterator<E0>, It1: Clone+Iterator<E1> {
+    fn next(&mut self) -> Option<(E0, E1)> {
+        loop {
+            if let Some(e0) = self.left_value.clone() {
+                match self.it1.next() {
+                    Some(e1) => return Some((e0, e1)),
+                    None => {
+                        self.left_value = None;
+                        self.it1 = self.it1_checkpoint.clone();
+                    }
+                }
+            }
+
+            match self.it0.next() {
+                Some(e0) => {
+                    self.left_value = Some(e0);
+                }
+                None => return None
+            }
+        }
+    }
+
+    fn size_hint(&self) -> (uint, Option<uint>) {
+        let (l0, mu0) = self.it0.size_hint();
+        let (l1, mu1) = self.it1.size_hint();
+        let (lc, muc) = self.it1_checkpoint.size_hint();
+
+        let combine_bounds: |uint, uint, uint| -> uint;
+
+        if self.left_value.is_some() {
+            combine_bounds = |b0, b1, bc| b1 + b0*bc;
+        } else {
+            combine_bounds = |b0, _, bc| b0*bc;
+        }
+
+        let l = combine_bounds(l1, l0, lc);
+        let mu = match (mu0, mu1, muc) {
+            (None, _, _) | (_, None, _) | (_, _, None) => None,
+            (Some(u0), Some(u1), Some(uc)) => Some(combine_bounds(u1, u0, uc))
+        };
+
+        (l, mu)
+    }
+}
+
+#[test]
+fn test_combinations() {
+    let a = vec![0u, 1, 2];
+    let b = vec![3u, 4];
+    let r: Vec<_> = a.into_iter().combinations(b.iter().clone_each()).collect();
+    assert_eq!(r, vec![(0,3),(0,4),(1,3),(1,4),(2,3),(2,4)]);
+}
+
 pub trait IteratorRoundRobin<It1> {
     /**
 Creates an iterator that alternates between yielding elements of the two input iterators.  It stops as soon as either iterator is exhausted.
