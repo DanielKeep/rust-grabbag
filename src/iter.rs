@@ -425,11 +425,19 @@ fn test_group_by() {
 
 pub trait IteratorIndexed<It, IndIt> {
     fn indexed(self, indices: IndIt) -> IndexedItems<It, IndIt>;
+    fn indexed_view(&mut self, indices: IndIt) -> IndexedViewItems<It, IndIt>;
 }
 
 impl<E, It, IndIt> IteratorIndexed<It, IndIt> for It where It: RandomAccessIterator<E> {
     fn indexed(self, indices: IndIt) -> IndexedItems<It, IndIt> {
         IndexedItems {
+            iter: self,
+            indices: indices,
+        }
+    }
+
+    fn indexed_view(&mut self, indices: IndIt) -> IndexedViewItems<It, IndIt> {
+        IndexedViewItems {
             iter: self,
             indices: indices,
         }
@@ -461,12 +469,47 @@ impl<E, It, IndIt> RandomAccessIterator<Option<E>> for IndexedItems<It, IndIt> w
     }
 }
 
+#[deriving(Show)]
+pub struct IndexedViewItems<'a, It, IndIt> where It: 'a {
+    iter: &'a mut It,
+    indices: IndIt,
+}
+
+impl<'a, E, It, IndIt> Iterator<Option<E>> for IndexedViewItems<'a, It, IndIt> where It: 'a+RandomAccessIterator<E>, IndIt: Iterator<uint> {
+    fn next(&mut self) -> Option<Option<E>> {
+        match self.indices.next() {
+            None => None,
+            Some(idx) => Some(self.iter.idx(idx))
+        }
+    }
+}
+
+impl<'a, E, It, IndIt> RandomAccessIterator<Option<E>> for IndexedViewItems<'a, It, IndIt> where It: 'a+RandomAccessIterator<E>, IndIt: RandomAccessIterator<uint> {
+    fn indexable(&self) -> uint {
+        self.indices.indexable()
+    }
+
+    fn idx(&mut self, index: uint) -> Option<Option<E>> {
+        self.indices.idx(index).and_then(|i| Some(self.iter.idx(i)))
+    }
+}
+
 #[test]
 fn test_indexed() {
     let v = vec![0u, 1, 2, 3, 4];
     let i = vec![2u, 4, 1, 0, 2, 3, 5];
     let r: Vec<_> = v.iter().indexed(i.into_iter()).map(|e| e.map(|v| *v)).collect();
     assert_eq!(r, vec![Some(2), Some(4), Some(1), Some(0), Some(2), Some(3), None])
+}
+
+#[test]
+fn test_indexed_view() {
+    let v = vec![0u, 1, 2, 3, 4];
+    let mut v = v.iter().clone_each();
+    let i = vec![2u, 4, 1, 0, 2, 3, 5];
+    let r: Vec<_> = v.indexed_view(i.into_iter()).collect();
+    assert_eq!(r, vec![Some(2), Some(4), Some(1), Some(0), Some(2), Some(3), None]);
+    assert_eq!(v.collect::<Vec<_>>(), vec![0, 1, 2, 3, 4]);
 }
 
 pub trait IteratorFoldl<E> {
