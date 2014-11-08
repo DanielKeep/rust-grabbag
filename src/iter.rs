@@ -476,6 +476,15 @@ Folds the elements of the iterator together, from left to right, using `f`.
 Returns `None` if the iterator is empty.
     */
     fn foldl(self, f: |E, E| -> E) -> Option<E>;
+
+    /**
+Folds the elements of the iterator together, from left to right, using `f.
+
+In addition, the first element is transformed using `map` before folding begins.
+
+Returns `None` if the iterator is empty.
+    */
+    fn foldl_map<F>(self, map: |E| -> F, f: |F, E| -> F) -> Option<F>;
 }
 
 impl<It, E> IteratorFoldl<E> for It where It: Iterator<E> {
@@ -487,6 +496,15 @@ impl<It, E> IteratorFoldl<E> for It where It: Iterator<E> {
 
         Some(self.fold(first, f))
     }
+
+    fn foldl_map<F>(mut self, map: |E| -> F, f: |F, E| -> F) -> Option<F> {
+        let first = match self.next() {
+            None => return None,
+            Some(e) => map(e)
+        };
+
+        Some(self.fold(first, f))
+    }
 }
 
 #[test]
@@ -494,6 +512,13 @@ fn test_foldl() {
     let vs = vec!["a", "b", "c"];
     let vs = vs.into_iter().map(|e| e.into_string());
     assert_eq!(Some("((a, b), c)".into_string()), vs.foldl(|a,b| format!("({}, {})", a, b)));
+}
+
+#[test]
+fn test_foldl_map() {
+    let v = vec!["a", "b", "c"];
+    let r = v.into_iter().foldl_map(|e| e.into_string(), |e,f| (e+", ")+f);
+    assert_eq!(r, Some("a, b, c".into_string()));
 }
 
 pub trait IteratorFoldr<E> {
