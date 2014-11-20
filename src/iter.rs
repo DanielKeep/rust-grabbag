@@ -2,7 +2,7 @@ use std::cell::RefCell;
 use std::cmp::{max, min};
 use std::collections::RingBuf;
 use std::mem::replace;
-use std::num::Bounded;
+use std::num::Int;
 use std::rc::Rc;
 
 pub trait IteratorAccumulate<E, It> where It: Iterator<E> {
@@ -862,11 +862,11 @@ pub struct PacingWalkItems<It> {
 impl<E, It> Iterator<E> for PacingWalkItems<It> where E: ::std::fmt::Show, It: RandomAccessIterator<E> {
     fn next(&mut self) -> Option<E> {
         // Figure out if we need to stop.  This isn't immediately obvious, due to the way we handle the spiralling.
-        let uint_max: uint = Bounded::max_value();
+        let uint_max: uint = Int::max_value();
         let iter_len = self.iter.indexable();
         let left_len = iter_len - self.start_at;
         let stop_pos = (
-            2.checked_mul(&max(left_len, iter_len - left_len)).and_then(|l| l.checked_add(&1))
+            2.checked_mul(max(left_len, iter_len - left_len)).and_then(|l| l.checked_add(1))
         ).unwrap_or(uint_max);
         if self.pos >= stop_pos { return None }
 
@@ -874,7 +874,7 @@ impl<E, It> Iterator<E> for PacingWalkItems<It> where E: ::std::fmt::Show, It: R
         let jitter_right: uint = self.pos & 1;
 
         // Gives us the magnitude of the jitter.
-        let mag = self.pos.checked_add(&1).map(|l| l / 2);
+        let mag = self.pos.checked_add(1).map(|l| l / 2);
 
         // If `mag` has overflowed, it's because `self.pos == uint::MAX`.  However, we know the answer to this...
         let mag: uint = mag.unwrap_or((uint_max / 2) + 1);
@@ -883,7 +883,7 @@ impl<E, It> Iterator<E> for PacingWalkItems<It> where E: ::std::fmt::Show, It: R
         // This could *possibly* be improved by computing when we need to stop doing the radial walk and just continue with a linear one instead.  For now, I'm just going to skip this position.
 
         if jitter_right == 0 && mag > self.start_at {
-            return match self.pos.checked_add(&1) {
+            return match self.pos.checked_add(1) {
                 None => None,
                 Some(pos) => {
                     self.pos = pos;
@@ -893,7 +893,7 @@ impl<E, It> Iterator<E> for PacingWalkItems<It> where E: ::std::fmt::Show, It: R
         }
 
         if jitter_right > 0 && mag >= self.iter.indexable() - self.start_at {
-            return match self.pos.checked_add(&1) {
+            return match self.pos.checked_add(1) {
                 None => None,
                 Some(pos) => {
                     self.pos = pos;
@@ -906,7 +906,7 @@ impl<E, It> Iterator<E> for PacingWalkItems<It> where E: ::std::fmt::Show, It: R
         match self.iter.idx(idx) {
             None => None,
             e @ _ => {
-                match self.pos.checked_add(&1) {
+                match self.pos.checked_add(1) {
                     // Sadly, we can't represent the next position, so we're kinda stuck.
                     None => None,
                     Some(pos) => {
@@ -1223,7 +1223,7 @@ impl<E, It> RandomAccessIterator<E> for StrideItems<It> where It: RandomAccessIt
     }
 
     fn idx(&mut self, index: uint) -> Option<E> {
-        index.checked_mul(&self.stride).and_then(|i| self.iter.idx(i))
+        index.checked_mul(self.stride).and_then(|i| self.iter.idx(i))
     }
 }
 
@@ -1397,7 +1397,7 @@ impl<E, It> Iterator<E> for TeeItems<E, It> where It: Iterator<E>, E: Clone {
                     Some(e) => {
                         self.this_next += 1;
                         state.iter_next += 1;
-                        state.buffer.push(e.clone());
+                        state.buffer.push_back(e.clone());
                         Some(e)
                     }
                 }
