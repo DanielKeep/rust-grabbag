@@ -4,6 +4,10 @@ name = "grabbag_macros"
 version = "0.0.1"
 authors = ["Daniel Keep <daniel.keep@gmail.com>"]
 
+description = "A random grab-bag of functionality. (macro package)"
+repository = "https://github.com/DanielKeep/rust-grabbag"
+license = "MIT"
+
 [lib]
 
 name = "grabbag_macros"

@@ -4,6 +4,10 @@ name = "grabbag"
 version = "0.0.1"
 authors = ["Daniel Keep <daniel.keep@gmail.com>"]
 
-[dependencies.grabbag_macros]
+description = "A random grab-bag of functionality."
+repository = "https://github.com/DanielKeep/rust-grabbag"
+license = "MIT"
 
-path = "grabbag_macros"
+[dependencies]
+
+grabbag_macros = "0.0.1"
