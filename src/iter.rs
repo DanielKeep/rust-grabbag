@@ -743,6 +743,49 @@ fn test_intersperse() {
     assert_eq!(r.idx(1), None);
 }
 
+pub trait IteratorKeepSome {
+    /**
+Creates an iterator that, given a sequence of `Option<E>` values, unwraps all `Some(E)`s, and discards all `None`s.
+    */
+    fn keep_some(self) -> KeepSomeItems<Self>;
+}
+
+impl<E, It> IteratorKeepSome for It where It: Iterator<Option<E>> {
+    fn keep_some(self) -> KeepSomeItems<It> {
+        KeepSomeItems {
+            iter: self,
+        }
+    }
+}
+
+pub struct KeepSomeItems<It> {
+    iter: It,
+}
+
+impl<E, It> Iterator<E> for KeepSomeItems<It> where It: Iterator<Option<E>> {
+    fn next(&mut self) -> Option<E> {
+        loop {
+            match self.iter.next() {
+                Some(v @ Some(_)) => return v,
+                Some(None) => { /* do nothing */ },
+                None => return None,
+            }
+        }
+    }
+
+    fn size_hint(&self) -> (uint, Option<uint>) {
+        let (_, mu) = self.iter.size_hint();
+        (0, mu)
+    }
+}
+
+#[test]
+fn test_keep_some() {
+    let v = vec![None, Some(0u), Some(1), None, Some(2), None, None, Some(3), None];
+    let r: Vec<_> = v.into_iter().keep_some().collect();
+    assert_eq!(r, vec![0, 1, 2, 3]);
+}
+
 pub trait IteratorPadTailTo<E, It> where It: Iterator<E> {
     /**
 Creates an iterator that ensures there are at least `n` elements in a sequence.  If the input iterator is too short, the difference is made up with a filler value.
