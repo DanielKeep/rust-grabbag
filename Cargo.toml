@@ -1,13 +1,13 @@
 [package]
 
 name = "grabbag"
-version = "0.0.1"
+version = "0.0.2"
 authors = ["Daniel Keep <daniel.keep@gmail.com>"]
 
 description = "A random grab-bag of functionality."
 repository = "https://github.com/DanielKeep/rust-grabbag"
 license = "MIT"
 
-[dependencies]
+[dependencies.grabbag_macros]
 
-grabbag_macros = "0.0.1"
+path = "grabbag_macros"
