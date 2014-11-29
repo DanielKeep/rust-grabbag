@@ -28,6 +28,16 @@ pub struct AccumulateItems<'a, E, It> {
     accum: Option<E>,
 }
 
+impl<'a, E, It> AccumulateItems<'a, E, It> {
+    /**
+Unwraps the iterator, returning the underlying iterator.
+    */
+    pub fn unwrap(self) -> It {
+        let AccumulateItems { iter, .. } = self;
+        iter
+    }
+}
+
 impl<'a, E, It> Iterator<E> for AccumulateItems<'a, E, It> where E: Clone, It: Iterator<E> {
     fn next(&mut self) -> Option<E> {
         match replace(&mut self.accum, None) {
@@ -158,6 +168,15 @@ impl<'a, E, It> IteratorCloneEach<'a, E, It> for It where E: Clone, It: Iterator
 #[deriving(Clone, Show)]
 pub struct CloneItems<It> {
     iter: It,
+}
+
+impl<'a, E, It> CloneItems<It> where E: 'a+Clone, It: Iterator<&'a E> {
+    /**
+Unwraps the iterator, returning the underlying iterator.
+    */
+    pub fn unwrap(self) -> It {
+        self.iter
+    }
 }
 
 impl<'a, E, It> Iterator<E> for CloneItems<It> where E: 'a+Clone, It: Iterator<&'a E> {
@@ -452,6 +471,16 @@ pub struct IndexedItems<It, IndIt> {
     indices: IndIt,
 }
 
+impl<It, IndIt> IndexedItems<It, IndIt> {
+    /**
+Unwraps the iterator, returning the underlying indexed and indexer iterators.
+    */
+    pub fn unwrap(self) -> (It, IndIt) {
+        let IndexedItems { iter, indices } = self;
+        (iter, indices)
+    }
+}
+
 impl<E, It, IndIt> Iterator<Option<E>> for IndexedItems<It, IndIt> where It: RandomAccessIterator<E>, IndIt: Iterator<uint> {
     fn next(&mut self) -> Option<Option<E>> {
         match self.indices.next() {
@@ -475,6 +504,16 @@ impl<E, It, IndIt> RandomAccessIterator<Option<E>> for IndexedItems<It, IndIt> w
 pub struct IndexedViewItems<'a, It, IndIt> where It: 'a {
     iter: &'a mut It,
     indices: IndIt,
+}
+
+impl<'a, It, IndIt> IndexedViewItems<'a, It, IndIt> {
+    /**
+Unwraps the iterator, returning the underlying indexed and indexer iterators.
+    */
+    pub fn unwrap(self) -> (&'a mut It, IndIt) {
+        let IndexedViewItems { iter, indices } = self;
+        (iter, indices)
+    }
 }
 
 impl<'a, E, It, IndIt> Iterator<Option<E>> for IndexedViewItems<'a, It, IndIt> where It: 'a+RandomAccessIterator<E>, IndIt: Iterator<uint> {
@@ -766,6 +805,15 @@ pub struct KeepSomeItems<It> {
     iter: It,
 }
 
+impl<It> KeepSomeItems<It> {
+    /**
+Unwraps the iterator, returning the underlying iterator.
+    */
+    pub fn unwrap(self) -> It {
+        self.iter
+    }
+}
+
 impl<E, It> Iterator<E> for KeepSomeItems<It> where It: Iterator<Option<E>> {
     fn next(&mut self) -> Option<E> {
         loop {
@@ -816,6 +864,16 @@ pub struct PadTailToItems<'a, It, E> {
     min: uint,
     pos: uint,
     filler: |uint|: 'a -> E,
+}
+
+impl<'a, It, E> PadTailToItems<'a, It, E> {
+    /**
+Unwraps the iterator, returning the underlying iterator and filler closure.
+    */
+    pub fn unwrap(self) -> (It, |uint|: 'a -> E) {
+        let PadTailToItems { iter, filler, .. } = self;
+        (iter, filler)
+    }
 }
 
 impl<'a, E, It> Iterator<E> for PadTailToItems<'a, It, E> where It: Iterator<E> {
@@ -904,6 +962,16 @@ pub struct PacingWalkItems<It> {
     iter: It,
     start_at: uint,
     pos: uint,
+}
+
+impl<It> PacingWalkItems<It> {
+    /**
+Unwraps the iterator, returning the underlying iterator.
+    */
+    pub fn unwrap(self) -> It {
+        let PacingWalkItems { iter, .. } = self;
+        iter
+    }
 }
 
 impl<E, It> Iterator<E> for PacingWalkItems<It> where E: ::std::fmt::Show, It: RandomAccessIterator<E> {
@@ -1025,6 +1093,16 @@ pub struct RoundRobinItems<It0, It1> {
     phase: u8,
 }
 
+impl<It0, It1> RoundRobinItems<It0, It1> {
+    /**
+Unwraps the iterator, returning the underlying iterators.
+    */
+    pub fn unwrap(self) -> (It0, It1) {
+        let RoundRobinItems { it0, it1, .. } = self;
+        (it0, it1)
+    }
+}
+
 impl<E, It0, It1> Iterator<E> for RoundRobinItems<It0, It1> where It0: Iterator<E>, It1: Iterator<E> {
     fn next(&mut self) -> Option<E> {
         match self.phase {
@@ -1059,6 +1137,16 @@ pub struct RoundRobinLongestItems<It0, It1> {
     it1: It1,
     phase: u8,
     fused: bool,
+}
+
+impl<It0, It1> RoundRobinLongestItems<It0, It1> {
+    /**
+Unwraps the iterator, returning the underlying iterators.
+    */
+    pub fn unwrap(self) -> (It0, It1) {
+        let RoundRobinLongestItems { it0, it1, .. } = self;
+        (it0, it1)
+    }
 }
 
 impl<E, It0, It1> Iterator<E> for RoundRobinLongestItems<It0, It1> where It0: Iterator<E>, It1: Iterator<E> {
@@ -1238,6 +1326,15 @@ pub struct StrideItems<It> {
     stride: uint,
 }
 
+impl<It> StrideItems<It> {
+    /**
+Unwraps the iterator, returning the underlying iterator.
+    */
+    pub fn unwrap(self) -> It {
+        self.iter
+    }
+}
+
 impl<E, It> Iterator<E> for StrideItems<It> where It: Iterator<E> {
     fn next(&mut self) -> Option<E> {
         let v = match self.iter.next() {
@@ -1335,6 +1432,15 @@ impl<E, It> IteratorTakeExactly<E, It> for It where It: Iterator<E> {
 pub struct TakeExactlyItems<It> {
     iter: It,
     left: uint,
+}
+
+impl<It> TakeExactlyItems<It> {
+    /**
+Unwraps the iterator, returning the underlying iterator.
+    */
+    pub fn unwrap(self) -> It {
+        self.iter
+    }
 }
 
 impl<E, It> Iterator<E> for TakeExactlyItems<It> where It: Iterator<E> {
@@ -1541,6 +1647,16 @@ impl<E0, It0> IteratorZipLongest for It0 where It0: Iterator<E0> {
 pub struct ZipLongestItems<It0, It1> {
     it0: It0,
     it1: It1,
+}
+
+impl<It0, It1> ZipLongestItems<It0, It1> {
+    /**
+Unwraps the iterator, returning the underlying iterators.
+    */
+    pub fn unwrap(self) -> (It0, It1) {
+        let ZipLongestItems { it0, it1 } = self;
+        (it0, it1)
+    }
 }
 
 impl<E0, E1, It0, It1> Iterator<(Option<E0>, Option<E1>)> for ZipLongestItems<It0, It1> where It0: Iterator<E0>, It1: Iterator<E1> {
