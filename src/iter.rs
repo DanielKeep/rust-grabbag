@@ -79,7 +79,7 @@ impl<E0, It0, It1> IteratorCartesianProduct<E0, It1> for It0 where E0: Clone, It
     }
 }
 
-#[deriving(Clone)]
+#[deriving(Clone, Show)]
 pub struct CartesianProductItems<E0, It0, It1> {
     it0: It0,
     it1: It1,
@@ -230,6 +230,7 @@ impl<E, It> IteratorGroupBy<E> for It where It: Iterator<E> {
     }
 }
 
+// **NOTE**: Although `Clone` *can* be implemented for this, you *should not* do so, since you cannot clone the underlying `GroupByItemsShared` value.
 pub struct GroupByItems<'a, E, It, G> {
     state: Rc<RefCell<GroupByItemsShared<'a, E, It, G>>>,
 }
@@ -308,6 +309,7 @@ impl<'a, E, It, G> Iterator<(G, GroupBySubItems<'a, E, It, G>)> for GroupByItems
     }
 }
 
+// **NOTE**: Although `Clone` *can* be implemented for this, you *should not* do so, since you cannot clone the underlying `GroupByItemsShared` value.
 pub struct GroupBySubItems<'a, E, It, G> {
     state: Rc<RefCell<GroupByItemsShared<'a, E, It, G>>>,
     group_value: G,
@@ -617,6 +619,7 @@ impl<E, It> IteratorIntersperse<E> for It where It: Iterator<E> {
     }
 }
 
+#[deriving(Clone, Show)]
 pub struct IntersperseItems<E, It> {
     iter: It,
     look_ahead: Option<E>,
@@ -758,6 +761,7 @@ impl<E, It> IteratorKeepSome for It where It: Iterator<Option<E>> {
     }
 }
 
+#[deriving(Clone, Show)]
 pub struct KeepSomeItems<It> {
     iter: It,
 }
@@ -1411,6 +1415,7 @@ impl<E, It> IteratorTee<E> for It where It: Iterator<E> {
     }
 }
 
+// **NOTE**: Although `Clone` *can* be implemented for this, you *should not* do so, since you cannot clone the underlying `TeeItemsState` value.
 pub struct TeeItems<E, It> {
     /*
         /!\ Important /!\
@@ -1532,7 +1537,7 @@ impl<E0, It0> IteratorZipLongest for It0 where It0: Iterator<E0> {
     }
 }
 
-#[deriving(Clone)]
+#[deriving(Clone, Show)]
 pub struct ZipLongestItems<It0, It1> {
     it0: It0,
     it1: It1,
