@@ -1,3 +1,18 @@
+/**
+This module contains a set of iterator extensions.  Rather than being named for the type of iterator they are implemented on, they are named for the method (or group of associated methods) being implemented.
+
+# Standard Features
+
+The iterator extensions, where possible, should implement the following features:
+
+- `Clone`, which produces an *independent* version of the iterator.
+- `DoubleEndedIterator`.
+- `ExactSizeIterator`.
+- `RandomAccessIterator`.
+- `Show`.
+- Accurate `size_hint` (depending on the transform being performed, and the accuracy of the underlying iterator).
+- An `unwrap` method, which returns any owned values passed into the iterator; typically, this is the original iterator.
+*/
 use std::cell::RefCell;
 use std::cmp::{max, min};
 use std::collections::RingBuf;
@@ -445,7 +460,14 @@ fn test_group_by() {
 }
 
 pub trait IteratorIndexed<It, IndIt> {
+    /**
+Creates an iterator which uses `indices` as an indexer to the subject iterator.
+    */
     fn indexed(self, indices: IndIt) -> IndexedItems<It, IndIt>;
+
+    /**
+Creates an iterator which uses `indices` as an indexer to the subject iterator, where the subject is behind a mutable reference.
+    */
     fn indexed_view(&mut self, indices: IndIt) -> IndexedViewItems<It, IndIt>;
 }
 
@@ -1234,6 +1256,13 @@ fn test_skip() {
 }
 
 pub trait IteratorSkipExactly {
+    /**
+Skips *exactly* `n` elements from the iterator.
+
+# Failure
+
+This method will panic if there are less than `n` elements in the iterator.
+    */
     fn skip_exactly(self, n: uint) -> Self;
 }
 
@@ -1416,6 +1445,13 @@ fn test_take() {
 }
 
 pub trait IteratorTakeExactly<E, It> where It: Iterator<E> {
+    /**
+Creates an iterator that yields *exactly* `n` elements from the subject iterator.
+
+# Failure
+
+The iterator will panic if there are less than `n` elements in the subject iterator.
+    */
     fn take_exactly(self, n: uint) -> TakeExactlyItems<It>;
 }
 
