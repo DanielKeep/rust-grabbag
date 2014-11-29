@@ -1185,13 +1185,13 @@ Returns a `Vec` with the elements of the input iterator in sorted order, as spec
 }
 
 impl<E, It> IteratorSorted<E> for It where E: Ord, It: Iterator<E> {
-    fn sorted(mut self) -> Vec<E> {
+    fn sorted(self) -> Vec<E> {
         let mut v = self.collect::<Vec<_>>();
         v.sort();
         v
     }
 
-    fn sorted_by(mut self, compare: |&E, &E| -> Ordering) -> Vec<E> {
+    fn sorted_by(self, compare: |&E, &E| -> Ordering) -> Vec<E> {
         let mut v = self.collect::<Vec<_>>();
         v.sort_by(compare);
         v
@@ -1493,12 +1493,12 @@ impl<E, It> Iterator<E> for TeeItems<E, It> where It: Iterator<E>, E: Clone {
 #[test]
 fn test_tee() {
     let v = vec![0u, 1, 2, 3];
-    let (mut a, mut b) = v.into_iter().tee();
+    let (a, b) = v.into_iter().tee();
     assert_eq!(a.collect::<Vec<_>>(), vec![0, 1, 2, 3]);
     assert_eq!(b.collect::<Vec<_>>(), vec![0, 1, 2, 3]);
 
     let v = vec![0u, 1, 2, 3];
-    let (mut a, mut b) = v.into_iter().tee();
+    let (a, b) = v.into_iter().tee();
     assert_eq!(b.collect::<Vec<_>>(), vec![0, 1, 2, 3]);
     assert_eq!(a.collect::<Vec<_>>(), vec![0, 1, 2, 3]);
 
