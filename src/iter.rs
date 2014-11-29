@@ -207,6 +207,12 @@ impl<'a, E, It> Iterator<E> for CloneItems<It> where E: 'a+Clone, It: Iterator<&
     }
 }
 
+impl<'a, E, It> DoubleEndedIterator<E> for CloneItems<It> where E: 'a+Clone, It: DoubleEndedIterator<E> {
+    fn next_back(&mut self) -> Option<E> {
+        self.iter.next_back().map(|e| e.clone())
+    }
+}
+
 impl<'a, E, It> RandomAccessIterator<E> for CloneItems<It> where E: 'a+Clone, It: RandomAccessIterator<&'a E> {
     fn indexable(&self) -> uint {
         self.iter.indexable()
@@ -512,6 +518,12 @@ impl<E, It, IndIt> Iterator<Option<E>> for IndexedItems<It, IndIt> where It: Ran
     }
 }
 
+impl<E, It, IndIt> DoubleEndedIterator<Option<E>> for IndexedItems<It, IndIt> where It: RandomAccessIterator<E>, IndIt: DoubleEndedIterator<uint> {
+    fn next_back(&mut self) -> Option<Option<E>> {
+        self.indices.next_back().map(|e| self.iter.idx(e))
+    }
+}
+
 impl<E, It, IndIt> RandomAccessIterator<Option<E>> for IndexedItems<It, IndIt> where It: RandomAccessIterator<E>, IndIt: RandomAccessIterator<uint> {
     fn indexable(&self) -> uint {
         self.indices.indexable()
@@ -544,6 +556,12 @@ impl<'a, E, It, IndIt> Iterator<Option<E>> for IndexedViewItems<'a, It, IndIt> w
             None => None,
             Some(idx) => Some(self.iter.idx(idx))
         }
+    }
+}
+
+impl<'a, E, It, IndIt> DoubleEndedIterator<Option<E>> for IndexedViewItems<'a, It, IndIt> where It: RandomAccessIterator<E>, IndIt: DoubleEndedIterator<uint> {
+    fn next_back(&mut self) -> Option<Option<E>> {
+        self.indices.next_back().map(|e| self.iter.idx(e))
     }
 }
 
@@ -853,6 +871,18 @@ impl<E, It> Iterator<E> for KeepSomeItems<It> where It: Iterator<Option<E>> {
     }
 }
 
+impl<E, It> DoubleEndedIterator<E> for KeepSomeItems<It> where It: DoubleEndedIterator<Option<E>> {
+    fn next_back(&mut self) -> Option<E> {
+        loop {
+            match self.iter.next_back() {
+                Some(v @ Some(_)) => return v,
+                Some(None) => (),
+                None => return None,
+            }
+        }
+    }
+}
+
 #[test]
 fn test_keep_some() {
     let v = vec![None, Some(0u), Some(1), None, Some(2), None, None, Some(3), None];
@@ -914,6 +944,20 @@ impl<'a, E, It> Iterator<E> for PadTailToItems<'a, It, E> where It: Iterator<E> 
                 self.pos += 1;
                 e
             }
+        }
+    }
+}
+
+impl<'a, E, It> DoubleEndedIterator<E> for PadTailToItems<'a, It, E> where It: DoubleEndedIterator<E> + ExactSizeIterator<E> {
+    fn next_back(&mut self) -> Option<E> {
+        if self.min == 0 {
+            self.next_back()
+        } else if self.len() >= self.min {
+            self.min -= 1;
+            self.next_back();
+        } else {
+            self.min -= 1;
+            Some((self.filler)(self.pos))
         }
     }
 }
