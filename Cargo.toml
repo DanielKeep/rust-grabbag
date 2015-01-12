@@ -8,6 +8,6 @@ description = "A random grab-bag of functionality."
 repository = "https://github.com/DanielKeep/rust-grabbag"
 license = "MIT"
 
-[dependencies.grabbag_macros]
+[dependencies]
 
-path = "grabbag_macros"
+grabbag_macros = "0.0.2"
