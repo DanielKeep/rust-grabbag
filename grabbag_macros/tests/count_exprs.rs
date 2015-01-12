@@ -1,6 +1,4 @@
-#![feature(macro_rules)]
-#![feature(phase)]
-#[phase(plugin)] extern crate grabbag_macros;
+#[macro_use] extern crate grabbag_macros;
 
 #[test]
 fn test_count_exprs() {

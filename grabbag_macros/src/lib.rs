@@ -1,13 +1,10 @@
-#![feature(macro_rules)]
-
 /**
 This macro provides a way to initialise any container for which there is a FromIterator implementation.  It allows for both sequence and map syntax to be used, as well as inline type ascription for the result.
 
 For example:
 
 ```
-# #![feature(phase)]
-# #[phase(plugin)] extern crate grabbag_macros;
+# #[macro_use] extern crate grabbag_macros;
 # use std::collections::{HashMap, VecMap};
 # fn main() {
 // Initialise an empty collection.
@@ -69,8 +66,7 @@ Counts the number of comma-delimited expressions passed to it.  The result is a 
 Example:
 
 ```
-# #![feature(phase)]
-# #[phase(plugin)] extern crate grabbag_macros;
+# #[macro_use] extern crate grabbag_macros;
 # fn main() {
 const COUNT: uint = count_exprs!(a, 5+1, "hi there!".into_string());
 assert_eq!(COUNT, 3);
@@ -90,8 +86,7 @@ elements of the given closed-form sequence.
 For example, you can define the sequence of positive odd integers like so:
 
 ```
-# #![feature(phase)]
-# #[phase(plugin)] extern crate grabbag_macros;
+# #[macro_use] extern crate grabbag_macros;
 # fn main() {
 #     let _ =
 sequence![ n: u64 = 2*(n as u64) + 1 ]
@@ -102,8 +97,7 @@ sequence![ n: u64 = 2*(n as u64) + 1 ]
 You can also specify one or more initial members of the sequence that are also used in the closed form expression like so:
 
 ```
-# #![feature(phase)]
-# #[phase(plugin)] extern crate grabbag_macros;
+# #[macro_use] extern crate grabbag_macros;
 # fn main() {
 #     let _ =
 sequence![ a[n]: u64 = 1, 2... a[0]*(n as u64) + a[1] ]
@@ -119,7 +113,9 @@ macro_rules! sequence {
                 pos: uint,
             }
 
-            impl Iterator<$sty> for Sequence {
+            impl Iterator for Sequence {
+                type Item = $sty;
+
                 #[inline]
                 fn next(&mut self) -> Option<$sty> {
                     if self.pos == ::std::uint::MAX {
@@ -144,11 +140,13 @@ macro_rules! sequence {
             const INITS: uint = count_exprs!($($inits),+);
 
             struct Sequence {
-                inits: [$sty, ..INITS],
+                inits: [$sty; INITS],
                 pos: uint,
             }
 
-            impl Iterator<$sty> for Sequence {
+            impl Iterator for Sequence {
+                type Item = $sty;
+
                 #[inline]
                 fn next(&mut self) -> Option<$sty> {
                     if self.pos == ::std::uint::MAX {
@@ -184,8 +182,7 @@ elements of the given recurrence relationship.
 For example, you can define a Fibonnaci sequence iterator like so:
 
 ```
-# #![feature(phase)]
-# #[phase(plugin)] extern crate grabbag_macros;
+# #[macro_use] extern crate grabbag_macros;
 # fn main() {
 #     let _ =
 recurrence![ fib[n]: f64 = 0.0, 1.0 ... fib[n-1] + fib[n-2] ]
@@ -197,19 +194,23 @@ recurrence![ fib[n]: f64 = 0.0, 1.0 ... fib[n-1] + fib[n-2] ]
 macro_rules! recurrence {
     ( $seq:ident [ $ind:ident ]: $sty:ty = $($inits:expr),+ ... $recur:expr ) => {
         {
+            use std::ops::Index;
+
             const MEMORY: uint = count_exprs!($($inits),+);
 
             struct Recurrence {
-                mem: [$sty, ..MEMORY],
+                mem: [$sty; MEMORY],
                 pos: uint,
             }
 
             struct IndexOffset<'a> {
-                slice: &'a [$sty, ..MEMORY],
+                slice: &'a [$sty; MEMORY],
                 offset: uint,
             }
 
-            impl<'a> Index<uint, $sty> for IndexOffset<'a> {
+            impl<'a> Index<uint> for IndexOffset<'a> {
+                type Output = $sty;
+
                 #[inline(always)]
                 fn index<'b>(&'b self, index: &uint) -> &'b $sty {
                     let real_index = *index - self.offset + MEMORY;
@@ -217,7 +218,9 @@ macro_rules! recurrence {
                 }
             }
 
-            impl Iterator<$sty> for Recurrence {
+            impl Iterator for Recurrence {
+                type Item = $sty;
+
                 #[inline]
                 fn next(&mut self) -> Option<$sty> {
                     if self.pos == ::std::uint::MAX {

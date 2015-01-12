@@ -1,8 +1,6 @@
-#![feature(macro_rules)]
-#![feature(phase)]
-#[phase(plugin)] extern crate grabbag_macros;
+#[macro_use] extern crate grabbag_macros;
 
-use std::collections::{HashMap, TreeSet};
+use std::collections::{HashMap, BTreeSet};
 
 macro_rules! assert_eq_iter {
     (== $it:expr:) => {
@@ -40,13 +38,10 @@ fn test_collect_empty_full_inference() {
     let c: Vec<int> = collect![];
     assert_eq!(c.len(), 0);
 
-    let c: String = collect![];
-    assert_eq!(c.len(), 0);
-
     let c: HashMap<String, Vec<u8>> = collect![];
     assert_eq!(c.len(), 0);
 
-    let c: TreeSet<int> = collect![];
+    let c: BTreeSet<int> = collect![];
     assert_eq!(c.len(), 0);
 }
 
@@ -55,13 +50,10 @@ fn test_collect_empty_constrained() {
     let c = collect![into Vec<int>];
     assert_eq!(c.len(), 0);
 
-    let c = collect![into String];
-    assert_eq!(c.len(), 0);
-
     let c = collect![into HashMap<String, Vec<u8>>];
     assert_eq!(c.len(), 0);
 
-    let c = collect![into TreeSet<int>];
+    let c = collect![into BTreeSet<int>];
     assert_eq!(c.len(), 0);
 }
 
@@ -73,7 +65,7 @@ fn test_collect_sequence_full_inference() {
     let c: String = collect!['a', 'b', 'c', '刀'];
     assert_eq_iter!(c.chars(): 'a', 'b', 'c', '刀');
 
-    let c: TreeSet<int> = collect![2, 1, 3];
+    let c: BTreeSet<int> = collect![2, 1, 3];
     assert_eq_iter!(c.iter().map(deref): 1, 2, 3);
 }
 
@@ -85,7 +77,7 @@ fn test_collect_sequence_constrained() {
     let c = collect![into String: 'a', 'b', 'c', '刀'];
     assert_eq_iter!(c.chars(): 'a', 'b', 'c', '刀');
 
-    let c = collect![into TreeSet<_>: 2, 1, 3i];
+    let c = collect![into BTreeSet<_>: 2, 1, 3i];
     assert_eq_iter!(c.iter().map(deref): 1, 2, 3);
 }
 

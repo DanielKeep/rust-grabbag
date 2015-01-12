@@ -1,0 +1,51 @@
+/**
+This module contains a set of iterator extensions.  Rather than being named for the type of iterator they are implemented on, they are named for the method (or group of associated methods) being implemented.
+
+# Standard Features
+
+The iterator extensions, where possible, should implement the following features:
+
+- `Clone`, which produces an *independent* version of the iterator.
+- `DoubleEndedIterator`.
+- `ExactSizeIterator`.
+- `RandomAccessIterator`.
+- `Show`.
+- Accurate `size_hint` (depending on the transform being performed, and the accuracy of the underlying iterator).
+- An `unwrap` method, which returns any owned values passed into the iterator; typically, this is the original iterator.
+*/
+
+pub use self::accumulate::AccumulateIterator;
+pub use self::cartesian_product::CartesianProductIterator;
+pub use self::clone_each::CloneEachIterator;
+pub use self::group_by::GroupByIterator;
+pub use self::indexed::IndexedIterator;
+pub use self::fold::{FoldlIterator, FoldrIterator};
+pub use self::intersperse::IntersperseIterator;
+pub use self::keep_some::KeepSomeIterator;
+pub use self::pad_tail_to::PadTailToIterator;
+pub use self::pacing_walk::PacingWalkIterator;
+pub use self::round_robin::RoundRobinIterator;
+pub use self::skip_exactly::SkipExactlyIterator;
+pub use self::sorted::SortedIterator;
+pub use self::stride::StrideIterator;
+pub use self::take_exactly::TakeExactlyIterator;
+pub use self::tee::TeeIterator;
+pub use self::zip_longest::ZipLongestIterator;
+
+pub mod accumulate;
+pub mod cartesian_product;
+pub mod clone_each;
+pub mod group_by;
+pub mod indexed;
+pub mod fold;
+pub mod intersperse;
+pub mod keep_some;
+pub mod pad_tail_to;
+pub mod pacing_walk;
+pub mod round_robin;
+pub mod skip_exactly;
+pub mod sorted;
+pub mod stride;
+pub mod take_exactly;
+pub mod tee;
+pub mod zip_longest;
