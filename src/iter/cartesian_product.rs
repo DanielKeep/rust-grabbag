@@ -49,12 +49,12 @@ impl<LeftIt, RightIt, LeftItem, RightItem> Iterator for CartesianProduct<LeftIt,
         }
     }
 
-    fn size_hint(&self) -> (uint, Option<uint>) {
+    fn size_hint(&self) -> (usize, Option<usize>) {
         let (l0, mu0) = self.left.size_hint();
         let (l1, mu1) = self.right.size_hint();
         let (lc, muc) = self.right_checkpoint.size_hint();
 
-        let combine_bounds: fn(uint, uint, uint) -> uint;
+        let combine_bounds: fn(usize, usize, usize) -> usize;
 
         if self.left_value.is_some() {
             combine_bounds = combine_bounds_with_partial;
@@ -72,11 +72,11 @@ impl<LeftIt, RightIt, LeftItem, RightItem> Iterator for CartesianProduct<LeftIt,
     }
 }
 
-fn combine_bounds_with_partial(b0: uint, b1: uint, bc: uint) -> uint {
+fn combine_bounds_with_partial(b0: usize, b1: usize, bc: usize) -> usize {
     b1 + b0*bc
 }
 
-fn combine_bounds_without_partial(b0: uint, _: uint, bc: uint) -> uint {
+fn combine_bounds_without_partial(b0: usize, _: usize, bc: usize) -> usize {
     b0*bc
 }
 
@@ -84,8 +84,8 @@ fn combine_bounds_without_partial(b0: uint, _: uint, bc: uint) -> uint {
 fn test_cartesian_product() {
     use super::CloneEachIterator;
 
-    let a = vec![0u, 1, 2];
-    let b = vec![3u, 4];
+    let a = vec![0us, 1, 2];
+    let b = vec![3us, 4];
     let r: Vec<_> = a.into_iter().cartesian_product(b.iter().clone_each()).collect();
     assert_eq!(r, vec![(0,3),(0,4),(1,3),(1,4),(2,3),(2,4)]);
 }

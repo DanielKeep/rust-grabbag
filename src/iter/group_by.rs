@@ -13,8 +13,8 @@ For example:
 # extern crate grabbag;
 # use grabbag::iter::GroupByIterator;
 # fn main () {
-let v = vec![7u, 5, 6, 2, 4, 7, 6, 1, 6, 4, 4, 6, 0, 0, 8, 8, 6, 1, 8, 7];
-let is_even = |&: n: &uint| if *n & 1 == 0 { true } else { false };
+let v = vec![7us, 5, 6, 2, 4, 7, 6, 1, 6, 4, 4, 6, 0, 0, 8, 8, 6, 1, 8, 7];
+let is_even = |&: n: &usize| if *n & 1 == 0 { true } else { false };
 for (even, mut ns) in v.into_iter().group_by(is_even) {
     println!("{}...", if even { "Evens" } else { "Odds" });
     for n in ns {
@@ -112,7 +112,7 @@ impl<'a, It, GroupFn, E, G> Iterator for GroupBy<'a, It, GroupFn, E, G> where Gr
         ))
     }
 
-    fn size_hint(&self) -> (uint, Option<uint>) {
+    fn size_hint(&self) -> (usize, Option<usize>) {
         let (lb, mub) = self.state.borrow().iter.size_hint();
         let lb = min(lb, 1);
         (lb, mub)
@@ -159,7 +159,7 @@ impl<'a, It, GroupFn, E, G> Iterator for Group<'a, It, GroupFn, E, G> where Grou
         }
     }
 
-    fn size_hint(&self) -> (uint, Option<uint>) {
+    fn size_hint(&self) -> (usize, Option<usize>) {
         let state = self.state.borrow();
 
         let lb = if self.first_value.is_some() { 1 } else { 0 };
@@ -171,7 +171,7 @@ impl<'a, It, GroupFn, E, G> Iterator for Group<'a, It, GroupFn, E, G> where Grou
 #[test]
 fn test_group_by() {
     {
-        let v = vec![0u, 1, 2, 3, 5, 4, 6, 8, 7];
+        let v = vec![0us, 1, 2, 3, 5, 4, 6, 8, 7];
         let mut oi = v.into_iter().group_by(|&e| e & 1);
 
         let (g, mut ii) = oi.next().unwrap();
@@ -210,7 +210,7 @@ fn test_group_by() {
         assert!(oi.next().is_none());
     }
     {
-        let v = vec![0u, 1, 2, 3, 5, 4, 6, 8, 7];
+        let v = vec![0us, 1, 2, 3, 5, 4, 6, 8, 7];
         let mut oi = v.into_iter().group_by(|&e| e & 1);
 
         let (g, _) = oi.next().unwrap();

@@ -6,7 +6,7 @@ Example:
 ```
 # #[macro_use] extern crate grabbag_macros;
 # fn main() {
-const COUNT: uint = count_exprs!(a, 5+1, "hi there!".into_string());
+const COUNT: usize = count_exprs!(a, 5+1, "hi there!".into_string());
 assert_eq!(COUNT, 3);
 # }
 ```
@@ -14,7 +14,8 @@ assert_eq!(COUNT, 3);
 #[macro_export]
 macro_rules! count_exprs {
     () => { 0 };
-    ($e:expr $(, $es:expr)*) => { 1 + count_exprs!($($es),*) };
+    ($e:expr) => { 1 };
+    ($e:expr, $($es:expr),+) => { 1 + count_exprs!($($es),*) };
 }
 
 /**
@@ -34,13 +35,13 @@ let b: HashMap<String, bool> = collect![];
 let c: String = collect!['a', 'b', 'c'];
 
 // Initialise a sequence with a type constraint.
-let d = collect![into Vec<_>: 0i, 1, 2];
+let d = collect![into Vec<_>: 0, 1, 2];
 
 // Initialise a map collection.
-let e: VecMap<&str> = collect![1:"one", 2:"two", 3:"many", 4:"lots"];
+let e: VecMap<&str> = collect![1 => "one", 2 => "two", 3 => "many", 4 => "lots"];
 
 // Initialise a map with a type constraint.
-let f: HashMap<_, u8> = collect![into HashMap<int, _>: 42: 0, -11: 2];
+let f: HashMap<_, u8> = collect![into HashMap<int, _>: 42 => 0, -11 => 2];
 # }
 ```
 */
@@ -59,7 +60,7 @@ macro_rules! collect {
     // Initialise a sequence with a constrained container type.
     [into $col_ty:ty: $($vs:expr),+] => {
         {
-            const NUM_ELEMS: uint = count_exprs!($($vs),+);
+            const NUM_ELEMS: usize = count_exprs!($($vs),+);
 
             // This trick is stolen from std::iter, and *should* serve to give the container enough information to pre-allocate sufficient storage for all the elements.
             struct SizeHint<E>;
@@ -79,7 +80,7 @@ macro_rules! collect {
                 }
 
                 #[inline(always)]
-                fn size_hint(&self) -> (uint, Option<uint>) {
+                fn size_hint(&self) -> (usize, Option<usize>) {
                     (NUM_ELEMS, Some(NUM_ELEMS))
                 }
             }
@@ -98,13 +99,13 @@ macro_rules! collect {
     [$($vs:expr),+] => { collect![into _: $($vs),+] };
 
     // Initialise a map with a constrained container type.
-    [into $col_ty:ty: $($ks:expr: $vs:expr),+] => {
+    [into $col_ty:ty: $($ks:expr => $vs:expr),+] => {
         // Maps implement FromIterator by taking tuples, so we just need to rewrite each `a:b` as `(a,b)`.
         collect![into $col_ty: $(($ks, $vs)),+]
     };
 
     // Initialise a map with a fully inferred contained type.
-    [$($ks:expr: $vs:expr),+] => { collect![into _: $($ks: $vs),+] };
+    [$($ks:expr => $vs:expr),+] => { collect![into _: $($ks => $vs),+] };
 }
 
 /**
@@ -138,7 +139,7 @@ macro_rules! sequence {
     ( $ind:ident: $sty:ty = $closed_form:expr ) => {
         {
             struct Sequence {
-                pos: uint,
+                pos: usize,
             }
 
             impl Iterator for Sequence {
@@ -146,7 +147,7 @@ macro_rules! sequence {
 
                 #[inline]
                 fn next(&mut self) -> Option<$sty> {
-                    if self.pos == ::std::uint::MAX {
+                    if self.pos == ::std::usize::MAX {
                         return None
                     }
 
@@ -165,11 +166,11 @@ macro_rules! sequence {
     };
     ( $seq:ident [ $ind:ident ]: $sty:ty = $($inits:expr),+ ... $closed_form:expr ) => {
         {
-            const INITS: uint = count_exprs!($($inits),+);
+            const INITS: usize = count_exprs!($($inits),+);
 
             struct Sequence {
                 inits: [$sty; INITS],
-                pos: uint,
+                pos: usize,
             }
 
             impl Iterator for Sequence {
@@ -177,7 +178,7 @@ macro_rules! sequence {
 
                 #[inline]
                 fn next(&mut self) -> Option<$sty> {
-                    if self.pos == ::std::uint::MAX {
+                    if self.pos == ::std::usize::MAX {
                         return None
                     }
 
@@ -224,23 +225,23 @@ macro_rules! recurrence {
         {
             use std::ops::Index;
 
-            const MEMORY: uint = count_exprs!($($inits),+);
+            const MEMORY: usize = count_exprs!($($inits),+);
 
             struct Recurrence {
                 mem: [$sty; MEMORY],
-                pos: uint,
+                pos: usize,
             }
 
             struct IndexOffset<'a> {
                 slice: &'a [$sty; MEMORY],
-                offset: uint,
+                offset: usize,
             }
 
-            impl<'a> Index<uint> for IndexOffset<'a> {
+            impl<'a> Index<usize> for IndexOffset<'a> {
                 type Output = $sty;
 
                 #[inline(always)]
-                fn index<'b>(&'b self, index: &uint) -> &'b $sty {
+                fn index<'b>(&'b self, index: &usize) -> &'b $sty {
                     let real_index = *index - self.offset + MEMORY;
                     &self.slice[real_index]
                 }
@@ -251,7 +252,7 @@ macro_rules! recurrence {
 
                 #[inline]
                 fn next(&mut self) -> Option<$sty> {
-                    if self.pos == ::std::uint::MAX {
+                    if self.pos == ::std::usize::MAX {
                         return None
                     }
 

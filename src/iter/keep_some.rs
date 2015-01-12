@@ -40,7 +40,7 @@ impl<E, It> Iterator for KeepSome<It> where It: Iterator<Item=Option<E>> {
         }
     }
 
-    fn size_hint(&self) -> (uint, Option<uint>) {
+    fn size_hint(&self) -> (usize, Option<usize>) {
         let (_, mu) = self.iter.size_hint();
         (0, mu)
     }
@@ -60,7 +60,7 @@ impl<E, It> DoubleEndedIterator for KeepSome<It> where It: DoubleEndedIterator +
 
 #[test]
 fn test_keep_some() {
-    let v = vec![None, Some(0u), Some(1), None, Some(2), None, None, Some(3), None];
+    let v = vec![None, Some(0us), Some(1), None, Some(2), None, None, Some(3), None];
     let r: Vec<_> = v.into_iter().keep_some().collect();
     assert_eq!(r, vec![0, 1, 2, 3]);
 }

@@ -35,12 +35,12 @@ pub struct Tee<E, It> {
     In order for this to *not* panic, you need to ensure that nothing is re-entrant whilst it holds a mutable reference to the `RefCell`.  This should still be safe from the user's perspective.
     */
     state: Rc<RefCell<TeeState<E, It>>>,
-    this_next: uint,
+    this_next: usize,
 }
 
 pub struct TeeState<E, It> {
     iter: It,
-    iter_next: uint,
+    iter_next: usize,
     buffer: RingBuf<E>,
 }
 
@@ -81,7 +81,7 @@ impl<E, It> Iterator for Tee<E, It> where It: Iterator<Item=E>, E: Clone {
         }
     }
 
-    fn size_hint(&self) -> (uint, Option<uint>) {
+    fn size_hint(&self) -> (usize, Option<usize>) {
         let state = self.state.borrow_mut();
         let state = &*state;
 
@@ -111,17 +111,17 @@ impl<E, It> Iterator for Tee<E, It> where It: Iterator<Item=E>, E: Clone {
 
 #[test]
 fn test_tee() {
-    let v = vec![0u, 1, 2, 3];
+    let v = vec![0us, 1, 2, 3];
     let (a, b) = v.into_iter().tee();
     assert_eq!(a.collect::<Vec<_>>(), vec![0, 1, 2, 3]);
     assert_eq!(b.collect::<Vec<_>>(), vec![0, 1, 2, 3]);
 
-    let v = vec![0u, 1, 2, 3];
+    let v = vec![0us, 1, 2, 3];
     let (a, b) = v.into_iter().tee();
     assert_eq!(b.collect::<Vec<_>>(), vec![0, 1, 2, 3]);
     assert_eq!(a.collect::<Vec<_>>(), vec![0, 1, 2, 3]);
 
-    let v = vec![0u, 1, 2, 3];
+    let v = vec![0us, 1, 2, 3];
     let (mut a, mut b) = v.into_iter().tee();
     assert_eq!(a.next(), Some(0));
     assert_eq!(a.next(), Some(1));

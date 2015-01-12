@@ -53,7 +53,7 @@ impl<It, E> Iterator for Intersperse<It, E> where It: Iterator<Item=E>, E: Clone
         }
     }
 
-    fn size_hint(&self) -> (uint, Option<uint>) {
+    fn size_hint(&self) -> (usize, Option<usize>) {
         let (li, mui) = self.iter.size_hint();
         let l = match li {
             0 => 0,
@@ -69,7 +69,7 @@ impl<It, E> Iterator for Intersperse<It, E> where It: Iterator<Item=E>, E: Clone
 }
 
 impl<It, E> RandomAccessIterator for Intersperse<It, E> where It: Iterator<Item=E> + RandomAccessIterator, E: Clone {
-    fn indexable(&self) -> uint {
+    fn indexable(&self) -> usize {
         match (self.look_ahead.is_some(), self.iter.indexable(), self.next_is_inject) {
             (false, _, _    ) => 0,
             (true,  0, false) => 1,
@@ -81,7 +81,7 @@ impl<It, E> RandomAccessIterator for Intersperse<It, E> where It: Iterator<Item=
         }
     }
 
-    fn idx(&mut self, index: uint) -> Option<E> {
+    fn idx(&mut self, index: usize) -> Option<E> {
         match (index, self.look_ahead.is_some(), self.iter.indexable(), self.next_is_inject, index & 1) {
             (_,     false, _, _,     _) => None,
 

@@ -5,7 +5,7 @@ pub trait PadTailToIterator<E>: Iterator<Item=E> + Sized {
     /**
 Creates an iterator that ensures there are at least `n` elements in a sequence.  If the input iterator is too short, the difference is made up with a filler value.
     */
-    fn pad_tail_to<F: FnMut(uint) -> E>(self, n: uint, filler: F) -> PadTailTo<Self, F> {
+    fn pad_tail_to<F: FnMut(usize) -> E>(self, n: usize, filler: F) -> PadTailTo<Self, F> {
         PadTailTo {
             iter: self,
             min: n,
@@ -19,8 +19,8 @@ impl<It, E> PadTailToIterator<E> for It where It: Iterator<Item=E> {}
 
 pub struct PadTailTo<It, F> {
     iter: It,
-    min: uint,
-    pos: uint,
+    min: usize,
+    pos: usize,
     filler: F,
 }
 
@@ -34,7 +34,7 @@ Unwraps the iterator, returning the underlying iterator and filler closure.
     }
 }
 
-impl<It, E, F> Iterator for PadTailTo<It, F> where It: Iterator<Item=E>, F: FnMut(uint) -> E {
+impl<It, E, F> Iterator for PadTailTo<It, F> where It: Iterator<Item=E>, F: FnMut(usize) -> E {
     type Item = E;
 
     fn next(&mut self) -> Option<E> {
@@ -56,7 +56,7 @@ impl<It, E, F> Iterator for PadTailTo<It, F> where It: Iterator<Item=E>, F: FnMu
     }
 }
 
-impl<It, E, F> DoubleEndedIterator for PadTailTo<It, F> where It: DoubleEndedIterator + ExactSizeIterator + Iterator<Item=E>, F: FnMut(uint) -> E {
+impl<It, E, F> DoubleEndedIterator for PadTailTo<It, F> where It: DoubleEndedIterator + ExactSizeIterator + Iterator<Item=E>, F: FnMut(usize) -> E {
     fn next_back(&mut self) -> Option<E> {
         if self.min == 0 {
             self.next_back()
@@ -70,12 +70,12 @@ impl<It, E, F> DoubleEndedIterator for PadTailTo<It, F> where It: DoubleEndedIte
     }
 }
 
-impl<It, E, F> RandomAccessIterator for PadTailTo<It, F> where It: Iterator<Item=E> + RandomAccessIterator, F: FnMut(uint) -> E {
-    fn indexable(&self) -> uint {
+impl<It, E, F> RandomAccessIterator for PadTailTo<It, F> where It: Iterator<Item=E> + RandomAccessIterator, F: FnMut(usize) -> E {
+    fn indexable(&self) -> usize {
         max(self.iter.indexable(), self.min)
     }
 
-    fn idx(&mut self, index: uint) -> Option<E> {
+    fn idx(&mut self, index: usize) -> Option<E> {
         match (index < self.iter.indexable(), index < self.min) {
             (true, _) => self.iter.idx(index),
             (false, true) => Some((self.filler)(index)),
@@ -86,11 +86,11 @@ impl<It, E, F> RandomAccessIterator for PadTailTo<It, F> where It: Iterator<Item
 
 #[test]
 fn test_pad_tail_to() {
-    let v: Vec<uint> = vec![0, 1, 2];
+    let v: Vec<usize> = vec![0, 1, 2];
     let r: Vec<_> = v.into_iter().pad_tail_to(5, |n| n).collect();
     assert_eq!(r, vec![0, 1, 2, 3, 4]);
 
-    let v: Vec<uint> = vec![0, 1, 2];
+    let v: Vec<usize> = vec![0, 1, 2];
     let r: Vec<_> = v.into_iter().pad_tail_to(1, |_| panic!()).collect();
     assert_eq!(r, vec![0, 1, 2]);
 }

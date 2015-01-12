@@ -38,7 +38,7 @@ impl<'a, It, E> Iterator for CloneEach<It> where It: Iterator<Item=&'a E>, E: 'a
         }
     }
 
-    fn size_hint(&self) -> (uint, Option<uint>) {
+    fn size_hint(&self) -> (usize, Option<usize>) {
         self.iter.size_hint()
     }
 }
@@ -50,18 +50,18 @@ impl<'a, E, It> DoubleEndedIterator for CloneEach<It> where It: DoubleEndedItera
 }
 
 impl<'a, E, It> RandomAccessIterator for CloneEach<It> where It: RandomAccessIterator<Item=&'a E>, E: 'a + Clone {
-    fn indexable(&self) -> uint {
+    fn indexable(&self) -> usize {
         self.iter.indexable()
     }
 
-    fn idx(&mut self, index: uint) -> Option<E> {
+    fn idx(&mut self, index: usize) -> Option<E> {
         self.iter.idx(index).map(|e| e.clone())
     }
 }
 
 #[test]
 fn test_clone_each() {
-    let it: Vec<int> = vec![1, 2, 3];
+    let it: Vec<i32> = vec![1, 2, 3];
     let mut it = it.iter().clone_each();
     assert_eq!(it.next(), Some(1));
     assert_eq!(it.next(), Some(2));

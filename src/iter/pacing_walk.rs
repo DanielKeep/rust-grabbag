@@ -10,7 +10,7 @@ For example:
 
 ```
 # use grabbag::iter::{CloneEachIterator, PacingWalkIterator};
-let v: Vec<uint> = vec![0, 1, 2, 3, 4];
+let v: Vec<usize> = vec![0, 1, 2, 3, 4];
 
 let w0: Vec<_> = v.iter().pacing_walk(0).clone_each().collect();
 let w1: Vec<_> = v.iter().pacing_walk(1).clone_each().collect();
@@ -25,11 +25,11 @@ assert_eq!(w3, vec![3, 4, 2, 1, 0]);
 assert_eq!(w4, vec![4, 3, 2, 1, 0]);
 ```
     */
-    fn pacing_walk(self, start_at: uint) -> PacingWalk<Self>;
+    fn pacing_walk(self, start_at: usize) -> PacingWalk<Self>;
 }
 
 impl<It, E> PacingWalkIterator for It where It: Iterator<Item=E> + RandomAccessIterator {
-    fn pacing_walk(self, start_at: uint) -> PacingWalk<It> {
+    fn pacing_walk(self, start_at: usize) -> PacingWalk<It> {
         PacingWalk {
             iter: self,
             start_at: start_at,
@@ -41,8 +41,8 @@ impl<It, E> PacingWalkIterator for It where It: Iterator<Item=E> + RandomAccessI
 #[derive(Clone, Show)]
 pub struct PacingWalk<It> {
     iter: It,
-    start_at: uint,
-    pos: uint,
+    start_at: usize,
+    pos: usize,
 }
 
 impl<It> PacingWalk<It> {
@@ -60,7 +60,7 @@ impl<It, E> Iterator for PacingWalk<It> where It: Iterator<Item=E> + RandomAcces
 
     fn next(&mut self) -> Option<E> {
         // Figure out if we need to stop.  This isn't immediately obvious, due to the way we handle the spiralling.
-        let uint_max: uint = ::std::uint::MAX;
+        let uint_max: usize = ::std::usize::MAX;
         let iter_len = self.iter.indexable();
         let left_len = iter_len - self.start_at;
         let stop_pos = (
@@ -69,14 +69,14 @@ impl<It, E> Iterator for PacingWalk<It> where It: Iterator<Item=E> + RandomAcces
         if self.pos >= stop_pos { return None }
 
         // Gives us 0 (jitter left) or 1 (jitter right).
-        //let jitter_right: uint = self.pos & 1;
+        //let jitter_right: usize = self.pos & 1;
         let jitter_right = (self.pos & 1) != 0;
 
         // Gives us the magnitude of the jitter.
         let mag = self.pos.checked_add(1).map(|l| l / 2);
 
-        // If `mag` has overflowed, it's because `self.pos == uint::MAX`.  However, we know the answer to this...
-        let mag: uint = mag.unwrap_or((uint_max / 2) + 1);
+        // If `mag` has overflowed, it's because `self.pos == usize::MAX`.  However, we know the answer to this...
+        let mag: usize = mag.unwrap_or((uint_max / 2) + 1);
 
         // We can now compute the actual index into `iter` we want to use.  Of course, this may very well be out of bounds!
         // This could *possibly* be improved by computing when we need to stop doing the radial walk and just continue with a linear one instead.  For now, I'm just going to skip this position.
@@ -117,7 +117,7 @@ impl<It, E> Iterator for PacingWalk<It> where It: Iterator<Item=E> + RandomAcces
         }
     }
 
-    fn size_hint(&self) -> (uint, Option<uint>) {
+    fn size_hint(&self) -> (usize, Option<usize>) {
         self.iter.size_hint()
     }
 }
@@ -126,7 +126,7 @@ impl<It, E> Iterator for PacingWalk<It> where It: Iterator<Item=E> + RandomAcces
 fn test_pacing_walk() {
     use super::CloneEachIterator;
 
-    let v: Vec<uint> = vec![0, 1, 2, 3, 4];
+    let v: Vec<usize> = vec![0, 1, 2, 3, 4];
 
     let w0: Vec<_> = v.iter().pacing_walk(0).clone_each().collect();
     let w1: Vec<_> = v.iter().pacing_walk(1).clone_each().collect();

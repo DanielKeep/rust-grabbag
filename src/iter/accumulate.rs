@@ -60,14 +60,14 @@ impl<It, E, F> Iterator for Accumulate<It, E, F> where It: Iterator<Item=E>, F: 
 
 #[test]
 fn test_accumulate() {
-    let v = vec![0u, 1, 2, 3, 4];
+    let v = vec![0us, 1, 2, 3, 4];
     let r: Vec<_> = v.into_iter().accumulate(|a,b| a+b).collect();
     assert_eq!(r, vec![0, 1, 3, 6, 10]);
 }
 
 #[test]
 fn test_accumulate_unwrap() {
-    let v = vec![0u, 1, 2, 3, 4];
+    let v = vec![0us, 1, 2, 3, 4];
     let mut i = v.into_iter().accumulate(|a,b| a+b);
     assert_eq!(i.next(), Some(0));
     assert_eq!(i.next(), Some(1));

@@ -1,10 +1,10 @@
 #[test]
 fn test_skip() {
-    let v = vec![0i, 1, 2, 3];
+    let v = vec![0is, 1, 2, 3];
     let r: Vec<_> = v.into_iter().skip(3).collect();
     assert_eq!(r, vec![3]);
 
-    let v = vec![0i, 1];
+    let v = vec![0is, 1];
     let r: Vec<_> = v.into_iter().skip(3).collect();
     assert_eq!(r, vec![]);
 }
@@ -17,7 +17,7 @@ Skips *exactly* `n` elements from the iterator.
 
 This method will panic if there are less than `n` elements in the iterator.
     */
-    fn skip_exactly(mut self, n: uint) -> Self {
+    fn skip_exactly(mut self, n: usize) -> Self {
         for i in range(0, n) {
             match self.next() {
                 None => panic!("skip_exactly asked to skip {} elements, but only got {}", n, i),
@@ -34,11 +34,11 @@ impl<It> SkipExactlyIterator for It where It: Iterator {}
 fn test_skip_exactly() {
     use std::thread::Thread;
 
-    let v = vec![0i, 1, 2, 3];
+    let v = vec![0is, 1, 2, 3];
     let r: Vec<_> = v.into_iter().skip_exactly(3).collect();
     assert_eq!(r, vec![3]);
 
-    let v = vec![0i, 1];
-    let r: Result<Vec<_>, _> = Thread::spawn(move || v.into_iter().skip_exactly(3).collect()).join();
+    let v = vec![0is, 1];
+    let r: Result<Vec<_>, _> = Thread::scoped(move || v.into_iter().skip_exactly(3).collect()).join();
     assert!(r.is_err());
 }
