@@ -1,4 +1,23 @@
 /**
+Counts the number of comma-delimited expressions passed to it.  The result is a compile-time evaluable expression, suitable for use as a static array size, or the value of a `const`.
+
+Example:
+
+```
+# #[macro_use] extern crate grabbag_macros;
+# fn main() {
+const COUNT: uint = count_exprs!(a, 5+1, "hi there!".into_string());
+assert_eq!(COUNT, 3);
+# }
+```
+*/
+#[macro_export]
+macro_rules! count_exprs {
+    () => { 0 };
+    ($e:expr $(, $es:expr)*) => { 1 + count_exprs!($($es),*) };
+}
+
+/**
 This macro provides a way to initialise any container for which there is a FromIterator implementation.  It allows for both sequence and map syntax to be used, as well as inline type ascription for the result.
 
 For example:
@@ -32,7 +51,7 @@ macro_rules! collect {
     [into $col_ty:ty] => { collect![into $col_ty:] };
     [into $col_ty:ty:] => {
         {
-            let col: $col_ty = ::std::iter::FromIterator::from_iter(None.into_iter());
+            let col: $col_ty = ::std::default::Default::default();
             col
         }
     };
@@ -40,9 +59,37 @@ macro_rules! collect {
     // Initialise a sequence with a constrained container type.
     [into $col_ty:ty: $($vs:expr),+] => {
         {
-            // This is inefficient.  Ideally, we'd do all this on the stack, with the target collection being the only thing to allocate.
-            let vs = vec![$($vs),+];
-            let col: $col_ty = ::std::iter::FromIterator::from_iter(vs.into_iter());
+            const NUM_ELEMS: uint = count_exprs!($($vs),+);
+
+            // This trick is stolen from std::iter, and *should* serve to give the container enough information to pre-allocate sufficient storage for all the elements.
+            struct SizeHint<E>;
+
+            impl<E> SizeHint<E> {
+                // This method is needed to help the compiler work out which `Extend` impl to use in cases where there is more than one (e.g. `String`).
+                #[inline(always)]
+                fn type_hint(_: &[E]) -> SizeHint<E> { SizeHint }
+            }
+
+            impl<E> Iterator for SizeHint<E> {
+                type Item = E;
+
+                #[inline(always)]
+                fn next(&mut self) -> Option<E> {
+                    None
+                }
+
+                #[inline(always)]
+                fn size_hint(&self) -> (uint, Option<uint>) {
+                    (NUM_ELEMS, Some(NUM_ELEMS))
+                }
+            }
+
+            let mut col: $col_ty = ::std::default::Default::default();
+
+            Extend::extend(&mut col, SizeHint::type_hint(&[$($vs),+]));
+
+            $(Extend::extend(&mut col, Some($vs).into_iter());)+
+
             col
         }
     };
@@ -58,25 +105,6 @@ macro_rules! collect {
 
     // Initialise a map with a fully inferred contained type.
     [$($ks:expr: $vs:expr),+] => { collect![into _: $($ks: $vs),+] };
-}
-
-/**
-Counts the number of comma-delimited expressions passed to it.  The result is a compile-time evaluable expression, suitable for use as a static array size, or the value of a `const`.
-
-Example:
-
-```
-# #[macro_use] extern crate grabbag_macros;
-# fn main() {
-const COUNT: uint = count_exprs!(a, 5+1, "hi there!".into_string());
-assert_eq!(COUNT, 3);
-# }
-```
-*/
-#[macro_export]
-macro_rules! count_exprs {
-    () => { 0 };
-    ($e:expr $(, $es:expr)*) => { 1 + count_exprs!($($es),*) };
 }
 
 /**

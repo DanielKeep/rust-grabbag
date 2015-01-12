@@ -38,6 +38,9 @@ fn test_collect_empty_full_inference() {
     let c: Vec<int> = collect![];
     assert_eq!(c.len(), 0);
 
+    let c: String = collect![];
+    assert_eq!(c.len(), 0);
+
     let c: HashMap<String, Vec<u8>> = collect![];
     assert_eq!(c.len(), 0);
 
@@ -48,6 +51,9 @@ fn test_collect_empty_full_inference() {
 #[test]
 fn test_collect_empty_constrained() {
     let c = collect![into Vec<int>];
+    assert_eq!(c.len(), 0);
+
+    let c = collect![into String];
     assert_eq!(c.len(), 0);
 
     let c = collect![into HashMap<String, Vec<u8>>];
