@@ -14,23 +14,7 @@ The iterator extensions, where possible, should implement the following features
 - An `unwrap` method, which returns any owned values passed into the iterator; typically, this is the original iterator.
 */
 
-pub use self::accumulate::AccumulateIterator;
-pub use self::cartesian_product::CartesianProductIterator;
-pub use self::clone_each::CloneEachIterator;
-pub use self::group_by::GroupByIterator;
-pub use self::indexed::IndexedIterator;
-pub use self::fold::{FoldlIterator, FoldrIterator};
-pub use self::intersperse::IntersperseIterator;
-pub use self::keep_some::KeepSomeIterator;
-pub use self::pad_tail_to::PadTailToIterator;
-pub use self::pacing_walk::PacingWalkIterator;
-pub use self::round_robin::RoundRobinIterator;
-pub use self::skip_exactly::SkipExactlyIterator;
-pub use self::sorted::SortedIterator;
-pub use self::stride::StrideIterator;
-pub use self::take_exactly::TakeExactlyIterator;
-pub use self::tee::TeeIterator;
-pub use self::zip_longest::ZipLongestIterator;
+pub use self::prelude::*;
 
 pub mod accumulate;
 pub mod cartesian_product;
@@ -49,3 +33,23 @@ pub mod stride;
 pub mod take_exactly;
 pub mod tee;
 pub mod zip_longest;
+
+pub mod prelude {
+    pub use super::accumulate::AccumulateIterator;
+    pub use super::cartesian_product::CartesianProductIterator;
+    pub use super::clone_each::CloneEachIterator;
+    pub use super::group_by::GroupByIterator;
+    pub use super::indexed::IndexedIterator;
+    pub use super::fold::{FoldlIterator, FoldrIterator};
+    pub use super::intersperse::IntersperseIterator;
+    pub use super::keep_some::KeepSomeIterator;
+    pub use super::pad_tail_to::PadTailToIterator;
+    pub use super::pacing_walk::PacingWalkIterator;
+    pub use super::round_robin::RoundRobinIterator;
+    pub use super::skip_exactly::SkipExactlyIterator;
+    pub use super::sorted::SortedIterator;
+    pub use super::stride::StrideIterator;
+    pub use super::take_exactly::TakeExactlyIterator;
+    pub use super::tee::TeeIterator;
+    pub use super::zip_longest::ZipLongestIterator;
+}
