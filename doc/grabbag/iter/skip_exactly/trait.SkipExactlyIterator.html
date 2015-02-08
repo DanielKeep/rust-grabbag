@@ -26,7 +26,7 @@
 
     <section class="sidebar">
         
-        <p class='location'><a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>skip_exactly</a></p><div class='block trait'><h2>Traits</h2><a class='trait current' href='trait.SkipExactlyIterator.html' title=''>SkipExactlyIterator</a></div>
+        <p class='location'><a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>skip_exactly</a></p><div class='block trait'><h2>Traits</h2><a class='trait current' href='trait.SkipExactlyIterator.html' title='(..., &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;i&lt;/em&gt;-1&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;i&lt;/em&gt;&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;i&lt;/em&gt;+1&lt;/sub&gt;, ...), &lt;em&gt;i&lt;/em&gt; &amp;nbsp;&amp;rarr;&amp;nbsp; (&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;i&lt;/em&gt;&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;i&lt;/em&gt;+1&lt;/sub&gt;, ...)'>SkipExactlyIterator</a></div>
     </section>
 
     <nav class="sub">
@@ -44,10 +44,13 @@
 <h1 class='fqn'><span class='in-band'>Trait <a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>skip_exactly</a>::<wbr><a class='trait' href=''>SkipExactlyIterator</a><wbr></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-5097' href='../../../src/grabbag/iter/skip_exactly.rs.html#12-29'>[src]</a></span></h1>
+        </span><a id='src-5115' href='../../../src/grabbag/iter/skip_exactly.rs.html#18-35'>[src]</a></span></h1>
 <pre class='rust trait'>pub trait SkipExactlyIterator: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a> + <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a> {
     fn <a href='#method.skip_exactly' class='fnname'>skip_exactly</a>(self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; Self { ... }
-}</pre>
+}</pre><div class='docblock'><p>(..., <em>a</em><sub><em>i</em>-1</sub>, <em>a</em><sub><em>i</em></sub>, <em>a</em><sub><em>i</em>+1</sub>, ...), <em>i</em>
+&nbsp;&rarr;&nbsp;
+(<em>a</em><sub><em>i</em></sub>, <em>a</em><sub><em>i</em>+1</sub>, ...)</p>
+</div>
             <h2 id='provided-methods'>Provided Methods</h2>
             <div class='methods'>
         <h3 id='method.skip_exactly' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.skip_exactly' class='fnname'>skip_exactly</a>(self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; Self</code></h3><div class='docblock'><p>Skips <em>exactly</em> <code>n</code> elements from the iterator.</p>
@@ -58,7 +61,7 @@
 </div></div>
         <h2 id='implementors'>Implementors</h2>
         <ul class='item-list' id='implementors-list'>
-    <li><a class='stability Unmarked' title='No stability level'></a><code>impl&lt;It&gt; <a class='trait' href='../../../grabbag/iter/skip_exactly/trait.SkipExactlyIterator.html' title='grabbag::iter::skip_exactly::SkipExactlyIterator'>SkipExactlyIterator</a> for It <span class='where'>where It: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a></span></code></li>
+    <li><a class='stability Unmarked' title='No stability level'></a><code>impl&lt;It&gt; <a class='trait' href='../../../grabbag/iter/trait.SkipExactlyIterator.html' title='grabbag::iter::SkipExactlyIterator'>SkipExactlyIterator</a> for It <span class='where'>where It: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a></span></code></li>
 </ul><script type="text/javascript" async
                               src="../../../implementors/grabbag/iter/skip_exactly/trait.SkipExactlyIterator.js">
                       </script></section>

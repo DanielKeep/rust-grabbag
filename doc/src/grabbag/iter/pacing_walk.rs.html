@@ -182,11 +182,17 @@
 <span id="140">140</span>
 <span id="141">141</span>
 <span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>cmp</span>::<span class='ident'>max</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>iter</span>::<span class='ident'>RandomAccessIterator</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>num</span>::<span class='ident'>Int</span>;
 
+<span class='doccomment'>/**
+Performs a back-and-forth iteration out from a point.  No, really.
+*/</span>
 <span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>PacingWalkIterator</span>: <span class='ident'>Iterator</span> <span class='op'>+</span> <span class='ident'>RandomAccessIterator</span> <span class='op'>+</span> <span class='ident'>Sized</span> {
     <span class='doccomment'>/**
 Creates an iterator that performs a back-and-forth walk of the input iterator.

@@ -192,10 +192,22 @@
 <span id="150">150</span>
 <span id="151">151</span>
 <span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>iter</span>::<span class='ident'>RandomAccessIterator</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>mem</span>::<span class='ident'>replace</span>;
 
+<span class='doccomment'>/**
+(&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, ..., &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;n&lt;/sub&gt;), &lt;em&gt;i&lt;/em&gt;
+&amp;nbsp;&amp;rarr;&amp;nbsp;
+(&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;i&lt;/em&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, &lt;em&gt;i&lt;/em&gt;, ..., &lt;em&gt;i&lt;/em&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;n&lt;/sub&gt;)
+
+*/</span>
 <span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>IntersperseIterator</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>E</span><span class='op'>&gt;</span> <span class='op'>+</span> <span class='ident'>Sized</span> {
     <span class='doccomment'>/**
 Creates an iterator that yields `inject` between each element of the input iterator.  `inject` will not appear as the first or last element of the resulting iterator.

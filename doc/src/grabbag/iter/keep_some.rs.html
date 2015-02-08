@@ -106,7 +106,17 @@
 <span id="64">64</span>
 <span id="65">65</span>
 <span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
 </pre><pre class='rust '>
+<span class='doccomment'>/**
+&lt;em&gt;a&lt;/em&gt; &amp;nbsp;&amp;rarr;&amp;nbsp;
+(&lt;em&gt;e&lt;/em&gt; | &lt;em&gt;e&lt;/em&gt; &amp;nbsp;&amp;rarr;&amp;nbsp; &lt;em&gt;a&lt;/em&gt; : &lt;em&gt;Some&lt;/em&gt;(&lt;em&gt;e&lt;/em&gt;))
+
+*/</span>
 <span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>KeepSomeIterator</span> {
     <span class='doccomment'>/**
 Creates an iterator that, given a sequence of `Option&lt;E&gt;` values, unwraps all `Some(E)`s, and discards all `None`s.

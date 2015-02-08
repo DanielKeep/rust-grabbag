@@ -26,7 +26,7 @@
 
     <section class="sidebar">
         
-        <p class='location'><a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>clone_each</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.CloneEach.html' title=''>CloneEach</a></div><div class='block trait'><h2>Traits</h2><a class='trait current' href='trait.CloneEachIterator.html' title=''>CloneEachIterator</a></div>
+        <p class='location'><a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>clone_each</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.CloneEach.html' title=''>CloneEach</a></div><div class='block trait'><h2>Traits</h2><a class='trait current' href='trait.CloneEachIterator.html' title='( &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, ... ) &amp;nbsp;&amp;rarr;&amp;nbsp; ( &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;`.clone()`, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;`.clone()`, ... )'>CloneEachIterator</a></div>
     </section>
 
     <nav class="sub">
@@ -44,17 +44,28 @@
 <h1 class='fqn'><span class='in-band'>Trait <a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>clone_each</a>::<wbr><a class='trait' href=''>CloneEachIterator</a><wbr></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-754' href='../../../src/grabbag/iter/clone_each.rs.html#3-12'>[src]</a></span></h1>
+        </span><a id='src-772' href='../../../src/grabbag/iter/clone_each.rs.html#17-26'>[src]</a></span></h1>
 <pre class='rust trait'>pub trait CloneEachIterator&lt;'a, E&gt;: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=&amp;'a E&gt; + <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a> <span class='where'>where E: <a class='trait' href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a></span> {
     fn <a href='#method.clone_each' class='fnname'>clone_each</a>(self) -&gt; <a class='struct' href='../../../grabbag/iter/clone_each/struct.CloneEach.html' title='grabbag::iter::clone_each::CloneEach'>CloneEach</a>&lt;Self&gt; { ... }
-}</pre>
+}</pre><div class='docblock'><p>(
+<em>a</em><sub>0</sub>,
+<em>a</em><sub>1</sub>,
+...
+)
+&nbsp;&rarr;&nbsp;
+(
+<em>a</em><sub>0</sub><code>.clone()</code>,
+<em>a</em><sub>1</sub><code>.clone()</code>,
+...
+)</p>
+</div>
             <h2 id='provided-methods'>Provided Methods</h2>
             <div class='methods'>
         <h3 id='method.clone_each' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.clone_each' class='fnname'>clone_each</a>(self) -&gt; <a class='struct' href='../../../grabbag/iter/clone_each/struct.CloneEach.html' title='grabbag::iter::clone_each::CloneEach'>CloneEach</a>&lt;Self&gt;</code></h3><div class='docblock'><p>Creates an iterator which will clone each element of the input iterator.</p>
 </div></div>
         <h2 id='implementors'>Implementors</h2>
         <ul class='item-list' id='implementors-list'>
-    <li><a class='stability Unmarked' title='No stability level'></a><code>impl&lt;'a, It, E&gt; <a class='trait' href='../../../grabbag/iter/clone_each/trait.CloneEachIterator.html' title='grabbag::iter::clone_each::CloneEachIterator'>CloneEachIterator</a>&lt;'a, E&gt; for It <span class='where'>where It: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=&amp;'a E&gt;, E: <a class='trait' href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a></span></code></li>
+    <li><a class='stability Unmarked' title='No stability level'></a><code>impl&lt;'a, It, E&gt; <a class='trait' href='../../../grabbag/iter/trait.CloneEachIterator.html' title='grabbag::iter::CloneEachIterator'>CloneEachIterator</a>&lt;'a, E&gt; for It <span class='where'>where It: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=&amp;'a E&gt;, E: <a class='trait' href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a></span></code></li>
 </ul><script type="text/javascript" async
                               src="../../../implementors/grabbag/iter/clone_each/trait.CloneEachIterator.js">
                       </script></section>

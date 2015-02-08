@@ -26,7 +26,7 @@
 
     <section class="sidebar">
         
-        <p class='location'><a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>cartesian_product</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.CartesianProduct.html' title=''>CartesianProduct</a></div><div class='block trait'><h2>Traits</h2><a class='trait current' href='trait.CartesianProductIterator.html' title=''>CartesianProductIterator</a></div>
+        <p class='location'><a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>cartesian_product</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.CartesianProduct.html' title=''>CartesianProduct</a></div><div class='block trait'><h2>Traits</h2><a class='trait current' href='trait.CartesianProductIterator.html' title='( &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, ... ), ( &lt;em&gt;b&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;b&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, ... ) &amp;nbsp;&amp;rarr;&amp;nbsp; ( (&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;b&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;), (&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;b&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;), ..., (&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, &lt;em&gt;b&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;), (&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, &lt;em&gt;b&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;), ... )'>CartesianProductIterator</a></div>
     </section>
 
     <nav class="sub">
@@ -44,10 +44,29 @@
 <h1 class='fqn'><span class='in-band'>Trait <a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>cartesian_product</a>::<wbr><a class='trait' href=''>CartesianProductIterator</a><wbr></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-225' href='../../../src/grabbag/iter/cartesian_product.rs.html#1-15'>[src]</a></span></h1>
+        </span><a id='src-243' href='../../../src/grabbag/iter/cartesian_product.rs.html#23-37'>[src]</a></span></h1>
 <pre class='rust trait'>pub trait CartesianProductIterator&lt;LeftItem&gt;: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=LeftItem&gt; + <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a> {
     fn <a href='#method.cartesian_product' class='fnname'>cartesian_product</a>&lt;RightIt, RightItem&gt;(self, right: RightIt) -&gt; <a class='struct' href='../../../grabbag/iter/cartesian_product/struct.CartesianProduct.html' title='grabbag::iter::cartesian_product::CartesianProduct'>CartesianProduct</a>&lt;Self, RightIt, LeftItem, RightItem&gt; <span class='where'>where RightIt: <a class='trait' href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> + <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=RightItem&gt;</span> { ... }
-}</pre>
+}</pre><div class='docblock'><p>(
+<em>a</em><sub>0</sub>,
+<em>a</em><sub>1</sub>,
+...
+),
+(
+<em>b</em><sub>0</sub>,
+<em>b</em><sub>1</sub>,
+...
+)
+&nbsp;&rarr;&nbsp;
+(
+(<em>a</em><sub>0</sub>, <em>b</em><sub>0</sub>),
+(<em>a</em><sub>0</sub>, <em>b</em><sub>1</sub>),
+...,
+(<em>a</em><sub>1</sub>, <em>b</em><sub>0</sub>),
+(<em>a</em><sub>1</sub>, <em>b</em><sub>1</sub>),
+...
+)</p>
+</div>
             <h2 id='provided-methods'>Provided Methods</h2>
             <div class='methods'>
         <h3 id='method.cartesian_product' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.cartesian_product' class='fnname'>cartesian_product</a>&lt;RightIt, RightItem&gt;(self, right: RightIt) -&gt; <a class='struct' href='../../../grabbag/iter/cartesian_product/struct.CartesianProduct.html' title='grabbag::iter::cartesian_product::CartesianProduct'>CartesianProduct</a>&lt;Self, RightIt, LeftItem, RightItem&gt; <span class='where'>where RightIt: <a class='trait' href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> + <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=RightItem&gt;</span></code></h3><div class='docblock'><p>Creates an iterator that yields the cartesian product of two input iterators.</p>
@@ -56,7 +75,7 @@
 </div></div>
         <h2 id='implementors'>Implementors</h2>
         <ul class='item-list' id='implementors-list'>
-    <li><a class='stability Unmarked' title='No stability level'></a><code>impl&lt;LeftIt, LeftItem&gt; <a class='trait' href='../../../grabbag/iter/cartesian_product/trait.CartesianProductIterator.html' title='grabbag::iter::cartesian_product::CartesianProductIterator'>CartesianProductIterator</a>&lt;LeftItem&gt; for LeftIt <span class='where'>where LeftIt: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=LeftItem&gt;, LeftItem: <a class='trait' href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a></span></code></li>
+    <li><a class='stability Unmarked' title='No stability level'></a><code>impl&lt;LeftIt, LeftItem&gt; <a class='trait' href='../../../grabbag/iter/trait.CartesianProductIterator.html' title='grabbag::iter::CartesianProductIterator'>CartesianProductIterator</a>&lt;LeftItem&gt; for LeftIt <span class='where'>where LeftIt: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=LeftItem&gt;, LeftItem: <a class='trait' href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a></span></code></li>
 </ul><script type="text/javascript" async
                               src="../../../implementors/grabbag/iter/cartesian_product/trait.CartesianProductIterator.js">
                       </script></section>

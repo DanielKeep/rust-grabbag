@@ -26,7 +26,7 @@
 
     <section class="sidebar">
         
-        <p class='location'><a href='../index.html'>grabbag</a></p><div class='block mod'><h2>Modules</h2><a class='mod current' href='../iter/index.html' title=''>iter</a></div>
+        <p class='location'><a href='../index.html'>grabbag</a></p><div class='block mod'><h2>Modules</h2><a class='mod current' href='../iter/index.html' title='This module contains a set of iterator extensions.  Rather than being named for the type of iterator they are implemented on, they are named for the method (or group of associated methods) being implemented.'>iter</a></div>
     </section>
 
     <nav class="sub">
@@ -44,9 +44,25 @@
 <h1 class='fqn'><span class='in-band'>Module <a href='../index.html'>grabbag</a>::<wbr><a class='mod' href=''>iter</a><wbr></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-4' href='../../src/grabbag/iter/mod.rs.html#1-55'>[src]</a></span></h1>
-<h2 id='reexports' class='section-header'><a href="#reexports">Reexports</a></h2>
-<table><tr><td><code>pub use self::<a class='mod' href='../../grabbag/iter/prelude/index.html' title='grabbag::iter::prelude'>prelude</a>::*;</code></td></tr></table><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
+        </span><a id='src-4' href='../../src/grabbag/iter/mod.rs.html#1-79'>[src]</a></span></h1>
+<div class='docblock'><p>This module contains a set of iterator extensions.  Rather than being named for the type of iterator they are implemented on, they are named for the method (or group of associated methods) being implemented.</p>
+
+<p>If you can&#39;t be bothered to import them individually, you can just pull in <code>iter::prelude::*</code> instead.</p>
+
+<h1 id="standard-features" class='section-header'><a
+                           href="#standard-features">Standard Features</a></h1>
+<p>The iterator extensions, where possible, should implement the following features:</p>
+
+<ul>
+<li><code>Clone</code>, which produces an <em>independent</em> version of the iterator.</li>
+<li><code>DoubleEndedIterator</code>.</li>
+<li><code>ExactSizeIterator</code>.</li>
+<li><code>RandomAccessIterator</code>.</li>
+<li><code>Show</code>.</li>
+<li>Accurate <code>size_hint</code> (depending on the transform being performed, and the accuracy of the underlying iterator).</li>
+<li>An <code>unwrap</code> method, which returns any owned values passed into the iterator; typically, this is the original iterator.</li>
+</ul>
+</div><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
 <table>
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='mod' href='accumulate/index.html'
@@ -111,7 +127,8 @@
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='mod' href='prelude/index.html'
                                title='grabbag::iter::prelude'>prelude</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>This module just centralises all the iterator extension traits in one place, suitable for glob importing.</p>
+</td>
                     </tr>
                 
                     <tr>
@@ -154,6 +171,213 @@
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='mod' href='zip_longest/index.html'
                                title='grabbag::iter::zip_longest'>zip_longest</a></td>
                         <td class='docblock short'></td>
+                    </tr>
+                </table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
+<table>
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='trait' href='trait.AccumulateIterator.html'
+                               title='grabbag::iter::AccumulateIterator'>AccumulateIterator</a></td>
+                        <td class='docblock short'><p>(
+<em>a</em><sub>0</sub>,
+<em>a</em><sub>1</sub>,
+<em>a</em><sub>2</sub>,
+...
+),
+&#x2297;
+&nbsp;&rarr;&nbsp;
+(
+<em>a</em><sub>0</sub>,
+(<em>a</em><sub>0</sub> &#x2297; <em>a</em><sub>1</sub>),
+((<em>a</em><sub>0</sub> &#x2297; <em>a</em><sub>1</sub>) &#x2297; <em>a</em><sub>2</sub>),
+...
+)</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='trait' href='trait.CartesianProductIterator.html'
+                               title='grabbag::iter::CartesianProductIterator'>CartesianProductIterator</a></td>
+                        <td class='docblock short'><p>(
+<em>a</em><sub>0</sub>,
+<em>a</em><sub>1</sub>,
+...
+),
+(
+<em>b</em><sub>0</sub>,
+<em>b</em><sub>1</sub>,
+...
+)
+&nbsp;&rarr;&nbsp;
+(
+(<em>a</em><sub>0</sub>, <em>b</em><sub>0</sub>),
+(<em>a</em><sub>0</sub>, <em>b</em><sub>1</sub>),
+...,
+(<em>a</em><sub>1</sub>, <em>b</em><sub>0</sub>),
+(<em>a</em><sub>1</sub>, <em>b</em><sub>1</sub>),
+...
+)</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='trait' href='trait.CloneEachIterator.html'
+                               title='grabbag::iter::CloneEachIterator'>CloneEachIterator</a></td>
+                        <td class='docblock short'><p>(
+<em>a</em><sub>0</sub>,
+<em>a</em><sub>1</sub>,
+...
+)
+&nbsp;&rarr;&nbsp;
+(
+<em>a</em><sub>0</sub><code>.clone()</code>,
+<em>a</em><sub>1</sub><code>.clone()</code>,
+...
+)</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='trait' href='trait.FoldlIterator.html'
+                               title='grabbag::iter::FoldlIterator'>FoldlIterator</a></td>
+                        <td class='docblock short'><p>(
+<em>a</em><sub>0</sub>,
+<em>a</em><sub>1</sub>,
+<em>a</em><sub>2</sub>,
+...
+),
+&nbsp;&rarr;&nbsp;
+&nbsp;&rarr;&nbsp;
+((<em>a</em><sub>0</sub>) &#x2297; <em>a</em><sub>1</sub>) &#x2297; <em>a</em><sub>2</sub>) &#x2297; ...</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='trait' href='trait.FoldrIterator.html'
+                               title='grabbag::iter::FoldrIterator'>FoldrIterator</a></td>
+                        <td class='docblock short'><p>(
+...,
+<em>a</em><sub><em>n</em>-2</sub>,
+<em>a</em><sub><em>n</em>-1</sub>,
+<em>a</em><sub><em>n</em></sub>,
+),
+&#x2297;
+&rarr;
+... &#x2297; (<em>a</em><sub><em>n</em>-2</sub> &#x2297; (<em>a</em><sub><em>n</em>-1</sub> &#x2297; (<em>a</em><sub><em>n</em></sub>)))</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='trait' href='trait.GroupByIterator.html'
+                               title='grabbag::iter::GroupByIterator'>GroupByIterator</a></td>
+                        <td class='docblock short'><p>Sequence of iterators containing successive elements of the subject which have the same group according to a group function.</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='trait' href='trait.IndexedIterator.html'
+                               title='grabbag::iter::IndexedIterator'>IndexedIterator</a></td>
+                        <td class='docblock short'><p><em>a</em>, (<em>i</em><sub>0</sub>, <em>i</em><sub>1</sub>, ...)
+&nbsp;&rarr;&nbsp;
+(a<sub><em>i</em><sub>0</sub></sub>, a<sub><em>i</em><sub>1</sub></sub>, ...)</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='trait' href='trait.IntersperseIterator.html'
+                               title='grabbag::iter::IntersperseIterator'>IntersperseIterator</a></td>
+                        <td class='docblock short'><p>(<em>a</em><sub>0</sub>, <em>a</em><sub>1</sub>, ..., <em>a</em><sub>n</sub>), <em>i</em>
+&nbsp;&rarr;&nbsp;
+(<em>a</em><sub>0</sub>, <em>i</em>, <em>a</em><sub>1</sub>, <em>i</em>, ..., <em>i</em>, <em>a</em><sub>n</sub>)</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='trait' href='trait.KeepSomeIterator.html'
+                               title='grabbag::iter::KeepSomeIterator'>KeepSomeIterator</a></td>
+                        <td class='docblock short'><p><em>a</em> &nbsp;&rarr;&nbsp;
+(<em>e</em> | <em>e</em> &nbsp;&rarr;&nbsp; <em>a</em> : <em>Some</em>(<em>e</em>))</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='trait' href='trait.PacingWalkIterator.html'
+                               title='grabbag::iter::PacingWalkIterator'>PacingWalkIterator</a></td>
+                        <td class='docblock short'><p>Performs a back-and-forth iteration out from a point.  No, really.</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='trait' href='trait.PadTailToIterator.html'
+                               title='grabbag::iter::PadTailToIterator'>PadTailToIterator</a></td>
+                        <td class='docblock short'><p>Pads a sequence to a minimum length.</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='trait' href='trait.RoundRobinIterator.html'
+                               title='grabbag::iter::RoundRobinIterator'>RoundRobinIterator</a></td>
+                        <td class='docblock short'><p>(<em>a</em><sub>0</sub>, <em>a</em><sub>1</sub>, ...),
+(<em>b</em><sub>0</sub>, <em>b</em><sub>1</sub>, ...)
+&nbsp;&rarr;&nbsp;
+(<em>a</em><sub>0</sub>, <em>b</em><sub>0</sub>, <em>a</em><sub>1</sub>, <em>b</em><sub>1</sub>, ...)</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='trait' href='trait.SkipExactlyIterator.html'
+                               title='grabbag::iter::SkipExactlyIterator'>SkipExactlyIterator</a></td>
+                        <td class='docblock short'><p>(..., <em>a</em><sub><em>i</em>-1</sub>, <em>a</em><sub><em>i</em></sub>, <em>a</em><sub><em>i</em>+1</sub>, ...), <em>i</em>
+&nbsp;&rarr;&nbsp;
+(<em>a</em><sub><em>i</em></sub>, <em>a</em><sub><em>i</em>+1</sub>, ...)</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='trait' href='trait.SortedIterator.html'
+                               title='grabbag::iter::SortedIterator'>SortedIterator</a></td>
+                        <td class='docblock short'><p>Shorthand for collecting and sorting an iterator.</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='trait' href='trait.StrideIterator.html'
+                               title='grabbag::iter::StrideIterator'>StrideIterator</a></td>
+                        <td class='docblock short'><p><em>a</em>, <em>n</em>
+&nbsp;&rarr;&nbsp;
+(<em>a</em><sub><em>i</em></sub> | <em>a</em><sub><em>i</em></sub> &nbsp;&rarr;&nbsp; <em>a</em> : <em>i</em> &equiv; <em>mod</em> <em>n</em> )</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='trait' href='trait.TakeExactlyIterator.html'
+                               title='grabbag::iter::TakeExactlyIterator'>TakeExactlyIterator</a></td>
+                        <td class='docblock short'><p>(<em>a</em><sub>0</sub>, ..., <em>a</em><sub><em>i</em>-1</sub>, <em>a</em><sub><em>i</em></sub>, <em>a</em><sub><em>i</em>+1</sub>, ...), <em>i</em>
+&nbsp;&rarr;&nbsp;
+(<em>a</em><sub>0</sub>, ..., <em>a</em><sub><em>i</em>-1</sub>)</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='trait' href='trait.TeeIterator.html'
+                               title='grabbag::iter::TeeIterator'>TeeIterator</a></td>
+                        <td class='docblock short'><p><em>a</em> &nbsp;&rarr;&nbsp; <em>a</em>, <em>a</em></p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='trait' href='trait.ZipLongestIterator.html'
+                               title='grabbag::iter::ZipLongestIterator'>ZipLongestIterator</a></td>
+                        <td class='docblock short'><p>(..., <em>a</em><sub><em>m</em></sub>),
+(..., <em>b</em><sub><em>m</em></sub>, <em>b</em><sub><em>m</em>+1</sub>, ..., <em>b</em><sub><em>n</em></sub>)
+&nbsp;&rarr;&nbsp;
+(
+...,
+(<em>Some</em>(<em>a</em><sub><em>m</em></sub>), <em>Some</em>(<em>b</em><sub><em>m</em></sub>)),
+(<em>None</em>, <em>Some</em>(<em>b</em><sub><em>m</em>+1</sub>)),
+...,
+(<em>None</em>, <em>Some</em>(<em>b</em><sub><em>n</em></sub>))
+)</p>
+</td>
                     </tr>
                 </table></section>
     <section id='search' class="content hidden"></section>

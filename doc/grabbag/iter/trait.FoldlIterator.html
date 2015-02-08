@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `FoldlIterator` trait in crate `grabbag`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, FoldlIterator">
+
+    <title>grabbag::iter::FoldlIterator - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <section class="sidebar">
+        
+        <p class='location'><a href='../index.html'>grabbag</a>::<wbr><a href='index.html'>iter</a></p><div class='block mod'><h2>Modules</h2><a class='mod ' href='accumulate/index.html' title=''>accumulate</a><a class='mod ' href='cartesian_product/index.html' title=''>cartesian_product</a><a class='mod ' href='clone_each/index.html' title=''>clone_each</a><a class='mod ' href='fold/index.html' title=''>fold</a><a class='mod ' href='group_by/index.html' title=''>group_by</a><a class='mod ' href='indexed/index.html' title=''>indexed</a><a class='mod ' href='intersperse/index.html' title=''>intersperse</a><a class='mod ' href='keep_some/index.html' title=''>keep_some</a><a class='mod ' href='pacing_walk/index.html' title=''>pacing_walk</a><a class='mod ' href='pad_tail_to/index.html' title=''>pad_tail_to</a><a class='mod ' href='prelude/index.html' title='This module just centralises all the iterator extension traits in one place, suitable for glob importing.'>prelude</a><a class='mod ' href='round_robin/index.html' title=''>round_robin</a><a class='mod ' href='skip_exactly/index.html' title=''>skip_exactly</a><a class='mod ' href='sorted/index.html' title=''>sorted</a><a class='mod ' href='stride/index.html' title=''>stride</a><a class='mod ' href='take_exactly/index.html' title=''>take_exactly</a><a class='mod ' href='tee/index.html' title=''>tee</a><a class='mod ' href='zip_longest/index.html' title=''>zip_longest</a></div><div class='block trait'><h2>Traits</h2><a class='trait ' href='trait.AccumulateIterator.html' title='( &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;2&lt;/sub&gt;, ... ), &amp;#x2297; &amp;nbsp;&amp;rarr;&amp;nbsp; ( &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, (&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt; &amp;#x2297; &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;), ((&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt; &amp;#x2297; &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;) &amp;#x2297; &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;2&lt;/sub&gt;), ... )'>AccumulateIterator</a><a class='trait ' href='trait.CartesianProductIterator.html' title='( &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, ... ), ( &lt;em&gt;b&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;b&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, ... ) &amp;nbsp;&amp;rarr;&amp;nbsp; ( (&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;b&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;), (&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;b&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;), ..., (&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, &lt;em&gt;b&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;), (&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, &lt;em&gt;b&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;), ... )'>CartesianProductIterator</a><a class='trait ' href='trait.CloneEachIterator.html' title='( &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, ... ) &amp;nbsp;&amp;rarr;&amp;nbsp; ( &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;`.clone()`, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;`.clone()`, ... )'>CloneEachIterator</a><a class='trait current' href='trait.FoldlIterator.html' title='( &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;2&lt;/sub&gt;, ... ), &amp;nbsp;&amp;rarr;&amp;nbsp; &amp;nbsp;&amp;rarr;&amp;nbsp; ((&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;) &amp;#x2297; &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;) &amp;#x2297; &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;2&lt;/sub&gt;) &amp;#x2297; ...'>FoldlIterator</a><a class='trait ' href='trait.FoldrIterator.html' title='( ..., &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;n&lt;/em&gt;-2&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;n&lt;/em&gt;-1&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;n&lt;/em&gt;&lt;/sub&gt;, ), &amp;#x2297; &amp;rarr; ... &amp;#x2297; (&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;n&lt;/em&gt;-2&lt;/sub&gt; &amp;#x2297; (&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;n&lt;/em&gt;-1&lt;/sub&gt; &amp;#x2297; (&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;n&lt;/em&gt;&lt;/sub&gt;)))'>FoldrIterator</a><a class='trait ' href='trait.GroupByIterator.html' title='Sequence of iterators containing successive elements of the subject which have the same group according to a group function.'>GroupByIterator</a><a class='trait ' href='trait.IndexedIterator.html' title='&lt;em&gt;a&lt;/em&gt;, (&lt;em&gt;i&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;i&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, ...) &amp;nbsp;&amp;rarr;&amp;nbsp; (a&lt;sub&gt;&lt;em&gt;i&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;&lt;/sub&gt;, a&lt;sub&gt;&lt;em&gt;i&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;&lt;/sub&gt;, ...)'>IndexedIterator</a><a class='trait ' href='trait.IntersperseIterator.html' title='(&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, ..., &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;n&lt;/sub&gt;), &lt;em&gt;i&lt;/em&gt; &amp;nbsp;&amp;rarr;&amp;nbsp; (&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;i&lt;/em&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, &lt;em&gt;i&lt;/em&gt;, ..., &lt;em&gt;i&lt;/em&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;n&lt;/sub&gt;)'>IntersperseIterator</a><a class='trait ' href='trait.KeepSomeIterator.html' title='&lt;em&gt;a&lt;/em&gt; &amp;nbsp;&amp;rarr;&amp;nbsp; (&lt;em&gt;e&lt;/em&gt; | &lt;em&gt;e&lt;/em&gt; &amp;nbsp;&amp;rarr;&amp;nbsp; &lt;em&gt;a&lt;/em&gt; : &lt;em&gt;Some&lt;/em&gt;(&lt;em&gt;e&lt;/em&gt;))'>KeepSomeIterator</a><a class='trait ' href='trait.PacingWalkIterator.html' title='Performs a back-and-forth iteration out from a point.  No, really.'>PacingWalkIterator</a><a class='trait ' href='trait.PadTailToIterator.html' title='Pads a sequence to a minimum length.'>PadTailToIterator</a><a class='trait ' href='trait.RoundRobinIterator.html' title='(&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, ...), (&lt;em&gt;b&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;b&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, ...) &amp;nbsp;&amp;rarr;&amp;nbsp; (&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;b&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, &lt;em&gt;b&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, ...)'>RoundRobinIterator</a><a class='trait ' href='trait.SkipExactlyIterator.html' title='(..., &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;i&lt;/em&gt;-1&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;i&lt;/em&gt;&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;i&lt;/em&gt;+1&lt;/sub&gt;, ...), &lt;em&gt;i&lt;/em&gt; &amp;nbsp;&amp;rarr;&amp;nbsp; (&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;i&lt;/em&gt;&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;i&lt;/em&gt;+1&lt;/sub&gt;, ...)'>SkipExactlyIterator</a><a class='trait ' href='trait.SortedIterator.html' title='Shorthand for collecting and sorting an iterator.'>SortedIterator</a><a class='trait ' href='trait.StrideIterator.html' title='&lt;em&gt;a&lt;/em&gt;, &lt;em&gt;n&lt;/em&gt; &amp;nbsp;&amp;rarr;&amp;nbsp; (&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;i&lt;/em&gt;&lt;/sub&gt; | &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;i&lt;/em&gt;&lt;/sub&gt; &amp;nbsp;&amp;rarr;&amp;nbsp; &lt;em&gt;a&lt;/em&gt; : &lt;em&gt;i&lt;/em&gt; &amp;equiv; &lt;em&gt;mod&lt;/em&gt; &lt;em&gt;n&lt;/em&gt; )'>StrideIterator</a><a class='trait ' href='trait.TakeExactlyIterator.html' title='(&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, ..., &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;i&lt;/em&gt;-1&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;i&lt;/em&gt;&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;i&lt;/em&gt;+1&lt;/sub&gt;, ...), &lt;em&gt;i&lt;/em&gt; &amp;nbsp;&amp;rarr;&amp;nbsp; (&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, ..., &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;i&lt;/em&gt;-1&lt;/sub&gt;)'>TakeExactlyIterator</a><a class='trait ' href='trait.TeeIterator.html' title='&lt;em&gt;a&lt;/em&gt; &amp;nbsp;&amp;rarr;&amp;nbsp; &lt;em&gt;a&lt;/em&gt;, &lt;em&gt;a&lt;/em&gt;'>TeeIterator</a><a class='trait ' href='trait.ZipLongestIterator.html' title='(..., &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;m&lt;/em&gt;&lt;/sub&gt;), (..., &lt;em&gt;b&lt;/em&gt;&lt;sub&gt;&lt;em&gt;m&lt;/em&gt;&lt;/sub&gt;, &lt;em&gt;b&lt;/em&gt;&lt;sub&gt;&lt;em&gt;m&lt;/em&gt;+1&lt;/sub&gt;, ..., &lt;em&gt;b&lt;/em&gt;&lt;sub&gt;&lt;em&gt;n&lt;/em&gt;&lt;/sub&gt;) &amp;nbsp;&amp;rarr;&amp;nbsp; ( ..., (&lt;em&gt;Some&lt;/em&gt;(&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;m&lt;/em&gt;&lt;/sub&gt;), &lt;em&gt;Some&lt;/em&gt;(&lt;em&gt;b&lt;/em&gt;&lt;sub&gt;&lt;em&gt;m&lt;/em&gt;&lt;/sub&gt;)), (&lt;em&gt;None&lt;/em&gt;, &lt;em&gt;Some&lt;/em&gt;(&lt;em&gt;b&lt;/em&gt;&lt;sub&gt;&lt;em&gt;m&lt;/em&gt;+1&lt;/sub&gt;)), ..., (&lt;em&gt;None&lt;/em&gt;, &lt;em&gt;Some&lt;/em&gt;(&lt;em&gt;b&lt;/em&gt;&lt;sub&gt;&lt;em&gt;n&lt;/em&gt;&lt;/sub&gt;)) )'>ZipLongestIterator</a></div>
+    </section>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press 'S' to search, '?' for more options..."
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content trait">
+<h1 class='fqn'><span class='in-band'>Trait <a href='../index.html'>grabbag</a>::<wbr><a href='index.html'>iter</a>::<wbr><a class='trait' href=''>FoldlIterator</a><wbr></span><span class='out-of-band'><span id='render-detail'>
+            <a id="collapse-all" href="#">[-]
+            </a>&nbsp;<a id="expand-all" href="#">[+]</a>
+        </span><a id='src-2380' href='../../src/grabbag/iter/fold.rs.html#13-43'>[src]</a></span></h1>
+<pre class='rust trait'>pub trait FoldlIterator&lt;E&gt;: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=E&gt; + <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a> {
+    fn <a href='#method.foldl' class='fnname'>foldl</a>&lt;F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>(E, E) -&gt; E&gt;(self, f: F) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;E&gt; { ... }
+    fn <a href='#method.foldl_map' class='fnname'>foldl_map</a>&lt;E1, F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>(E1, E) -&gt; E1, MapFn: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnOnce.html' title='core::ops::FnOnce'>FnOnce</a>(E) -&gt; E1&gt;(self, map: MapFn, f: F) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;E1&gt; { ... }
+}</pre><div class='docblock'><p>(
+<em>a</em><sub>0</sub>,
+<em>a</em><sub>1</sub>,
+<em>a</em><sub>2</sub>,
+...
+),
+&nbsp;&rarr;&nbsp;
+&nbsp;&rarr;&nbsp;
+((<em>a</em><sub>0</sub>) &#x2297; <em>a</em><sub>1</sub>) &#x2297; <em>a</em><sub>2</sub>) &#x2297; ...</p>
+</div>
+            <h2 id='provided-methods'>Provided Methods</h2>
+            <div class='methods'>
+        <h3 id='method.foldl' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.foldl' class='fnname'>foldl</a>&lt;F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>(E, E) -&gt; E&gt;(self, f: F) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;E&gt;</code></h3><div class='docblock'><p>Folds the elements of the iterator together, from left to right, using <code>f</code>.</p>
+
+<p>Returns <code>None</code> if the iterator is empty.</p>
+</div><h3 id='method.foldl_map' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.foldl_map' class='fnname'>foldl_map</a>&lt;E1, F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>(E1, E) -&gt; E1, MapFn: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnOnce.html' title='core::ops::FnOnce'>FnOnce</a>(E) -&gt; E1&gt;(self, map: MapFn, f: F) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;E1&gt;</code></h3><div class='docblock'><p>Folds the elements of the iterator together, from left to right, using `f.</p>
+
+<p>In addition, the first element is transformed using <code>map</code> before folding begins.</p>
+
+<p>Returns <code>None</code> if the iterator is empty.</p>
+</div></div>
+        <h2 id='implementors'>Implementors</h2>
+        <ul class='item-list' id='implementors-list'>
+    <li><a class='stability Unmarked' title='No stability level'></a><code>impl&lt;It, E&gt; <a class='trait' href='../../grabbag/iter/trait.FoldlIterator.html' title='grabbag::iter::FoldlIterator'>FoldlIterator</a>&lt;E&gt; for It <span class='where'>where It: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=E&gt;</span></code></li>
+</ul><script type="text/javascript" async
+                              src="../../implementors/grabbag/iter/trait.FoldlIterator.js">
+                      </script></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <div id="help" class="hidden">
+        <div class="shortcuts">
+            <h1>Keyboard shortcuts</h1>
+            <dl>
+                <dt>?</dt>
+                <dd>Show this help dialog</dd>
+                <dt>S</dt>
+                <dd>Focus the search field</dd>
+                <dt>&larrb;</dt>
+                <dd>Move up in search results</dd>
+                <dt>&rarrb;</dt>
+                <dd>Move down in search results</dd>
+                <dt>&#9166;</dt>
+                <dd>Go to active search result</dd>
+            </dl>
+        </div>
+        <div class="infos">
+            <h1>Search tricks</h1>
+            <p>
+                Prefix searches with a type followed by a colon (e.g.
+                <code>fn:</code>) to restrict the search to a given type.
+            </p>
+            <p>
+                Accepted types are: <code>fn</code>, <code>mod</code>,
+                <code>struct</code>, <code>enum</code>,
+                <code>trait</code>, <code>typedef</code> (or
+                <code>tdef</code>).
+            </p>
+        </div>
+    </div>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "grabbag";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    
+    <script async src="../../search-index.js"></script>
+</body>
+</html>

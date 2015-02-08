@@ -26,7 +26,7 @@
 
     <section class="sidebar">
         
-        <p class='location'><a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>group_by</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.Group.html' title=''>Group</a><a class='struct ' href='struct.GroupBy.html' title=''>GroupBy</a><a class='struct ' href='struct.GroupByShared.html' title=''>GroupByShared</a></div><div class='block trait'><h2>Traits</h2><a class='trait current' href='trait.GroupByIterator.html' title=''>GroupByIterator</a></div>
+        <p class='location'><a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>group_by</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.Group.html' title=''>Group</a><a class='struct ' href='struct.GroupBy.html' title=''>GroupBy</a><a class='struct ' href='struct.GroupByShared.html' title=''>GroupByShared</a></div><div class='block trait'><h2>Traits</h2><a class='trait current' href='trait.GroupByIterator.html' title='Sequence of iterators containing successive elements of the subject which have the same group according to a group function.'>GroupByIterator</a></div>
     </section>
 
     <nav class="sub">
@@ -44,10 +44,11 @@
 <h1 class='fqn'><span class='in-band'>Trait <a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>group_by</a>::<wbr><a class='trait' href=''>GroupByIterator</a><wbr></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-1088' href='../../../src/grabbag/iter/group_by.rs.html#6-37'>[src]</a></span></h1>
+        </span><a id='src-1106' href='../../../src/grabbag/iter/group_by.rs.html#9-40'>[src]</a></span></h1>
 <pre class='rust trait'>pub trait GroupByIterator&lt;E&gt;: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=E&gt; + <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a> {
     fn <a href='#method.group_by' class='fnname'>group_by</a>&lt;'a, GroupFn: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>(&amp;E) -&gt; G, G&gt;(self, group: GroupFn) -&gt; <a class='struct' href='../../../grabbag/iter/group_by/struct.GroupBy.html' title='grabbag::iter::group_by::GroupBy'>GroupBy</a>&lt;'a, Self, GroupFn, E, G&gt; { ... }
-}</pre>
+}</pre><div class='docblock'><p>Sequence of iterators containing successive elements of the subject which have the same group according to a group function.</p>
+</div>
             <h2 id='provided-methods'>Provided Methods</h2>
             <div class='methods'>
         <h3 id='method.group_by' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.group_by' class='fnname'>group_by</a>&lt;'a, GroupFn: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>(&amp;E) -&gt; G, G&gt;(self, group: GroupFn) -&gt; <a class='struct' href='../../../grabbag/iter/group_by/struct.GroupBy.html' title='grabbag::iter::group_by::GroupBy'>GroupBy</a>&lt;'a, Self, GroupFn, E, G&gt;</code></h3><div class='docblock'><p>Creates an iterator that yields a succession of <code>(group, sub_iterator)</code> pairs.  Each <code>sub_iterator</code> yields successive elements of the input iterator that have the same <code>group</code>.  An element&#39;s <code>group</code> is computed using the <code>f</code> closure.</p>
@@ -66,7 +67,7 @@
 </div></div>
         <h2 id='implementors'>Implementors</h2>
         <ul class='item-list' id='implementors-list'>
-    <li><a class='stability Unmarked' title='No stability level'></a><code>impl&lt;E, It&gt; <a class='trait' href='../../../grabbag/iter/group_by/trait.GroupByIterator.html' title='grabbag::iter::group_by::GroupByIterator'>GroupByIterator</a>&lt;E&gt; for It <span class='where'>where It: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=E&gt;</span></code></li>
+    <li><a class='stability Unmarked' title='No stability level'></a><code>impl&lt;E, It&gt; <a class='trait' href='../../../grabbag/iter/trait.GroupByIterator.html' title='grabbag::iter::GroupByIterator'>GroupByIterator</a>&lt;E&gt; for It <span class='where'>where It: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=E&gt;</span></code></li>
 </ul><script type="text/javascript" async
                               src="../../../implementors/grabbag/iter/group_by/trait.GroupByIterator.js">
                       </script></section>

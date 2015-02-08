@@ -136,10 +136,16 @@
 <span id="94">94</span>
 <span id="95">95</span>
 <span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>cmp</span>::<span class='ident'>max</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>iter</span>::<span class='ident'>RandomAccessIterator</span>;
 
+<span class='doccomment'>/**
+Pads a sequence to a minimum length.
+*/</span>
 <span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>PadTailToIterator</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>E</span><span class='op'>&gt;</span> <span class='op'>+</span> <span class='ident'>Sized</span> {
     <span class='doccomment'>/**
 Creates an iterator that ensures there are at least `n` elements in a sequence.  If the input iterator is too short, the difference is made up with a filler value.

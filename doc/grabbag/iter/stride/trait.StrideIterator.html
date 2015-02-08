@@ -26,7 +26,7 @@
 
     <section class="sidebar">
         
-        <p class='location'><a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>stride</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.Stride.html' title=''>Stride</a></div><div class='block trait'><h2>Traits</h2><a class='trait current' href='trait.StrideIterator.html' title=''>StrideIterator</a></div>
+        <p class='location'><a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>stride</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.Stride.html' title=''>Stride</a></div><div class='block trait'><h2>Traits</h2><a class='trait current' href='trait.StrideIterator.html' title='&lt;em&gt;a&lt;/em&gt;, &lt;em&gt;n&lt;/em&gt; &amp;nbsp;&amp;rarr;&amp;nbsp; (&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;i&lt;/em&gt;&lt;/sub&gt; | &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;i&lt;/em&gt;&lt;/sub&gt; &amp;nbsp;&amp;rarr;&amp;nbsp; &lt;em&gt;a&lt;/em&gt; : &lt;em&gt;i&lt;/em&gt; &amp;equiv; &lt;em&gt;mod&lt;/em&gt; &lt;em&gt;n&lt;/em&gt; )'>StrideIterator</a></div>
     </section>
 
     <nav class="sub">
@@ -44,17 +44,20 @@
 <h1 class='fqn'><span class='in-band'>Trait <a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>stride</a>::<wbr><a class='trait' href=''>StrideIterator</a><wbr></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-5335' href='../../../src/grabbag/iter/stride.rs.html#4-14'>[src]</a></span></h1>
+        </span><a id='src-5353' href='../../../src/grabbag/iter/stride.rs.html#10-20'>[src]</a></span></h1>
 <pre class='rust trait'>pub trait StrideIterator&lt;E&gt;: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=E&gt; + <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a> {
     fn <a href='#method.stride' class='fnname'>stride</a>(self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; <a class='struct' href='../../../grabbag/iter/stride/struct.Stride.html' title='grabbag::iter::stride::Stride'>Stride</a>&lt;Self&gt; { ... }
-}</pre>
+}</pre><div class='docblock'><p><em>a</em>, <em>n</em>
+&nbsp;&rarr;&nbsp;
+(<em>a</em><sub><em>i</em></sub> | <em>a</em><sub><em>i</em></sub> &nbsp;&rarr;&nbsp; <em>a</em> : <em>i</em> &equiv; <em>mod</em> <em>n</em> )</p>
+</div>
             <h2 id='provided-methods'>Provided Methods</h2>
             <div class='methods'>
         <h3 id='method.stride' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.stride' class='fnname'>stride</a>(self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; <a class='struct' href='../../../grabbag/iter/stride/struct.Stride.html' title='grabbag::iter::stride::Stride'>Stride</a>&lt;Self&gt;</code></h3><div class='docblock'><p>Creates an iterator which yields every <code>n</code>th element of the input iterator, including the first.</p>
 </div></div>
         <h2 id='implementors'>Implementors</h2>
         <ul class='item-list' id='implementors-list'>
-    <li><a class='stability Unmarked' title='No stability level'></a><code>impl&lt;It, E&gt; <a class='trait' href='../../../grabbag/iter/stride/trait.StrideIterator.html' title='grabbag::iter::stride::StrideIterator'>StrideIterator</a>&lt;E&gt; for It <span class='where'>where It: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=E&gt;</span></code></li>
+    <li><a class='stability Unmarked' title='No stability level'></a><code>impl&lt;It, E&gt; <a class='trait' href='../../../grabbag/iter/trait.StrideIterator.html' title='grabbag::iter::StrideIterator'>StrideIterator</a>&lt;E&gt; for It <span class='where'>where It: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=E&gt;</span></code></li>
 </ul><script type="text/javascript" async
                               src="../../../implementors/grabbag/iter/stride/trait.StrideIterator.js">
                       </script></section>

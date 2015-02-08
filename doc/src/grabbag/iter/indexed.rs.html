@@ -171,9 +171,21 @@
 <span id="129">129</span>
 <span id="130">130</span>
 <span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>iter</span>::<span class='ident'>RandomAccessIterator</span>;
 
+<span class='doccomment'>/**
+&lt;em&gt;a&lt;/em&gt;, (&lt;em&gt;i&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;i&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, ...)
+&amp;nbsp;&amp;rarr;&amp;nbsp;
+(a&lt;sub&gt;&lt;em&gt;i&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;&lt;/sub&gt;, a&lt;sub&gt;&lt;em&gt;i&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;&lt;/sub&gt;, ...)
+
+*/</span>
 <span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>IndexedIterator</span><span class='op'>&lt;</span><span class='ident'>IndIt</span><span class='op'>&gt;</span>: <span class='ident'>Iterator</span> <span class='op'>+</span> <span class='ident'>Sized</span> {
     <span class='doccomment'>/**
 Creates an iterator which uses `indices` as an indexer to the subject iterator.

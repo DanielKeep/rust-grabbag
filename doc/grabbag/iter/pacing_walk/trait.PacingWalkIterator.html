@@ -26,7 +26,7 @@
 
     <section class="sidebar">
         
-        <p class='location'><a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>pacing_walk</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.PacingWalk.html' title=''>PacingWalk</a></div><div class='block trait'><h2>Traits</h2><a class='trait current' href='trait.PacingWalkIterator.html' title=''>PacingWalkIterator</a></div>
+        <p class='location'><a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>pacing_walk</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.PacingWalk.html' title=''>PacingWalk</a></div><div class='block trait'><h2>Traits</h2><a class='trait current' href='trait.PacingWalkIterator.html' title='Performs a back-and-forth iteration out from a point.  No, really.'>PacingWalkIterator</a></div>
     </section>
 
     <nav class="sub">
@@ -44,10 +44,11 @@
 <h1 class='fqn'><span class='in-band'>Trait <a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>pacing_walk</a>::<wbr><a class='trait' href=''>PacingWalkIterator</a><wbr></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-3858' href='../../../src/grabbag/iter/pacing_walk.rs.html#5-29'>[src]</a></span></h1>
+        </span><a id='src-3876' href='../../../src/grabbag/iter/pacing_walk.rs.html#8-32'>[src]</a></span></h1>
 <pre class='rust trait'>pub trait PacingWalkIterator: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a> + <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.RandomAccessIterator.html' title='core::iter::RandomAccessIterator'>RandomAccessIterator</a> + <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a> {
     fn <a href='#tymethod.pacing_walk' class='fnname'>pacing_walk</a>(self, start_at: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; <a class='struct' href='../../../grabbag/iter/pacing_walk/struct.PacingWalk.html' title='grabbag::iter::pacing_walk::PacingWalk'>PacingWalk</a>&lt;Self&gt;;
-}</pre>
+}</pre><div class='docblock'><p>Performs a back-and-forth iteration out from a point.  No, really.</p>
+</div>
             <h2 id='required-methods'>Required Methods</h2>
             <div class='methods'>
         <h3 id='tymethod.pacing_walk' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#tymethod.pacing_walk' class='fnname'>pacing_walk</a>(self, start_at: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; <a class='struct' href='../../../grabbag/iter/pacing_walk/struct.PacingWalk.html' title='grabbag::iter::pacing_walk::PacingWalk'>PacingWalk</a>&lt;Self&gt;</code></h3><div class='docblock'><p>Creates an iterator that performs a back-and-forth walk of the input iterator.</p>
@@ -71,7 +72,7 @@
 </div></div>
         <h2 id='implementors'>Implementors</h2>
         <ul class='item-list' id='implementors-list'>
-    <li><a class='stability Unmarked' title='No stability level'></a><code>impl&lt;It, E&gt; <a class='trait' href='../../../grabbag/iter/pacing_walk/trait.PacingWalkIterator.html' title='grabbag::iter::pacing_walk::PacingWalkIterator'>PacingWalkIterator</a> for It <span class='where'>where It: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=E&gt; + <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.RandomAccessIterator.html' title='core::iter::RandomAccessIterator'>RandomAccessIterator</a></span></code></li>
+    <li><a class='stability Unmarked' title='No stability level'></a><code>impl&lt;It, E&gt; <a class='trait' href='../../../grabbag/iter/trait.PacingWalkIterator.html' title='grabbag::iter::PacingWalkIterator'>PacingWalkIterator</a> for It <span class='where'>where It: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=E&gt; + <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.RandomAccessIterator.html' title='core::iter::RandomAccessIterator'>RandomAccessIterator</a></span></code></li>
 </ul><script type="text/javascript" async
                               src="../../../implementors/grabbag/iter/pacing_walk/trait.PacingWalkIterator.js">
                       </script></section>

@@ -26,7 +26,7 @@
 
     <section class="sidebar">
         
-        <p class='location'><a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>fold</a></p><div class='block trait'><h2>Traits</h2><a class='trait current' href='trait.FoldlIterator.html' title=''>FoldlIterator</a><a class='trait ' href='trait.FoldrIterator.html' title=''>FoldrIterator</a></div>
+        <p class='location'><a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>fold</a></p><div class='block trait'><h2>Traits</h2><a class='trait current' href='trait.FoldlIterator.html' title='( &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;2&lt;/sub&gt;, ... ), &amp;nbsp;&amp;rarr;&amp;nbsp; &amp;nbsp;&amp;rarr;&amp;nbsp; ((&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;) &amp;#x2297; &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;) &amp;#x2297; &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;2&lt;/sub&gt;) &amp;#x2297; ...'>FoldlIterator</a><a class='trait ' href='trait.FoldrIterator.html' title='( ..., &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;n&lt;/em&gt;-2&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;n&lt;/em&gt;-1&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;n&lt;/em&gt;&lt;/sub&gt;, ), &amp;#x2297; &amp;rarr; ... &amp;#x2297; (&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;n&lt;/em&gt;-2&lt;/sub&gt; &amp;#x2297; (&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;n&lt;/em&gt;-1&lt;/sub&gt; &amp;#x2297; (&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;n&lt;/em&gt;&lt;/sub&gt;)))'>FoldrIterator</a></div>
     </section>
 
     <nav class="sub">
@@ -44,11 +44,20 @@
 <h1 class='fqn'><span class='in-band'>Trait <a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>fold</a>::<wbr><a class='trait' href=''>FoldlIterator</a><wbr></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-2362' href='../../../src/grabbag/iter/fold.rs.html#1-31'>[src]</a></span></h1>
+        </span><a id='src-2380' href='../../../src/grabbag/iter/fold.rs.html#13-43'>[src]</a></span></h1>
 <pre class='rust trait'>pub trait FoldlIterator&lt;E&gt;: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=E&gt; + <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a> {
     fn <a href='#method.foldl' class='fnname'>foldl</a>&lt;F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>(E, E) -&gt; E&gt;(self, f: F) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;E&gt; { ... }
     fn <a href='#method.foldl_map' class='fnname'>foldl_map</a>&lt;E1, F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>(E1, E) -&gt; E1, MapFn: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnOnce.html' title='core::ops::FnOnce'>FnOnce</a>(E) -&gt; E1&gt;(self, map: MapFn, f: F) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;E1&gt; { ... }
-}</pre>
+}</pre><div class='docblock'><p>(
+<em>a</em><sub>0</sub>,
+<em>a</em><sub>1</sub>,
+<em>a</em><sub>2</sub>,
+...
+),
+&nbsp;&rarr;&nbsp;
+&nbsp;&rarr;&nbsp;
+((<em>a</em><sub>0</sub>) &#x2297; <em>a</em><sub>1</sub>) &#x2297; <em>a</em><sub>2</sub>) &#x2297; ...</p>
+</div>
             <h2 id='provided-methods'>Provided Methods</h2>
             <div class='methods'>
         <h3 id='method.foldl' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.foldl' class='fnname'>foldl</a>&lt;F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>(E, E) -&gt; E&gt;(self, f: F) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;E&gt;</code></h3><div class='docblock'><p>Folds the elements of the iterator together, from left to right, using <code>f</code>.</p>
@@ -62,7 +71,7 @@
 </div></div>
         <h2 id='implementors'>Implementors</h2>
         <ul class='item-list' id='implementors-list'>
-    <li><a class='stability Unmarked' title='No stability level'></a><code>impl&lt;It, E&gt; <a class='trait' href='../../../grabbag/iter/fold/trait.FoldlIterator.html' title='grabbag::iter::fold::FoldlIterator'>FoldlIterator</a>&lt;E&gt; for It <span class='where'>where It: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=E&gt;</span></code></li>
+    <li><a class='stability Unmarked' title='No stability level'></a><code>impl&lt;It, E&gt; <a class='trait' href='../../../grabbag/iter/trait.FoldlIterator.html' title='grabbag::iter::FoldlIterator'>FoldlIterator</a>&lt;E&gt; for It <span class='where'>where It: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=E&gt;</span></code></li>
 </ul><script type="text/javascript" async
                               src="../../../implementors/grabbag/iter/fold/trait.FoldlIterator.js">
                       </script></section>

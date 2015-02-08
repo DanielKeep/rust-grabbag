@@ -208,9 +208,23 @@
 <span id="166">166</span>
 <span id="167">167</span>
 <span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>cmp</span>::<span class='ident'>min</span>;
 
+<span class='doccomment'>/**
+(&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, ...),
+(&lt;em&gt;b&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;b&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, ...)
+&amp;nbsp;&amp;rarr;&amp;nbsp;
+(&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;b&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;, &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, &lt;em&gt;b&lt;/em&gt;&lt;sub&gt;1&lt;/sub&gt;, ...)
+
+*/</span>
 <span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>RoundRobinIterator</span>: <span class='ident'>Iterator</span> <span class='op'>+</span> <span class='ident'>Sized</span> {
     <span class='doccomment'>/**
 Creates an iterator that alternates between yielding elements of the two input iterators.  It stops as soon as either iterator is exhausted.

@@ -144,10 +144,22 @@
 <span id="102">102</span>
 <span id="103">103</span>
 <span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>iter</span>::<span class='ident'>RandomAccessIterator</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>num</span>::<span class='ident'>Int</span>;
 
+<span class='doccomment'>/**
+&lt;em&gt;a&lt;/em&gt;, &lt;em&gt;n&lt;/em&gt;
+&amp;nbsp;&amp;rarr;&amp;nbsp;
+(&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;i&lt;/em&gt;&lt;/sub&gt; | &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;i&lt;/em&gt;&lt;/sub&gt; &amp;nbsp;&amp;rarr;&amp;nbsp; &lt;em&gt;a&lt;/em&gt; : &lt;em&gt;i&lt;/em&gt; &amp;equiv; &lt;em&gt;mod&lt;/em&gt; &lt;em&gt;n&lt;/em&gt; )
+
+*/</span>
 <span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>StrideIterator</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>E</span><span class='op'>&gt;</span> <span class='op'>+</span> <span class='ident'>Sized</span> {
     <span class='doccomment'>/**
 Creates an iterator which yields every `n`th element of the input iterator, including the first.
