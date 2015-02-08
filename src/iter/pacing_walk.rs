@@ -2,6 +2,9 @@ use std::cmp::max;
 use std::iter::RandomAccessIterator;
 use std::num::Int;
 
+/**
+Performs a back-and-forth iteration out from a point.  No, really.
+*/
 pub trait PacingWalkIterator: Iterator + RandomAccessIterator + Sized {
     /**
 Creates an iterator that performs a back-and-forth walk of the input iterator.

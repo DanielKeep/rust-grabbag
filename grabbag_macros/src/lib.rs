@@ -1,3 +1,9 @@
+/*!
+This is a random grab-bag of macros that didn't really seem to deserve a separate home.
+
+If you see something you think you have a better place for, let me know!
+*/
+
 /**
 Counts the number of comma-delimited expressions passed to it.  The result is a compile-time evaluable expression, suitable for use as a static array size, or the value of a `const`.
 

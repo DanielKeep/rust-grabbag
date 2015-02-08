@@ -1,5 +1,18 @@
 use std::cmp::max;
 
+/**
+(..., <em>a</em><sub><em>m</em></sub>),
+(..., <em>b</em><sub><em>m</em></sub>, <em>b</em><sub><em>m</em>+1</sub>, ..., <em>b</em><sub><em>n</em></sub>)
+&nbsp;&rarr;&nbsp;
+(
+...,
+(<em>Some</em>(<em>a</em><sub><em>m</em></sub>), <em>Some</em>(<em>b</em><sub><em>m</em></sub>)),
+(<em>None</em>, <em>Some</em>(<em>b</em><sub><em>m</em>+1</sub>)),
+...,
+(<em>None</em>, <em>Some</em>(<em>b</em><sub><em>n</em></sub>))
+)
+
+*/
 pub trait ZipLongestIterator: Iterator + Sized {
     /**
 Creates an iterator which yields elements from both input iterators in lockstep.  If one iterator ends before the other, the elements from that iterator will be replaced with `None`.

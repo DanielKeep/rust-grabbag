@@ -1,6 +1,12 @@
 use std::iter::RandomAccessIterator;
 use std::mem::replace;
 
+/**
+(<em>a</em><sub>0</sub>, <em>a</em><sub>1</sub>, ..., <em>a</em><sub>n</sub>), <em>i</em>
+&nbsp;&rarr;&nbsp;
+(<em>a</em><sub>0</sub>, <em>i</em>, <em>a</em><sub>1</sub>, <em>i</em>, ..., <em>i</em>, <em>a</em><sub>n</sub>)
+
+*/
 pub trait IntersperseIterator<E>: Iterator<Item=E> + Sized {
     /**
 Creates an iterator that yields `inject` between each element of the input iterator.  `inject` will not appear as the first or last element of the resulting iterator.

@@ -9,6 +9,12 @@ fn test_skip() {
     assert_eq!(r, vec![]);
 }
 
+/**
+(..., <em>a</em><sub><em>i</em>-1</sub>, <em>a</em><sub><em>i</em></sub>, <em>a</em><sub><em>i</em>+1</sub>, ...), <em>i</em>
+&nbsp;&rarr;&nbsp;
+(<em>a</em><sub><em>i</em></sub>, <em>a</em><sub><em>i</em>+1</sub>, ...)
+
+*/
 pub trait SkipExactlyIterator: Iterator + Sized {
     /**
 Skips *exactly* `n` elements from the iterator.

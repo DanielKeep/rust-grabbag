@@ -1,6 +1,12 @@
 use std::iter::RandomAccessIterator;
 use std::num::Int;
 
+/**
+<em>a</em>, <em>n</em>
+&nbsp;&rarr;&nbsp;
+(<em>a</em><sub><em>i</em></sub> | <em>a</em><sub><em>i</em></sub> &nbsp;&rarr;&nbsp; <em>a</em> : <em>i</em> &equiv; <em>mod</em> <em>n</em> )
+
+*/
 pub trait StrideIterator<E>: Iterator<Item=E> + Sized {
     /**
 Creates an iterator which yields every `n`th element of the input iterator, including the first.

@@ -1,5 +1,12 @@
 use std::cmp::min;
 
+/**
+(<em>a</em><sub>0</sub>, <em>a</em><sub>1</sub>, ...),
+(<em>b</em><sub>0</sub>, <em>b</em><sub>1</sub>, ...)
+&nbsp;&rarr;&nbsp;
+(<em>a</em><sub>0</sub>, <em>b</em><sub>0</sub>, <em>a</em><sub>1</sub>, <em>b</em><sub>1</sub>, ...)
+
+*/
 pub trait RoundRobinIterator: Iterator + Sized {
     /**
 Creates an iterator that alternates between yielding elements of the two input iterators.  It stops as soon as either iterator is exhausted.

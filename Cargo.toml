@@ -6,6 +6,7 @@ authors = ["Daniel Keep <daniel.keep@gmail.com>"]
 
 description = "A random grab-bag of functionality."
 repository = "https://github.com/DanielKeep/rust-grabbag"
+documentation = "https://danielkeep.github.io/rust-grabbag/doc/grabbag/index.html"
 license = "MIT"
 
 [dependencies.grabbag_macros]

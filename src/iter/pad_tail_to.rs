@@ -1,6 +1,9 @@
 use std::cmp::max;
 use std::iter::RandomAccessIterator;
 
+/**
+Pads a sequence to a minimum length.
+*/
 pub trait PadTailToIterator<E>: Iterator<Item=E> + Sized {
     /**
 Creates an iterator that ensures there are at least `n` elements in a sequence.  If the input iterator is too short, the difference is made up with a filler value.

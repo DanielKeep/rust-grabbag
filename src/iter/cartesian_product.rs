@@ -1,3 +1,25 @@
+/**
+(
+<em>a</em><sub>0</sub>,
+<em>a</em><sub>1</sub>,
+...
+),
+(
+<em>b</em><sub>0</sub>,
+<em>b</em><sub>1</sub>,
+...
+)
+&nbsp;&rarr;&nbsp;
+(
+(<em>a</em><sub>0</sub>, <em>b</em><sub>0</sub>),
+(<em>a</em><sub>0</sub>, <em>b</em><sub>1</sub>),
+...,
+(<em>a</em><sub>1</sub>, <em>b</em><sub>0</sub>),
+(<em>a</em><sub>1</sub>, <em>b</em><sub>1</sub>),
+...
+)
+
+*/
 pub trait CartesianProductIterator<LeftItem>: Iterator<Item=LeftItem> + Sized {
     /**
 Creates an iterator that yields the cartesian product of two input iterators.

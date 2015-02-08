@@ -1,3 +1,8 @@
+/**
+<em>a</em> &nbsp;&rarr;&nbsp;
+(<em>e</em> | <em>e</em> &nbsp;&rarr;&nbsp; <em>a</em> : <em>Some</em>(<em>e</em>))
+
+*/
 pub trait KeepSomeIterator {
     /**
 Creates an iterator that, given a sequence of `Option<E>` values, unwraps all `Some(E)`s, and discards all `None`s.

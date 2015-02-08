@@ -11,6 +11,12 @@ fn test_take() {
     assert_eq!(r, vec![0, 1]);
 }
 
+/**
+(<em>a</em><sub>0</sub>, ..., <em>a</em><sub><em>i</em>-1</sub>, <em>a</em><sub><em>i</em></sub>, <em>a</em><sub><em>i</em>+1</sub>, ...), <em>i</em>
+&nbsp;&rarr;&nbsp;
+(<em>a</em><sub>0</sub>, ..., <em>a</em><sub><em>i</em>-1</sub>)
+
+*/
 pub trait TakeExactlyIterator<E>: Iterator<Item=E> + Sized {
     /**
 Creates an iterator that yields *exactly* `n` elements from the subject iterator.

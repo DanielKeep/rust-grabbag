@@ -1,5 +1,7 @@
-/**
+/*!
 This module contains a set of iterator extensions.  Rather than being named for the type of iterator they are implemented on, they are named for the method (or group of associated methods) being implemented.
+
+If you can't be bothered to import them individually, you can just pull in `iter::prelude::*` instead.
 
 # Standard Features
 
@@ -14,7 +16,26 @@ The iterator extensions, where possible, should implement the following features
 - An `unwrap` method, which returns any owned values passed into the iterator; typically, this is the original iterator.
 */
 
-pub use self::prelude::*;
+#[doc(inline)]
+pub use self::prelude::{
+    AccumulateIterator,
+    CartesianProductIterator,
+    CloneEachIterator,
+    GroupByIterator,
+    IndexedIterator,
+    FoldlIterator, FoldrIterator,
+    IntersperseIterator,
+    KeepSomeIterator,
+    PadTailToIterator,
+    PacingWalkIterator,
+    RoundRobinIterator,
+    SkipExactlyIterator,
+    SortedIterator,
+    StrideIterator,
+    TakeExactlyIterator,
+    TeeIterator,
+    ZipLongestIterator,
+};
 
 pub mod accumulate;
 pub mod cartesian_product;
@@ -34,6 +55,9 @@ pub mod take_exactly;
 pub mod tee;
 pub mod zip_longest;
 
+/**
+This module just centralises all the iterator extension traits in one place, suitable for glob importing.
+*/
 pub mod prelude {
     pub use super::accumulate::AccumulateIterator;
     pub use super::cartesian_product::CartesianProductIterator;

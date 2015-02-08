@@ -3,6 +3,9 @@ use std::cmp::min;
 use std::mem::replace;
 use std::rc::Rc;
 
+/**
+Sequence of iterators containing successive elements of the subject which have the same group according to a group function.
+*/
 pub trait GroupByIterator<E>: Iterator<Item=E> + Sized {
     /**
 Creates an iterator that yields a succession of `(group, sub_iterator)` pairs.  Each `sub_iterator` yields successive elements of the input iterator that have the same `group`.  An element's `group` is computed using the `f` closure.

@@ -2,6 +2,9 @@ use std::cell::RefCell;
 use std::collections::RingBuf;
 use std::rc::Rc;
 
+/**
+<em>a</em> &nbsp;&rarr;&nbsp; <em>a</em>, <em>a</em>
+*/
 pub trait TeeIterator<E>: Iterator<Item=E> + Sized {
     /**
 Creates a pair of iterators that will yield the same sequence of values.

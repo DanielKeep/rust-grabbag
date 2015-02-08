@@ -1,5 +1,8 @@
 use std::cmp::Ordering;
 
+/**
+Shorthand for collecting and sorting an iterator.
+*/
 pub trait SortedIterator<E>: Iterator<Item=E> + Sized where E: Ord {
     /**
 Returns a `Vec` with the elements of the input iterator in sorted order.

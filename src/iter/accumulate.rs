@@ -1,8 +1,35 @@
 use std::mem::replace;
 
+/**
+(
+<em>a</em><sub>0</sub>,
+<em>a</em><sub>1</sub>,
+<em>a</em><sub>2</sub>,
+...
+),
+&#x2297;
+&nbsp;&rarr;&nbsp;
+(
+<em>a</em><sub>0</sub>,
+(<em>a</em><sub>0</sub> &#x2297; <em>a</em><sub>1</sub>),
+((<em>a</em><sub>0</sub> &#x2297; <em>a</em><sub>1</sub>) &#x2297; <em>a</em><sub>2</sub>),
+...
+)
+
+*/
 pub trait AccumulateIterator<E>: Iterator<Item=E> + Sized {
     /**
-Creates an iterator that scans from left to right over the input sequence, returning the accumulated result of calling `f` on the entire sequence up to that point.
+Creates an iterator that scans from left to right over the input sequence, returning the accumulated result of calling the provided function on the entire sequence up to that point.
+
+# Example
+
+```
+let v = vec![0us, 1, 2, 3, 4];
+
+// `r` is the sequence of partial sums of `v`.
+let r: Vec<_> = v.into_iter().accumulate(|a,b| a+b).collect();
+assert_eq!(r, vec![0, 1, 3, 6, 10]);
+```
     */
     fn accumulate<F: FnMut(E, E) -> E>(self, f: F) -> Accumulate<Self, E, F> {
         Accumulate {

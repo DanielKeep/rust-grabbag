@@ -1,5 +1,19 @@
 use std::iter::RandomAccessIterator;
 
+/**
+(
+<em>a</em><sub>0</sub>,
+<em>a</em><sub>1</sub>,
+...
+)
+&nbsp;&rarr;&nbsp;
+(
+<em>a</em><sub>0</sub>`.clone()`,
+<em>a</em><sub>1</sub>`.clone()`,
+...
+)
+
+*/
 pub trait CloneEachIterator<'a, E>: Iterator<Item=&'a E> + Sized where E: Clone {
     /**
 Creates an iterator which will clone each element of the input iterator.

@@ -1,5 +1,11 @@
 use std::iter::RandomAccessIterator;
 
+/**
+<em>a</em>, (<em>i</em><sub>0</sub>, <em>i</em><sub>1</sub>, ...)
+&nbsp;&rarr;&nbsp;
+(a<sub><em>i</em><sub>0</sub></sub>, a<sub><em>i</em><sub>1</sub></sub>, ...)
+
+*/
 pub trait IndexedIterator<IndIt>: Iterator + Sized {
     /**
 Creates an iterator which uses `indices` as an indexer to the subject iterator.

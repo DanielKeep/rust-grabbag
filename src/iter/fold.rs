@@ -1,3 +1,15 @@
+/**
+(
+<em>a</em><sub>0</sub>,
+<em>a</em><sub>1</sub>,
+<em>a</em><sub>2</sub>,
+...
+),
+&nbsp;&rarr;&nbsp;
+&nbsp;&rarr;&nbsp;
+((<em>a</em><sub>0</sub>) &#x2297; <em>a</em><sub>1</sub>) &#x2297; <em>a</em><sub>2</sub>) &#x2297; ...
+
+*/
 pub trait FoldlIterator<E>: Iterator<Item=E> + Sized {
     /**
 Folds the elements of the iterator together, from left to right, using `f`.
@@ -50,6 +62,18 @@ fn test_foldl_map() {
     assert_eq!(r, Some("a, b, c".to_owned()));
 }
 
+/**
+(
+...,
+<em>a</em><sub><em>n</em>-2</sub>,
+<em>a</em><sub><em>n</em>-1</sub>,
+<em>a</em><sub><em>n</em></sub>,
+),
+&#x2297;
+&rarr;
+... &#x2297; (<em>a</em><sub><em>n</em>-2</sub> &#x2297; (<em>a</em><sub><em>n</em>-1</sub> &#x2297; (<em>a</em><sub><em>n</em></sub>)))
+
+*/
 pub trait FoldrIterator<E>: DoubleEndedIterator + Iterator<Item=E> + Sized {
     /**
 Folds the elements of the iterator together, from right to left, using `f`.
