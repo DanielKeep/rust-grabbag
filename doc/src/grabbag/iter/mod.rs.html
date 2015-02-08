@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="Source to the Rust file `src\iter\mod.rs`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang">
+
+    <title>mod.rs.html -- source</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <section class="sidebar">
+        
+        
+    </section>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press 'S' to search, '?' for more options..."
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content source"><pre class="line-numbers"><span id="1"> 1</span>
+<span id="2"> 2</span>
+<span id="3"> 3</span>
+<span id="4"> 4</span>
+<span id="5"> 5</span>
+<span id="6"> 6</span>
+<span id="7"> 7</span>
+<span id="8"> 8</span>
+<span id="9"> 9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+</pre><pre class='rust '>
+<span class='doccomment'>/**
+This module contains a set of iterator extensions.  Rather than being named for the type of iterator they are implemented on, they are named for the method (or group of associated methods) being implemented.
+
+# Standard Features
+
+The iterator extensions, where possible, should implement the following features:
+
+- `Clone`, which produces an *independent* version of the iterator.
+- `DoubleEndedIterator`.
+- `ExactSizeIterator`.
+- `RandomAccessIterator`.
+- `Show`.
+- Accurate `size_hint` (depending on the transform being performed, and the accuracy of the underlying iterator).
+- An `unwrap` method, which returns any owned values passed into the iterator; typically, this is the original iterator.
+*/</span>
+
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='self'>self</span>::<span class='ident'>prelude</span>::<span class='op'>*</span>;
+
+<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>accumulate</span>;
+<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>cartesian_product</span>;
+<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>clone_each</span>;
+<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>group_by</span>;
+<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>indexed</span>;
+<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>fold</span>;
+<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>intersperse</span>;
+<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>keep_some</span>;
+<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>pad_tail_to</span>;
+<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>pacing_walk</span>;
+<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>round_robin</span>;
+<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>skip_exactly</span>;
+<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>sorted</span>;
+<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>stride</span>;
+<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>take_exactly</span>;
+<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>tee</span>;
+<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>zip_longest</span>;
+
+<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>prelude</span> {
+    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>accumulate</span>::<span class='ident'>AccumulateIterator</span>;
+    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>cartesian_product</span>::<span class='ident'>CartesianProductIterator</span>;
+    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>clone_each</span>::<span class='ident'>CloneEachIterator</span>;
+    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>group_by</span>::<span class='ident'>GroupByIterator</span>;
+    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>indexed</span>::<span class='ident'>IndexedIterator</span>;
+    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>fold</span>::{<span class='ident'>FoldlIterator</span>, <span class='ident'>FoldrIterator</span>};
+    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>intersperse</span>::<span class='ident'>IntersperseIterator</span>;
+    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>keep_some</span>::<span class='ident'>KeepSomeIterator</span>;
+    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>pad_tail_to</span>::<span class='ident'>PadTailToIterator</span>;
+    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>pacing_walk</span>::<span class='ident'>PacingWalkIterator</span>;
+    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>round_robin</span>::<span class='ident'>RoundRobinIterator</span>;
+    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>skip_exactly</span>::<span class='ident'>SkipExactlyIterator</span>;
+    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>sorted</span>::<span class='ident'>SortedIterator</span>;
+    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>stride</span>::<span class='ident'>StrideIterator</span>;
+    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>take_exactly</span>::<span class='ident'>TakeExactlyIterator</span>;
+    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>tee</span>::<span class='ident'>TeeIterator</span>;
+    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>zip_longest</span>::<span class='ident'>ZipLongestIterator</span>;
+}
+</pre>
+</section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <div id="help" class="hidden">
+        <div class="shortcuts">
+            <h1>Keyboard shortcuts</h1>
+            <dl>
+                <dt>?</dt>
+                <dd>Show this help dialog</dd>
+                <dt>S</dt>
+                <dd>Focus the search field</dd>
+                <dt>&larrb;</dt>
+                <dd>Move up in search results</dd>
+                <dt>&rarrb;</dt>
+                <dd>Move down in search results</dd>
+                <dt>&#9166;</dt>
+                <dd>Go to active search result</dd>
+            </dl>
+        </div>
+        <div class="infos">
+            <h1>Search tricks</h1>
+            <p>
+                Prefix searches with a type followed by a colon (e.g.
+                <code>fn:</code>) to restrict the search to a given type.
+            </p>
+            <p>
+                Accepted types are: <code>fn</code>, <code>mod</code>,
+                <code>struct</code>, <code>enum</code>,
+                <code>trait</code>, <code>typedef</code> (or
+                <code>tdef</code>).
+            </p>
+        </div>
+    </div>
+
+    
+
+    <script>
+        window.rootPath = "../../../";
+        window.currentCrate = "grabbag";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../../jquery.js"></script>
+    <script src="../../../main.js"></script>
+    
+    <script async src="../../../search-index.js"></script>
+</body>
+</html>

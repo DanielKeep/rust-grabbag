@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `collect!` macro in crate `grabbag_macros`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, collect!">
+
+    <title>grabbag_macros::collect! - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <section class="sidebar">
+        
+        <p class='location'><a href='index.html'>grabbag_macros</a></p><div class='block macro'><h2>Macros</h2><a class='macro current' href='macro.collect!.html' title='This macro provides a way to initialise any container for which there is a FromIterator implementation.  It allows for both sequence and map syntax to be used, as well as inline type ascription for the result.'>collect!</a><a class='macro ' href='macro.count_exprs!.html' title='Counts the number of comma-delimited expressions passed to it.  The result is a compile-time evaluable expression, suitable for use as a static array size, or the value of a `const`.'>count_exprs!</a><a class='macro ' href='macro.recurrence!.html' title='Expands to an expression implementing the `Iterator` trait, which yields successive elements of the given recurrence relationship.'>recurrence!</a><a class='macro ' href='macro.sequence!.html' title='Expands to an expression implementing the `Iterator` trait, which yields successive elements of the given closed-form sequence.'>sequence!</a></div>
+    </section>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press 'S' to search, '?' for more options..."
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content macro">
+<h1 class='fqn'><span class='in-band'><a href='index.html'>grabbag_macros</a>::<wbr><a class='macro' href=''>collect!</a><wbr></span><span class='out-of-band'><span id='render-detail'>
+            <a id="collapse-all" href="#">[-]
+            </a>&nbsp;<a id="expand-all" href="#">[+]</a>
+        </span><a id='src-5' href='../src/grabbag_macros/lib.rs.html#49-109'>[src]</a></span></h1>
+<pre class='rust macro'>
+<span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>collect</span> {
+    <span class='comment'>// Short-hands for initialising an empty collection.</span>
+    [] <span class='op'>=&gt;</span> { <span class='macro'>collect</span><span class='macro'>!</span>[<span class='ident'>into</span> _] };
+    [<span class='ident'>into</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>col_ty</span>:<span class='ident'>ty</span>] <span class='op'>=&gt;</span> { <span class='macro'>collect</span><span class='macro'>!</span>[<span class='ident'>into</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>col_ty</span>:] };
+    [<span class='ident'>into</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>col_ty</span>:<span class='ident'>ty</span>:] <span class='op'>=&gt;</span> {
+        {
+            <span class='kw'>let</span> <span class='ident'>col</span>: <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>col_ty</span> <span class='op'>=</span> ::<span class='ident'>std</span>::<span class='ident'>default</span>::<span class='ident'>Default</span>::<span class='ident'>default</span>();
+            <span class='ident'>col</span>
+        }
+    };
+
+    <span class='comment'>// Initialise a sequence with a constrained container type.</span>
+    [<span class='ident'>into</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>col_ty</span>:<span class='ident'>ty</span>: $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>:<span class='ident'>expr</span>),<span class='op'>+</span>] <span class='op'>=&gt;</span> {
+        {
+            <span class='kw'>const</span> <span class='ident'>NUM_ELEMS</span>: <span class='ident'>usize</span> <span class='op'>=</span> <span class='macro'>count_exprs</span><span class='macro'>!</span>($(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>),<span class='op'>+</span>);
+
+            <span class='comment'>// This trick is stolen from std::iter, and *should* serve to give the container enough information to pre-allocate sufficient storage for all the elements.</span>
+            <span class='kw'>struct</span> <span class='ident'>SizeHint</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span>;
+
+            <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span> <span class='ident'>SizeHint</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span> {
+                <span class='comment'>// This method is needed to help the compiler work out which `Extend` impl to use in cases where there is more than one (e.g. `String`).</span>
+                <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
+                <span class='kw'>fn</span> <span class='ident'>type_hint</span>(_: <span class='kw-2'>&amp;</span>[<span class='ident'>E</span>]) <span class='op'>-&gt;</span> <span class='ident'>SizeHint</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span> { <span class='ident'>SizeHint</span> }
+            }
+
+            <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>SizeHint</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span> {
+                <span class='kw'>type</span> <span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>E</span>;
+
+                <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
+                <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span> {
+                    <span class='prelude-val'>None</span>
+                }
+
+                <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
+                <span class='kw'>fn</span> <span class='ident'>size_hint</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>usize</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>) {
+                    (<span class='ident'>NUM_ELEMS</span>, <span class='prelude-val'>Some</span>(<span class='ident'>NUM_ELEMS</span>))
+                }
+            }
+
+            <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>col</span>: <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>col_ty</span> <span class='op'>=</span> ::<span class='ident'>std</span>::<span class='ident'>default</span>::<span class='ident'>Default</span>::<span class='ident'>default</span>();
+
+            <span class='ident'>Extend</span>::<span class='ident'>extend</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>col</span>, <span class='ident'>SizeHint</span>::<span class='ident'>type_hint</span>(<span class='kw-2'>&amp;</span>[$(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>),<span class='op'>+</span>]));
+
+            $(<span class='ident'>Extend</span>::<span class='ident'>extend</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>col</span>, <span class='prelude-val'>Some</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>).<span class='ident'>into_iter</span>());)<span class='op'>+</span>
+
+            <span class='ident'>col</span>
+        }
+    };
+
+    <span class='comment'>// Initialise a sequence with a fully inferred contained type.</span>
+    [$(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>:<span class='ident'>expr</span>),<span class='op'>+</span>] <span class='op'>=&gt;</span> { <span class='macro'>collect</span><span class='macro'>!</span>[<span class='ident'>into</span> _: $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>),<span class='op'>+</span>] };
+
+    <span class='comment'>// Initialise a map with a constrained container type.</span>
+    [<span class='ident'>into</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>col_ty</span>:<span class='ident'>ty</span>: $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>ks</span>:<span class='ident'>expr</span> <span class='op'>=&gt;</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>:<span class='ident'>expr</span>),<span class='op'>+</span>] <span class='op'>=&gt;</span> {
+        <span class='comment'>// Maps implement FromIterator by taking tuples, so we just need to rewrite each `a:b` as `(a,b)`.</span>
+        <span class='macro'>collect</span><span class='macro'>!</span>[<span class='ident'>into</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>col_ty</span>: $((<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>ks</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>)),<span class='op'>+</span>]
+    };
+
+    <span class='comment'>// Initialise a map with a fully inferred contained type.</span>
+    [$(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>ks</span>:<span class='ident'>expr</span> <span class='op'>=&gt;</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>:<span class='ident'>expr</span>),<span class='op'>+</span>] <span class='op'>=&gt;</span> { <span class='macro'>collect</span><span class='macro'>!</span>[<span class='ident'>into</span> _: $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>ks</span> <span class='op'>=&gt;</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>),<span class='op'>+</span>] };
+}
+</pre>
+<div class='docblock'><p>This macro provides a way to initialise any container for which there is a FromIterator implementation.  It allows for both sequence and map syntax to be used, as well as inline type ascription for the result.</p>
+
+<p>For example:</p>
+<pre id='rust-example-rendered' class='rust '>
+<span class='comment'>// Initialise an empty collection.</span>
+<span class='kw'>let</span> <span class='ident'>a</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>int</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='macro'>collect</span><span class='macro'>!</span>[];
+<span class='kw'>let</span> <span class='ident'>b</span>: <span class='ident'>HashMap</span><span class='op'>&lt;</span><span class='ident'>String</span>, <span class='ident'>bool</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='macro'>collect</span><span class='macro'>!</span>[];
+
+<span class='comment'>// Initialise a sequence.</span>
+<span class='kw'>let</span> <span class='ident'>c</span>: <span class='ident'>String</span> <span class='op'>=</span> <span class='macro'>collect</span><span class='macro'>!</span>[<span class='string'>&#39;a&#39;</span>, <span class='string'>&#39;b&#39;</span>, <span class='string'>&#39;c&#39;</span>];
+
+<span class='comment'>// Initialise a sequence with a type constraint.</span>
+<span class='kw'>let</span> <span class='ident'>d</span> <span class='op'>=</span> <span class='macro'>collect</span><span class='macro'>!</span>[<span class='ident'>into</span> <span class='ident'>Vec</span><span class='op'>&lt;</span>_<span class='op'>&gt;</span>: <span class='number'>0</span>, <span class='number'>1</span>, <span class='number'>2</span>];
+
+<span class='comment'>// Initialise a map collection.</span>
+<span class='kw'>let</span> <span class='ident'>e</span>: <span class='ident'>VecMap</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>str</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='macro'>collect</span><span class='macro'>!</span>[<span class='number'>1</span> <span class='op'>=&gt;</span> <span class='string'>&quot;one&quot;</span>, <span class='number'>2</span> <span class='op'>=&gt;</span> <span class='string'>&quot;two&quot;</span>, <span class='number'>3</span> <span class='op'>=&gt;</span> <span class='string'>&quot;many&quot;</span>, <span class='number'>4</span> <span class='op'>=&gt;</span> <span class='string'>&quot;lots&quot;</span>];
+
+<span class='comment'>// Initialise a map with a type constraint.</span>
+<span class='kw'>let</span> <span class='ident'>f</span>: <span class='ident'>HashMap</span><span class='op'>&lt;</span>_, <span class='ident'>u8</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='macro'>collect</span><span class='macro'>!</span>[<span class='ident'>into</span> <span class='ident'>HashMap</span><span class='op'>&lt;</span><span class='ident'>int</span>, _<span class='op'>&gt;</span>: <span class='number'>42</span> <span class='op'>=&gt;</span> <span class='number'>0</span>, <span class='op'>-</span><span class='number'>11</span> <span class='op'>=&gt;</span> <span class='number'>2</span>];
+</pre>
+</div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <div id="help" class="hidden">
+        <div class="shortcuts">
+            <h1>Keyboard shortcuts</h1>
+            <dl>
+                <dt>?</dt>
+                <dd>Show this help dialog</dd>
+                <dt>S</dt>
+                <dd>Focus the search field</dd>
+                <dt>&larrb;</dt>
+                <dd>Move up in search results</dd>
+                <dt>&rarrb;</dt>
+                <dd>Move down in search results</dd>
+                <dt>&#9166;</dt>
+                <dd>Go to active search result</dd>
+            </dl>
+        </div>
+        <div class="infos">
+            <h1>Search tricks</h1>
+            <p>
+                Prefix searches with a type followed by a colon (e.g.
+                <code>fn:</code>) to restrict the search to a given type.
+            </p>
+            <p>
+                Accepted types are: <code>fn</code>, <code>mod</code>,
+                <code>struct</code>, <code>enum</code>,
+                <code>trait</code>, <code>typedef</code> (or
+                <code>tdef</code>).
+            </p>
+        </div>
+    </div>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "grabbag_macros";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script async src="../search-index.js"></script>
+</body>
+</html>
