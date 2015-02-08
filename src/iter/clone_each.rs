@@ -18,6 +18,7 @@ pub trait CloneEachIterator<'a, E>: Iterator<Item=&'a E> + Sized where E: Clone 
     /**
 Creates an iterator which will clone each element of the input iterator.
     */
+    #[deprecated = "use `it.cloned()` provided by the standard library"]
     fn clone_each(self) -> CloneEach<Self> {
         CloneEach {
             iter: self,
