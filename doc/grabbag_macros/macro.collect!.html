@@ -47,7 +47,7 @@
         </span><a id='src-5' href='../src/grabbag_macros/lib.rs.html#49-109'>[src]</a></span></h1>
 <pre class='rust macro'>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>collect</span> {
-    <span class='comment'>// Short-hands for initialising an empty collection.</span>
+    <span class='comment'>// Short-hands for initialising an empty collection.</span>
     [] <span class='op'>=&gt;</span> { <span class='macro'>collect</span><span class='macro'>!</span>[<span class='ident'>into</span> _] };
     [<span class='ident'>into</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>col_ty</span>:<span class='ident'>ty</span>] <span class='op'>=&gt;</span> { <span class='macro'>collect</span><span class='macro'>!</span>[<span class='ident'>into</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>col_ty</span>:] };
     [<span class='ident'>into</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>col_ty</span>:<span class='ident'>ty</span>:] <span class='op'>=&gt;</span> {
@@ -57,16 +57,16 @@
         }
     };
 
-    <span class='comment'>// Initialise a sequence with a constrained container type.</span>
+    <span class='comment'>// Initialise a sequence with a constrained container type.</span>
     [<span class='ident'>into</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>col_ty</span>:<span class='ident'>ty</span>: $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>:<span class='ident'>expr</span>),<span class='op'>+</span>] <span class='op'>=&gt;</span> {
         {
             <span class='kw'>const</span> <span class='ident'>NUM_ELEMS</span>: <span class='ident'>usize</span> <span class='op'>=</span> <span class='macro'>count_exprs</span><span class='macro'>!</span>($(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>),<span class='op'>+</span>);
 
-            <span class='comment'>// This trick is stolen from std::iter, and *should* serve to give the container enough information to pre-allocate sufficient storage for all the elements.</span>
+            <span class='comment'>// This trick is stolen from std::iter, and *should* serve to give the container enough information to pre-allocate sufficient storage for all the elements.</span>
             <span class='kw'>struct</span> <span class='ident'>SizeHint</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span>;
 
             <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span> <span class='ident'>SizeHint</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span> {
-                <span class='comment'>// This method is needed to help the compiler work out which `Extend` impl to use in cases where there is more than one (e.g. `String`).</span>
+                <span class='comment'>// This method is needed to help the compiler work out which `Extend` impl to use in cases where there is more than one (e.g. `String`).</span>
                 <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
                 <span class='kw'>fn</span> <span class='ident'>type_hint</span>(_: <span class='kw-2'>&amp;</span>[<span class='ident'>E</span>]) <span class='op'>-&gt;</span> <span class='ident'>SizeHint</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span> { <span class='ident'>SizeHint</span> }
             }
@@ -95,16 +95,16 @@
         }
     };
 
-    <span class='comment'>// Initialise a sequence with a fully inferred contained type.</span>
+    <span class='comment'>// Initialise a sequence with a fully inferred contained type.</span>
     [$(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>:<span class='ident'>expr</span>),<span class='op'>+</span>] <span class='op'>=&gt;</span> { <span class='macro'>collect</span><span class='macro'>!</span>[<span class='ident'>into</span> _: $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>),<span class='op'>+</span>] };
 
-    <span class='comment'>// Initialise a map with a constrained container type.</span>
+    <span class='comment'>// Initialise a map with a constrained container type.</span>
     [<span class='ident'>into</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>col_ty</span>:<span class='ident'>ty</span>: $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>ks</span>:<span class='ident'>expr</span> <span class='op'>=&gt;</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>:<span class='ident'>expr</span>),<span class='op'>+</span>] <span class='op'>=&gt;</span> {
-        <span class='comment'>// Maps implement FromIterator by taking tuples, so we just need to rewrite each `a:b` as `(a,b)`.</span>
+        <span class='comment'>// Maps implement FromIterator by taking tuples, so we just need to rewrite each `a:b` as `(a,b)`.</span>
         <span class='macro'>collect</span><span class='macro'>!</span>[<span class='ident'>into</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>col_ty</span>: $((<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>ks</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>)),<span class='op'>+</span>]
     };
 
-    <span class='comment'>// Initialise a map with a fully inferred contained type.</span>
+    <span class='comment'>// Initialise a map with a fully inferred contained type.</span>
     [$(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>ks</span>:<span class='ident'>expr</span> <span class='op'>=&gt;</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>:<span class='ident'>expr</span>),<span class='op'>+</span>] <span class='op'>=&gt;</span> { <span class='macro'>collect</span><span class='macro'>!</span>[<span class='ident'>into</span> _: $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>ks</span> <span class='op'>=&gt;</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>),<span class='op'>+</span>] };
 }
 </pre>
