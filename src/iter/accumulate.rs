@@ -24,11 +24,15 @@ Creates an iterator that scans from left to right over the input sequence, retur
 # Example
 
 ```
+# extern crate grabbag;
+# use grabbag::iter::AccumulateIterator;
+# fn main() {
 let v = vec![0us, 1, 2, 3, 4];
 
 // `r` is the sequence of partial sums of `v`.
 let r: Vec<_> = v.into_iter().accumulate(|a,b| a+b).collect();
 assert_eq!(r, vec![0, 1, 3, 6, 10]);
+# }
 ```
     */
     fn accumulate<F: FnMut(E, E) -> E>(self, f: F) -> Accumulate<Self, E, F> {
