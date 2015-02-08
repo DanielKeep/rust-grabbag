@@ -15,7 +15,7 @@ Creates an iterator which yields every `n`th element of the input iterator, incl
 
 impl<It, E> StrideIterator<E> for It where It: Iterator<Item=E> {}
 
-#[derive(Clone, Show)]
+#[derive(Clone, Debug)]
 pub struct Stride<It> {
     iter: It,
     stride: usize,

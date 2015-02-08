@@ -40,7 +40,7 @@ macro_rules! assert_eq_iter_sort {
 
 #[test]
 fn test_collect_empty_full_inference() {
-    let c: Vec<int> = collect![];
+    let c: Vec<i32> = collect![];
     assert_eq!(c.len(), 0);
 
     let c: String = collect![];
@@ -49,13 +49,13 @@ fn test_collect_empty_full_inference() {
     let c: HashMap<String, Vec<u8>> = collect![];
     assert_eq!(c.len(), 0);
 
-    let c: BTreeSet<int> = collect![];
+    let c: BTreeSet<i32> = collect![];
     assert_eq!(c.len(), 0);
 }
 
 #[test]
 fn test_collect_empty_constrained() {
-    let c = collect![into Vec<int>];
+    let c = collect![into Vec<i32>];
     assert_eq!(c.len(), 0);
 
     let c = collect![into String];
@@ -64,19 +64,19 @@ fn test_collect_empty_constrained() {
     let c = collect![into HashMap<String, Vec<u8>>];
     assert_eq!(c.len(), 0);
 
-    let c = collect![into BTreeSet<int>];
+    let c = collect![into BTreeSet<i32>];
     assert_eq!(c.len(), 0);
 }
 
 #[test]
 fn test_collect_sequence_full_inference() {
-    let c: Vec<int> = collect![1, 2, 3];
+    let c: Vec<i32> = collect![1, 2, 3];
     assert_eq_iter!(c.into_iter(), 1, 2, 3);
 
     let c: String = collect!['a', 'b', 'c', '刀'];
     assert_eq_iter!(c.chars(), 'a', 'b', 'c', '刀');
 
-    let c: BTreeSet<int> = collect![2, 1, 3];
+    let c: BTreeSet<i32> = collect![2, 1, 3];
     assert_eq_iter!(c.iter().map(deref), 1, 2, 3);
 }
 
@@ -94,13 +94,13 @@ fn test_collect_sequence_constrained() {
 
 #[test]
 fn test_collect_map_full_inference() {
-    let c: HashMap<&str, int> = collect!["a" => 0, "b" => 2, "c" => 42];
+    let c: HashMap<&str, i32> = collect!["a" => 0, "b" => 2, "c" => 42];
     assert_eq_iter_sort!(c.into_iter(), ("a", 0), ("b", 2), ("c", 42));
 }
 
 #[test]
 fn test_collect_map_constrained() {
-    let c = collect![into HashMap<&str, int>: "a" => 0, "b" => 2, "c" => 42];
+    let c = collect![into HashMap<&str, i32>: "a" => 0, "b" => 2, "c" => 42];
     assert_eq_iter_sort!(c.into_iter(), ("a", 0), ("b", 2), ("c", 42));
 
     let c = collect![into HashMap<_, _>: "a" => 0, "b" => 2, "c" => 42];

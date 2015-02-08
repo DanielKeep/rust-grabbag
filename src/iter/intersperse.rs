@@ -20,7 +20,7 @@ impl<It, E> IntersperseIterator<E> for It where It: Iterator<Item=E> {
     }
 }
 
-#[derive(Clone, Show)]
+#[derive(Clone, Debug)]
 pub struct Intersperse<It, E> {
     iter: It,
     look_ahead: Option<E>,

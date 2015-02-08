@@ -27,7 +27,7 @@ Creates an iterator that alternates between yielding elements of the two input i
 
 impl<It> RoundRobinIterator for It where It: Iterator {}
 
-#[derive(Clone, Show)]
+#[derive(Clone, Debug)]
 pub struct RoundRobin<It0, It1> {
     it0: It0,
     it1: It1,
@@ -74,7 +74,7 @@ impl<It0, It1, E> Iterator for RoundRobin<It0, It1> where It0: Iterator<Item=E>,
     }
 }
 
-#[derive(Clone, Show)]
+#[derive(Clone, Debug)]
 pub struct RoundRobinLongest<It0, It1> {
     it0: It0,
     it1: It1,

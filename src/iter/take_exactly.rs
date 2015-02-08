@@ -29,7 +29,7 @@ The iterator will panic if there are less than `n` elements in the subject itera
 
 impl<It, E> TakeExactlyIterator<E> for It where It: Iterator<Item=E> {}
 
-#[derive(Clone, Show)]
+#[derive(Clone, Debug)]
 pub struct TakeExactly<It> {
     iter: It,
     left: usize,

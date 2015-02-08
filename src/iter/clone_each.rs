@@ -13,7 +13,7 @@ Creates an iterator which will clone each element of the input iterator.
 
 impl<'a, It, E> CloneEachIterator<'a, E> for It where It: Iterator<Item=&'a E>, E: Clone {}
 
-#[derive(Clone, Show)]
+#[derive(Clone, Debug)]
 #[must_use = "iterator adaptors are lazy and do nothing unless consumed"]
 pub struct CloneEach<It> {
     iter: It,

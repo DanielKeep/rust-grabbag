@@ -14,7 +14,7 @@ Creates an iterator which yields elements from both input iterators in lockstep.
 
 impl<LeftIt> ZipLongestIterator for LeftIt where LeftIt: Iterator {}
 
-#[derive(Clone, Show)]
+#[derive(Clone, Debug)]
 pub struct ZipLongest<LeftIt, RightIt> {
     left: LeftIt,
     right: RightIt,

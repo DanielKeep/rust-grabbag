@@ -13,7 +13,7 @@ impl<It> KeepSomeIterator for It where It: Iterator {
     }
 }
 
-#[derive(Clone, Show)]
+#[derive(Clone, Debug)]
 pub struct KeepSome<It> {
     iter: It,
 }

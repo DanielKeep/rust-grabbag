@@ -16,7 +16,7 @@ The element type of the first input iterator must implement Clone, as must the s
 
 impl<LeftIt, LeftItem> CartesianProductIterator<LeftItem> for LeftIt where LeftIt: Iterator<Item=LeftItem>, LeftItem: Clone {}
 
-#[derive(Clone, Show)]
+#[derive(Clone, Debug)]
 #[must_use = "iterator adaptors are lazy and do nothing unless consumed"]
 pub struct CartesianProduct<LeftIt, RightIt, LeftItem, RightItem> {
     left: LeftIt,

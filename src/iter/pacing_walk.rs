@@ -38,7 +38,7 @@ impl<It, E> PacingWalkIterator for It where It: Iterator<Item=E> + RandomAccessI
     }
 }
 
-#[derive(Clone, Show)]
+#[derive(Clone, Debug)]
 pub struct PacingWalk<It> {
     iter: It,
     start_at: usize,

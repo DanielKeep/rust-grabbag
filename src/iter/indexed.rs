@@ -24,7 +24,7 @@ Creates an iterator which uses `indices` as an indexer to the subject iterator, 
 
 impl<It, IndIt, E> IndexedIterator<IndIt> for It where It: RandomAccessIterator<Item=E> {}
 
-#[derive(Clone, Show)]
+#[derive(Clone, Debug)]
 pub struct Indexed<It, IndIt> {
     iter: It,
     indices: IndIt,
@@ -67,7 +67,7 @@ impl<It, IndIt, E> RandomAccessIterator for Indexed<It, IndIt> where It: RandomA
     }
 }
 
-#[derive(Show)]
+#[derive(Debug)]
 pub struct IndexedView<'a, It, IndIt> where It: 'a {
     iter: &'a mut It,
     indices: IndIt,
