@@ -1,3 +1,7 @@
+# 0.0.3
+
+* Update to recent rust nightly.
+
 # 0.0.2
 
 * Changed `collect!` to *not* allocate temporary storage.

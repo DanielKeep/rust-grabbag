@@ -1,7 +1,7 @@
 [package]
 
 name = "grabbag"
-version = "0.0.2"
+version = "0.0.3"
 authors = ["Daniel Keep <daniel.keep@gmail.com>"]
 
 description = "A random grab-bag of functionality."
@@ -10,4 +10,4 @@ license = "MIT"
 
 [dependencies]
 
-grabbag_macros = "0.0.2"
+grabbag_macros = "0.0.3"
