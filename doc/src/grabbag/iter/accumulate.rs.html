@@ -144,6 +144,10 @@
 <span id="102">102</span>
 <span id="103">103</span>
 <span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>mem</span>::<span class='ident'>replace</span>;
 
@@ -171,11 +175,15 @@ Creates an iterator that scans from left to right over the input sequence, retur
 # Example
 
 ```
+# extern crate grabbag;
+# use grabbag::iter::AccumulateIterator;
+# fn main() {
 let v = vec![0us, 1, 2, 3, 4];
 
 // `r` is the sequence of partial sums of `v`.
 let r: Vec&lt;_&gt; = v.into_iter().accumulate(|a,b| a+b).collect();
 assert_eq!(r, vec![0, 1, 3, 6, 10]);
+# }
 ```
     */</span>
     <span class='kw'>fn</span> <span class='ident'>accumulate</span><span class='op'>&lt;</span><span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='ident'>E</span>, <span class='ident'>E</span>) <span class='op'>-&gt;</span> <span class='ident'>E</span><span class='op'>&gt;</span>(<span class='self'>self</span>, <span class='ident'>f</span>: <span class='ident'>F</span>) <span class='op'>-&gt;</span> <span class='ident'>Accumulate</span><span class='op'>&lt;</span><span class='ident'>Self</span>, <span class='ident'>E</span>, <span class='ident'>F</span><span class='op'>&gt;</span> {

@@ -124,6 +124,7 @@
 <span id="82">82</span>
 <span id="83">83</span>
 <span id="84">84</span>
+<span id="85">85</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>iter</span>::<span class='ident'>RandomAccessIterator</span>;
 
@@ -145,6 +146,7 @@
     <span class='doccomment'>/**
 Creates an iterator which will clone each element of the input iterator.
     */</span>
+    <span class='attribute'>#[<span class='ident'>deprecated</span> <span class='op'>=</span> <span class='string'>&quot;use `it.cloned()` provided by the standard library&quot;</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>clone_each</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>CloneEach</span><span class='op'>&lt;</span><span class='ident'>Self</span><span class='op'>&gt;</span> {
         <span class='ident'>CloneEach</span> {
             <span class='ident'>iter</span>: <span class='self'>self</span>,
