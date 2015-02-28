@@ -16,7 +16,7 @@ For example:
 # extern crate grabbag;
 # use grabbag::iter::GroupByIterator;
 # fn main () {
-let v = vec![7us, 5, 6, 2, 4, 7, 6, 1, 6, 4, 4, 6, 0, 0, 8, 8, 6, 1, 8, 7];
+let v = vec![7usize, 5, 6, 2, 4, 7, 6, 1, 6, 4, 4, 6, 0, 0, 8, 8, 6, 1, 8, 7];
 let is_even = |&: n: &usize| if *n & 1 == 0 { true } else { false };
 for (even, mut ns) in v.into_iter().group_by(is_even) {
     println!("{}...", if even { "Evens" } else { "Odds" });
@@ -27,7 +27,7 @@ for (even, mut ns) in v.into_iter().group_by(is_even) {
 # }
 ```
     */
-    fn group_by<'a, GroupFn: FnMut(&E) -> G, G>(self, group: GroupFn) -> GroupBy<'a, Self, GroupFn, E, G> {
+    fn group_by<GroupFn: FnMut(&E) -> G, G>(self, group: GroupFn) -> GroupBy<Self, GroupFn, E, G> {
         GroupBy {
             state: Rc::new(RefCell::new(GroupByShared {
                 iter: self,
@@ -42,21 +42,22 @@ for (even, mut ns) in v.into_iter().group_by(is_even) {
 impl<E, It> GroupByIterator<E> for It where It: Iterator<Item=E> {}
 
 // **NOTE**: Although `Clone` *can* be implemented for this, you *should not* do so, since you cannot clone the underlying `GroupByItemsShared` value.
-pub struct GroupBy<'a, It, GroupFn, E, G> {
-    state: Rc<RefCell<GroupByShared<'a, It, GroupFn, E, G>>>,
+pub struct GroupBy<It, GroupFn, E, G> {
+    state: Rc<RefCell<GroupByShared<It, GroupFn, E, G>>>,
 }
 
-pub struct GroupByShared<'a, It, GroupFn, E, G> {
+pub struct GroupByShared<It, GroupFn, E, G> {
     iter: It,
     group: GroupFn,
     last_group: Option<G>,
     push_back: Option<(G, E)>,
+
 }
 
-impl<'a, It, GroupFn, E, G> Iterator for GroupBy<'a, It, GroupFn, E, G> where GroupFn: FnMut(&E) -> G, It: Iterator<Item=E>, G: Clone + Eq {
-    type Item = (G, Group<'a, It, GroupFn, E, G>);
+impl<It, GroupFn, E, G> Iterator for GroupBy<It, GroupFn, E, G> where GroupFn: FnMut(&E) -> G, It: Iterator<Item=E>, G: Clone + Eq {
+    type Item = (G, Group<It, GroupFn, E, G>);
 
-    fn next(&mut self) -> Option<(G, Group<'a, It, GroupFn, E, G>)> {
+    fn next(&mut self) -> Option<(G, Group<It, GroupFn, E, G>)> {
         // First, get a mutable borrow to the underlying state.
         let mut state = self.state.borrow_mut();
         let state = &mut *state;
@@ -123,13 +124,13 @@ impl<'a, It, GroupFn, E, G> Iterator for GroupBy<'a, It, GroupFn, E, G> where Gr
 }
 
 // **NOTE**: Although `Clone` *can* be implemented for this, you *should not* do so, since you cannot clone the underlying `GroupByShared` value.
-pub struct Group<'a, It, GroupFn, E, G> {
-    state: Rc<RefCell<GroupByShared<'a, It, GroupFn, E, G>>>,
+pub struct Group<It, GroupFn, E, G> {
+    state: Rc<RefCell<GroupByShared<It, GroupFn, E, G>>>,
     group_value: G,
     first_value: Option<E>,
 }
 
-impl<'a, It, GroupFn, E, G> Iterator for Group<'a, It, GroupFn, E, G> where GroupFn: FnMut(&E) -> G, It: Iterator<Item=E>, G: Eq {
+impl<It, GroupFn, E, G> Iterator for Group<It, GroupFn, E, G> where GroupFn: FnMut(&E) -> G, It: Iterator<Item=E>, G: Eq {
     type Item = E;
 
     fn next(&mut self) -> Option<E> {
@@ -174,7 +175,7 @@ impl<'a, It, GroupFn, E, G> Iterator for Group<'a, It, GroupFn, E, G> where Grou
 #[test]
 fn test_group_by() {
     {
-        let v = vec![0us, 1, 2, 3, 5, 4, 6, 8, 7];
+        let v = vec![0usize, 1, 2, 3, 5, 4, 6, 8, 7];
         let mut oi = v.into_iter().group_by(|&e| e & 1);
 
         let (g, mut ii) = oi.next().unwrap();
@@ -213,7 +214,7 @@ fn test_group_by() {
         assert!(oi.next().is_none());
     }
     {
-        let v = vec![0us, 1, 2, 3, 5, 4, 6, 8, 7];
+        let v = vec![0usize, 1, 2, 3, 5, 4, 6, 8, 7];
         let mut oi = v.into_iter().group_by(|&e| e & 1);
 
         let (g, _) = oi.next().unwrap();

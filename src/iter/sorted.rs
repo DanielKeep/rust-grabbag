@@ -31,14 +31,14 @@ impl<It, E> SortedIterator<E> for It where It: Iterator<Item=E>, E: Ord {
 
 #[test]
 fn test_sorted() {
-    let v = vec![1us, 3, 2, 0, 4];
+    let v = vec![1usize, 3, 2, 0, 4];
     let s = v.into_iter().sorted();
-    assert_eq!(s, vec![0us, 1, 2, 3, 4]);
+    assert_eq!(s, vec![0usize, 1, 2, 3, 4]);
 }
 
 #[test]
 fn test_sorted_by() {
-    let v = vec![1us, 3, 2, 0, 4];
+    let v = vec![1usize, 3, 2, 0, 4];
     let s = v.into_iter().sorted_by(|a,b| (!*a).cmp(&!*b));
-    assert_eq!(s, vec![4, 3, 2, 1, 0us]);
+    assert_eq!(s, vec![4, 3, 2, 1, 0usize]);
 }

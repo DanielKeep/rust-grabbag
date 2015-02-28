@@ -1,5 +1,5 @@
 use std::cell::RefCell;
-use std::collections::RingBuf;
+use std::collections::VecDeque;
 use std::rc::Rc;
 
 /**
@@ -16,7 +16,7 @@ The element type must implement Clone.
             state: Rc::new(RefCell::new(TeeState {
                 iter: self,
                 iter_next: 0,
-                buffer: RingBuf::new(),
+                buffer: VecDeque::new(),
             })),
             this_next: 0,
         };
@@ -44,7 +44,7 @@ pub struct Tee<E, It> {
 pub struct TeeState<E, It> {
     iter: It,
     iter_next: usize,
-    buffer: RingBuf<E>,
+    buffer: VecDeque<E>,
 }
 
 impl<E, It> Iterator for Tee<E, It> where It: Iterator<Item=E>, E: Clone {
@@ -114,17 +114,17 @@ impl<E, It> Iterator for Tee<E, It> where It: Iterator<Item=E>, E: Clone {
 
 #[test]
 fn test_tee() {
-    let v = vec![0us, 1, 2, 3];
+    let v = vec![0usize, 1, 2, 3];
     let (a, b) = v.into_iter().tee();
     assert_eq!(a.collect::<Vec<_>>(), vec![0, 1, 2, 3]);
     assert_eq!(b.collect::<Vec<_>>(), vec![0, 1, 2, 3]);
 
-    let v = vec![0us, 1, 2, 3];
+    let v = vec![0usize, 1, 2, 3];
     let (a, b) = v.into_iter().tee();
     assert_eq!(b.collect::<Vec<_>>(), vec![0, 1, 2, 3]);
     assert_eq!(a.collect::<Vec<_>>(), vec![0, 1, 2, 3]);
 
-    let v = vec![0us, 1, 2, 3];
+    let v = vec![0usize, 1, 2, 3];
     let (mut a, mut b) = v.into_iter().tee();
     assert_eq!(a.next(), Some(0));
     assert_eq!(a.next(), Some(1));

@@ -78,7 +78,7 @@ impl<It, E> RandomAccessIterator for Stride<It> where It: Iterator<Item=E> + Ran
 fn test_stride() {
     use super::CloneEachIterator;
 
-    let v = vec![0is, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    let v = vec![0isize, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     let mut it = v.iter().clone_each().stride(2);
     assert_eq!(it.size_hint(), (5, Some(5)));
     assert_eq!(it.next(), Some(0));
@@ -88,23 +88,23 @@ fn test_stride() {
     assert_eq!(it.next(), Some(8));
     assert_eq!(it.next(), None);
 
-    let v = vec![0is, 1, 2, 3, 4, 5];
+    let v = vec![0isize, 1, 2, 3, 4, 5];
     let it = v.iter().clone_each().stride(3);
     assert_eq!(it.size_hint(), (2, Some(2)));
 
-    let v = vec![0is, 1, 2, 3, 4, 5, 6];
+    let v = vec![0isize, 1, 2, 3, 4, 5, 6];
     let it = v.iter().clone_each().stride(3);
     assert_eq!(it.size_hint(), (3, Some(3)));
 
-    let v = vec![0is, 1, 2, 3, 4, 5, 6, 7];
+    let v = vec![0isize, 1, 2, 3, 4, 5, 6, 7];
     let it = v.iter().clone_each().stride(3);
     assert_eq!(it.size_hint(), (3, Some(3)));
 
-    let v = vec![0is, 1, 2, 3, 4, 5, 6, 7, 8];
+    let v = vec![0isize, 1, 2, 3, 4, 5, 6, 7, 8];
     let it = v.iter().clone_each().stride(3);
     assert_eq!(it.size_hint(), (3, Some(3)));
 
-    let v = vec![0is, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    let v = vec![0isize, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     let it = v.iter().clone_each().stride(3);
     assert_eq!(it.size_hint(), (4, Some(4)));
 }

@@ -147,8 +147,8 @@ impl<It0, It1, E> Iterator for RoundRobinLongest<It0, It1> where It0: Iterator<I
 
 #[test]
 fn test_round_robin() {
-    let v0 = vec![0us, 2, 4];
-    let v1 = vec![1us, 3, 5, 7];
+    let v0 = vec![0usize, 2, 4];
+    let v1 = vec![1usize, 3, 5, 7];
     let mut it = v0.into_iter().round_robin(v1.into_iter());
     assert_eq!(it.next(), Some(0));
     assert_eq!(it.next(), Some(1));
@@ -161,8 +161,8 @@ fn test_round_robin() {
 
 #[test]
 fn test_round_robin_longest() {
-    let v0 = vec![0us, 2, 4];
-    let v1 = vec![1us, 3, 5, 7];
+    let v0 = vec![0usize, 2, 4];
+    let v1 = vec![1usize, 3, 5, 7];
     let mut it = v0.into_iter().round_robin_longest(v1.into_iter());
     assert_eq!(it.next(), Some(0));
     assert_eq!(it.next(), Some(1));

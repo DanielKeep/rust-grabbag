@@ -67,7 +67,7 @@ impl<LeftIt, RightIt, LeftE, RightE> Iterator for ZipLongest<LeftIt, RightIt> wh
 
 #[test]
 fn test_zip_longest() {
-    let a = vec![0us, 1, 2, 3];
+    let a = vec![0usize, 1, 2, 3];
     let b = vec!["a", "b", "c"];
     let r: Vec<_> = a.into_iter().zip_longest(b.into_iter()).collect();
     assert_eq!(r, vec![
@@ -77,7 +77,7 @@ fn test_zip_longest() {
         (Some(3), None),
     ]);
 
-    let a = vec![0us, 1, 2];
+    let a = vec![0usize, 1, 2];
     let b = vec!["a", "b", "c"];
     let r: Vec<_> = a.into_iter().zip_longest(b.into_iter()).collect();
     assert_eq!(r, vec![
@@ -86,7 +86,7 @@ fn test_zip_longest() {
         (Some(2), Some("c")),
     ]);
 
-    let a = vec![0us, 1, 2];
+    let a = vec![0usize, 1, 2];
     let b = vec!["a", "b", "c", "d"];
     let r: Vec<_> = a.into_iter().zip_longest(b.into_iter()).collect();
     assert_eq!(r, vec![

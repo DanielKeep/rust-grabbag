@@ -118,8 +118,8 @@ impl<'a, It, IndIt, E> RandomAccessIterator for IndexedView<'a, It, IndIt> where
 
 #[test]
 fn test_indexed() {
-    let v = vec![0us, 1, 2, 3, 4];
-    let i = vec![2us, 4, 1, 0, 2, 3, 5];
+    let v = vec![0usize, 1, 2, 3, 4];
+    let i = vec![2usize, 4, 1, 0, 2, 3, 5];
     let r: Vec<_> = v.iter().indexed(i.into_iter()).map(|e| e.map(|v| *v)).collect();
     assert_eq!(r, vec![Some(2), Some(4), Some(1), Some(0), Some(2), Some(3), None])
 }
@@ -128,9 +128,9 @@ fn test_indexed() {
 fn test_indexed_view() {
     use super::CloneEachIterator;
 
-    let v = vec![0us, 1, 2, 3, 4];
+    let v = vec![0usize, 1, 2, 3, 4];
     let mut v = v.iter().clone_each();
-    let i = vec![2us, 4, 1, 0, 2, 3, 5];
+    let i = vec![2usize, 4, 1, 0, 2, 3, 5];
     let r: Vec<_> = v.indexed_view(i.into_iter()).collect();
     assert_eq!(r, vec![Some(2), Some(4), Some(1), Some(0), Some(2), Some(3), None]);
     assert_eq!(v.collect::<Vec<_>>(), vec![0, 1, 2, 3, 4]);

@@ -2,11 +2,11 @@ use std::iter::RandomAccessIterator;
 
 #[test]
 fn test_take() {
-    let v = vec![0is, 1, 2, 3];
+    let v = vec![0isize, 1, 2, 3];
     let r: Vec<_> = v.into_iter().take(3).collect();
     assert_eq!(r, vec![0, 1, 2]);
 
-    let v = vec![0is, 1];
+    let v = vec![0isize, 1];
     let r: Vec<_> = v.into_iter().take(3).collect();
     assert_eq!(r, vec![0, 1]);
 }
@@ -90,13 +90,13 @@ impl<It, E> RandomAccessIterator for TakeExactly<It> where It: Iterator<Item=E> 
 
 #[test]
 fn test_take_exactly() {
-    use std::thread::Thread;
+    use std::thread;
 
-    let v = vec![0is, 1, 2, 3];
+    let v = vec![0isize, 1, 2, 3];
     let r: Vec<_> = v.into_iter().take_exactly(3).collect();
     assert_eq!(r, vec![0, 1, 2]);
 
-    let v = vec![0is, 1];
-    let r: Result<Vec<_>, _> = Thread::scoped(move || v.into_iter().take_exactly(3).collect()).join();
+    let v = vec![0isize, 1];
+    let r = thread::spawn(move || { v.into_iter().take_exactly(3).collect::<Vec<_>>(); }).join();
     assert!(r.is_err());
 }

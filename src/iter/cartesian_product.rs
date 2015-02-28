@@ -40,7 +40,7 @@ impl<LeftIt, LeftItem> CartesianProductIterator<LeftItem> for LeftIt where LeftI
 
 #[derive(Clone, Debug)]
 #[must_use = "iterator adaptors are lazy and do nothing unless consumed"]
-pub struct CartesianProduct<LeftIt, RightIt, LeftItem, RightItem> {
+pub struct CartesianProduct<LeftIt, RightIt, LeftItem, RightItem> where LeftIt: Iterator<Item=LeftItem>, RightIt: Iterator<Item=RightItem> {
     left: LeftIt,
     right: RightIt,
     right_checkpoint: RightIt,
@@ -106,8 +106,8 @@ fn combine_bounds_without_partial(b0: usize, _: usize, bc: usize) -> usize {
 fn test_cartesian_product() {
     use super::CloneEachIterator;
 
-    let a = vec![0us, 1, 2];
-    let b = vec![3us, 4];
+    let a = vec![0usize, 1, 2];
+    let b = vec![3usize, 4];
     let r: Vec<_> = a.into_iter().cartesian_product(b.iter().clone_each()).collect();
     assert_eq!(r, vec![(0,3),(0,4),(1,3),(1,4),(2,3),(2,4)]);
 }

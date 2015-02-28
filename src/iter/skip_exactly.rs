@@ -1,10 +1,10 @@
 #[test]
 fn test_skip() {
-    let v = vec![0is, 1, 2, 3];
+    let v = vec![0isize, 1, 2, 3];
     let r: Vec<_> = v.into_iter().skip(3).collect();
     assert_eq!(r, vec![3]);
 
-    let v = vec![0is, 1];
+    let v = vec![0isize, 1];
     let r: Vec<_> = v.into_iter().skip(3).collect();
     assert_eq!(r, vec![]);
 }
@@ -38,13 +38,13 @@ impl<It> SkipExactlyIterator for It where It: Iterator {}
 
 #[test]
 fn test_skip_exactly() {
-    use std::thread::Thread;
+    use std::thread;
 
-    let v = vec![0is, 1, 2, 3];
+    let v = vec![0isize, 1, 2, 3];
     let r: Vec<_> = v.into_iter().skip_exactly(3).collect();
     assert_eq!(r, vec![3]);
 
-    let v = vec![0is, 1];
-    let r: Result<Vec<_>, _> = Thread::scoped(move || v.into_iter().skip_exactly(3).collect()).join();
+    let v = vec![0isize, 1];
+    let r = thread::spawn(move || { v.into_iter().skip_exactly(3).collect::<Vec<_>>(); }).join();
     assert!(r.is_err());
 }

@@ -27,7 +27,7 @@ Creates an iterator that scans from left to right over the input sequence, retur
 # extern crate grabbag;
 # use grabbag::iter::AccumulateIterator;
 # fn main() {
-let v = vec![0us, 1, 2, 3, 4];
+let v = vec![0usize, 1, 2, 3, 4];
 
 // `r` is the sequence of partial sums of `v`.
 let r: Vec<_> = v.into_iter().accumulate(|a,b| a+b).collect();
@@ -91,14 +91,14 @@ impl<It, E, F> Iterator for Accumulate<It, E, F> where It: Iterator<Item=E>, F: 
 
 #[test]
 fn test_accumulate() {
-    let v = vec![0us, 1, 2, 3, 4];
+    let v = vec![0usize, 1, 2, 3, 4];
     let r: Vec<_> = v.into_iter().accumulate(|a,b| a+b).collect();
     assert_eq!(r, vec![0, 1, 3, 6, 10]);
 }
 
 #[test]
 fn test_accumulate_unwrap() {
-    let v = vec![0us, 1, 2, 3, 4];
+    let v = vec![0usize, 1, 2, 3, 4];
     let mut i = v.into_iter().accumulate(|a,b| a+b);
     assert_eq!(i.next(), Some(0));
     assert_eq!(i.next(), Some(1));

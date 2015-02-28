@@ -65,7 +65,7 @@ impl<E, It> DoubleEndedIterator for KeepSome<It> where It: DoubleEndedIterator +
 
 #[test]
 fn test_keep_some() {
-    let v = vec![None, Some(0us), Some(1), None, Some(2), None, None, Some(3), None];
+    let v = vec![None, Some(0usize), Some(1), None, Some(2), None, None, Some(3), None];
     let r: Vec<_> = v.into_iter().keep_some().collect();
     assert_eq!(r, vec![0, 1, 2, 3]);
 }

@@ -66,15 +66,17 @@ macro_rules! collect {
     // Initialise a sequence with a constrained container type.
     [into $col_ty:ty: $($vs:expr),+] => {
         {
+            use std::marker::PhantomData;
+
             const NUM_ELEMS: usize = count_exprs!($($vs),+);
 
             // This trick is stolen from std::iter, and *should* serve to give the container enough information to pre-allocate sufficient storage for all the elements.
-            struct SizeHint<E>;
+            struct SizeHint<E>(PhantomData<E>);
 
             impl<E> SizeHint<E> {
                 // This method is needed to help the compiler work out which `Extend` impl to use in cases where there is more than one (e.g. `String`).
                 #[inline(always)]
-                fn type_hint(_: &[E]) -> SizeHint<E> { SizeHint }
+                fn type_hint(_: &[E]) -> SizeHint<E> { SizeHint(PhantomData) }
             }
 
             impl<E> Iterator for SizeHint<E> {
