@@ -9,6 +9,7 @@
 
     <title>grabbag::iter::prelude - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../main.css">
 
     
@@ -24,17 +25,17 @@
 
     
 
-    <section class="sidebar">
+    <nav class="sidebar">
         
         <p class='location'><a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a></p><script>window.sidebarCurrent = {name: 'prelude', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script>
-    </section>
+    </nav>
 
     <nav class="sub">
         <form class="search-form js-only">
             <div class="search-container">
                 <input class="search-input" name="search"
                        autocomplete="off"
-                       placeholder="Click or press 'S' to search, '?' for more options..."
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
                        type="search">
             </div>
         </form>
@@ -45,7 +46,7 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-4301' class='srclink' href='../../../src/grabbag/iter/mod.rs.html#56-72' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-839' class='srclink' href='../../../src/grabbag/iter/mod.rs.html#56-72' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>This module just centralises all the iterator extension traits in one place, suitable for glob importing.</p>
 </div><h2 id='reexports' class='section-header'><a href="#reexports">Reexports</a></h2>
 <table><tr><td><code>pub use super::accumulate::<a class='trait' href='../../../grabbag/iter/trait.AccumulateIterator.html' title='grabbag::iter::AccumulateIterator'>AccumulateIterator</a>;</code></td></tr><tr><td><code>pub use super::cartesian_product::<a class='trait' href='../../../grabbag/iter/trait.CartesianProductIterator.html' title='grabbag::iter::CartesianProductIterator'>CartesianProductIterator</a>;</code></td></tr><tr><td><code>pub use super::clone_each::<a class='trait' href='../../../grabbag/iter/trait.CloneEachIterator.html' title='grabbag::iter::CloneEachIterator'>CloneEachIterator</a>;</code></td></tr><tr><td><code>pub use super::group_by::<a class='trait' href='../../../grabbag/iter/trait.GroupByIterator.html' title='grabbag::iter::GroupByIterator'>GroupByIterator</a>;</code></td></tr><tr><td><code>pub use super::fold::{<a class='trait' href='../../../grabbag/iter/trait.FoldlIterator.html' title='grabbag::iter::FoldlIterator'>FoldlIterator</a>, <a class='trait' href='../../../grabbag/iter/trait.FoldrIterator.html' title='grabbag::iter::FoldrIterator'>FoldrIterator</a>};</code></td></tr><tr><td><code>pub use super::intersperse::<a class='trait' href='../../../grabbag/iter/trait.IntersperseIterator.html' title='grabbag::iter::IntersperseIterator'>IntersperseIterator</a>;</code></td></tr><tr><td><code>pub use super::keep_some::<a class='trait' href='../../../grabbag/iter/trait.KeepSomeIterator.html' title='grabbag::iter::KeepSomeIterator'>KeepSomeIterator</a>;</code></td></tr><tr><td><code>pub use super::pad_tail_to::<a class='trait' href='../../../grabbag/iter/trait.PadTailToIterator.html' title='grabbag::iter::PadTailToIterator'>PadTailToIterator</a>;</code></td></tr><tr><td><code>pub use super::round_robin::<a class='trait' href='../../../grabbag/iter/trait.RoundRobinIterator.html' title='grabbag::iter::RoundRobinIterator'>RoundRobinIterator</a>;</code></td></tr><tr><td><code>pub use super::skip_exactly::<a class='trait' href='../../../grabbag/iter/trait.SkipExactlyIterator.html' title='grabbag::iter::SkipExactlyIterator'>SkipExactlyIterator</a>;</code></td></tr><tr><td><code>pub use super::sorted::<a class='trait' href='../../../grabbag/iter/trait.SortedIterator.html' title='grabbag::iter::SortedIterator'>SortedIterator</a>;</code></td></tr><tr><td><code>pub use super::stride::<a class='trait' href='../../../grabbag/iter/trait.StrideIterator.html' title='grabbag::iter::StrideIterator'>StrideIterator</a>;</code></td></tr><tr><td><code>pub use super::take_exactly::<a class='trait' href='../../../grabbag/iter/trait.TakeExactlyIterator.html' title='grabbag::iter::TakeExactlyIterator'>TakeExactlyIterator</a>;</code></td></tr><tr><td><code>pub use super::tee::<a class='trait' href='../../../grabbag/iter/trait.TeeIterator.html' title='grabbag::iter::TeeIterator'>TeeIterator</a>;</code></td></tr><tr><td><code>pub use super::zip_longest::<a class='trait' href='../../../grabbag/iter/trait.ZipLongestIterator.html' title='grabbag::iter::ZipLongestIterator'>ZipLongestIterator</a>;</code></td></tr></table></section>
@@ -53,40 +54,49 @@
 
     <section class="footer"></section>
 
-    <div id="help" class="hidden">
-        <div class="shortcuts">
-            <h1>Keyboard shortcuts</h1>
-            <dl>
-                <dt>?</dt>
-                <dd>Show this help dialog</dd>
-                <dt>S</dt>
-                <dd>Focus the search field</dd>
-                <dt>&larrb;</dt>
-                <dd>Move up in search results</dd>
-                <dt>&rarrb;</dt>
-                <dd>Move down in search results</dd>
-                <dt>&#9166;</dt>
-                <dd>Go to active search result</dd>
-            </dl>
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code>)
+                </p>
+            </div>
         </div>
-        <div class="infos">
-            <h1>Search tricks</h1>
-            <p>
-                Prefix searches with a type followed by a colon (e.g.
-                <code>fn:</code>) to restrict the search to a given type.
-            </p>
-            <p>
-                Accepted types are: <code>fn</code>, <code>mod</code>,
-                <code>struct</code>, <code>enum</code>,
-                <code>trait</code>, <code>typedef</code> (or
-                <code>tdef</code>).
-            </p>
-            <p>
-                Search functions by type signature (e.g.
-                <code>vec -> usize</code>)
-            </p>
-        </div>
-    </div>
+    </aside>
 
     
 
@@ -98,6 +108,6 @@
     <script src="../../../jquery.js"></script>
     <script src="../../../main.js"></script>
     
-    <script async src="../../../search-index.js"></script>
+    <script defer src="../../../search-index.js"></script>
 </body>
 </html>
