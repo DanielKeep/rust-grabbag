@@ -1,6 +1,3 @@
-use std::cmp::max;
-use std::iter::RandomAccessIterator;
-
 /**
 Pads a sequence to a minimum length.
 */
@@ -69,20 +66,6 @@ impl<It, E, F> DoubleEndedIterator for PadTailTo<It, F> where It: DoubleEndedIte
         } else {
             self.min -= 1;
             Some((self.filler)(self.pos))
-        }
-    }
-}
-
-impl<It, E, F> RandomAccessIterator for PadTailTo<It, F> where It: Iterator<Item=E> + RandomAccessIterator, F: FnMut(usize) -> E {
-    fn indexable(&self) -> usize {
-        max(self.iter.indexable(), self.min)
-    }
-
-    fn idx(&mut self, index: usize) -> Option<E> {
-        match (index < self.iter.indexable(), index < self.min) {
-            (true, _) => self.iter.idx(index),
-            (false, true) => Some((self.filler)(index)),
-            _ => None
         }
     }
 }

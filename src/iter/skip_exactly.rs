@@ -24,7 +24,7 @@ Skips *exactly* `n` elements from the iterator.
 This method will panic if there are less than `n` elements in the iterator.
     */
     fn skip_exactly(mut self, n: usize) -> Self {
-        for i in range(0, n) {
+        for i in 0..n {
             match self.next() {
                 None => panic!("skip_exactly asked to skip {} elements, but only got {}", n, i),
                 _ => ()

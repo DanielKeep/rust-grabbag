@@ -1,5 +1,3 @@
-use std::iter::RandomAccessIterator;
-
 #[test]
 fn test_take() {
     let v = vec![0isize, 1, 2, 3];
@@ -68,23 +66,6 @@ impl<It, E> Iterator for TakeExactly<It> where It: Iterator<Item=E> {
 
     fn size_hint(&self) -> (usize, Option<usize>) {
         (self.left, Some(self.left))
-    }
-}
-
-impl<It, E> RandomAccessIterator for TakeExactly<It> where It: Iterator<Item=E> + RandomAccessIterator {
-    fn indexable(&self) -> usize {
-        self.left
-    }
-
-    fn idx(&mut self, index: usize) -> Option<E> {
-        if index < self.left {
-            match self.iter.idx(index) {
-                None => panic!("take_exactly expected {} more elements from iterator"),
-                e @ _ => e
-            }
-        } else {
-            None
-        }
     }
 }
 

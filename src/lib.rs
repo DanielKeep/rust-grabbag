@@ -1,5 +1,3 @@
-#![feature(core)]
-
 /*!
 This is a random grab-bag of functionality that didn't really seem to deserve a separate home.
 

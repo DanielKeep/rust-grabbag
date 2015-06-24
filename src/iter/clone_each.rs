@@ -1,5 +1,3 @@
-use std::iter::RandomAccessIterator;
-
 /**
 (
 <em>a</em><sub>0</sub>,
@@ -18,7 +16,6 @@ pub trait CloneEachIterator<'a, E>: Iterator<Item=&'a E> + Sized where E: Clone 
     /**
 Creates an iterator which will clone each element of the input iterator.
     */
-    #[deprecated = "use `it.cloned()` provided by the standard library"]
     fn clone_each(self) -> CloneEach<Self> {
         CloneEach {
             iter: self,
@@ -61,16 +58,6 @@ impl<'a, It, E> Iterator for CloneEach<It> where It: Iterator<Item=&'a E>, E: 'a
 impl<'a, E, It> DoubleEndedIterator for CloneEach<It> where It: DoubleEndedIterator<Item=&'a E>, E: 'a + Clone {
     fn next_back(&mut self) -> Option<E> {
         self.iter.next_back().map(|e| e.clone())
-    }
-}
-
-impl<'a, E, It> RandomAccessIterator for CloneEach<It> where It: RandomAccessIterator<Item=&'a E>, E: 'a + Clone {
-    fn indexable(&self) -> usize {
-        self.iter.indexable()
-    }
-
-    fn idx(&mut self, index: usize) -> Option<E> {
-        self.iter.idx(index).map(|e| e.clone())
     }
 }
 

@@ -17,7 +17,7 @@ For example:
 # use grabbag::iter::GroupByIterator;
 # fn main () {
 let v = vec![7usize, 5, 6, 2, 4, 7, 6, 1, 6, 4, 4, 6, 0, 0, 8, 8, 6, 1, 8, 7];
-let is_even = |&: n: &usize| if *n & 1 == 0 { true } else { false };
+let is_even = |n: &usize| if *n & 1 == 0 { true } else { false };
 for (even, mut ns) in v.into_iter().group_by(is_even) {
     println!("{}...", if even { "Evens" } else { "Odds" });
     for n in ns {

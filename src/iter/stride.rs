@@ -1,6 +1,3 @@
-use std::iter::RandomAccessIterator;
-use std::num::Int;
-
 /**
 <em>a</em>, <em>n</em>
 &nbsp;&rarr;&nbsp;
@@ -45,7 +42,7 @@ impl<It, E> Iterator for Stride<It> where It: Iterator<Item=E> {
             None => return None
         };
 
-        for _ in range(0, self.stride - 1) {
+        for _ in 0..(self.stride - 1) {
             match self.iter.next() {
                 None => break,
                 _ => ()
@@ -61,16 +58,6 @@ impl<It, E> Iterator for Stride<It> where It: Iterator<Item=E> {
                                 Some((ub + self.stride - 1) / self.stride)),
             (lb, None) => (lb, None)
         }
-    }
-}
-
-impl<It, E> RandomAccessIterator for Stride<It> where It: Iterator<Item=E> + RandomAccessIterator {
-    fn indexable(&self) -> usize {
-        (self.iter.indexable() + self.stride - 1) / self.stride
-    }
-
-    fn idx(&mut self, index: usize) -> Option<E> {
-        index.checked_mul(self.stride).and_then(|i| self.iter.idx(i))
     }
 }
 
