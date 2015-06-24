@@ -107,6 +107,38 @@ fn test_collect_map_constrained() {
     assert_eq_iter_sort!(c.into_iter(), ("a", 0), ("b", 2), ("c", 42));
 }
 
+#[test]
+fn test_collect_eval_once() {
+    let mut n = 0;
+
+    macro_rules! npp {
+        () => ({n += 1; n});
+    }
+
+    let _: Vec<_> = collect![npp!()];
+    assert_eq!(n, 1);
+
+    n = 0;
+    let _: Vec<_> = collect![npp!(), npp!()];
+    assert_eq!(n, 2);
+
+    n = 0;
+    let _: Vec<_> = collect![npp!(), npp!(), npp!()];
+    assert_eq!(n, 3);
+
+    n = 0;
+    let _: HashMap<_, _> = collect![npp!() => npp!()];
+    assert_eq!(n, 2);
+
+    n = 0;
+    let _: HashMap<_, _> = collect![npp!() => npp!(), npp!() => npp!()];
+    assert_eq!(n, 4);
+
+    n = 0;
+    let _: HashMap<_, _> = collect![npp!() => npp!(), npp!() => npp!(), npp!() => npp!()];
+    assert_eq!(n, 6);
+}
+
 fn deref<T>(r: &T) -> T where T: Copy {
     *r
 }
