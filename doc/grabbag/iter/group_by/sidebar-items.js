@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Group",""],["GroupBy",""],["GroupByShared",""]],"trait":[["GroupByIterator","Sequence of iterators containing successive elements of the subject which have the same group according to a group function."]]});

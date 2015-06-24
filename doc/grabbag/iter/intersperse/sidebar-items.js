@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Intersperse",""]],"trait":[["IntersperseIterator","(<em>a</em><sub>0</sub>, <em>a</em><sub>1</sub>, ..., <em>a</em><sub>n</sub>), <em>i</em>  (<em>a</em><sub>0</sub>, <em>i</em>, <em>a</em><sub>1</sub>, <em>i</em>, ..., <em>i</em>, <em>a</em><sub>n</sub>)"]]});

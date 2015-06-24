@@ -26,7 +26,7 @@
 
     <section class="sidebar">
         
-        <p class='location'><a href='index.html'>grabbag_macros</a></p><div class='block macro'><h2>Macros</h2><a class='macro current' href='macro.collect!.html' title='This macro provides a way to initialise any container for which there is a FromIterator implementation.  It allows for both sequence and map syntax to be used, as well as inline type ascription for the result.'>collect!</a><a class='macro ' href='macro.count_exprs!.html' title='Counts the number of comma-delimited expressions passed to it.  The result is a compile-time evaluable expression, suitable for use as a static array size, or the value of a `const`.'>count_exprs!</a><a class='macro ' href='macro.recurrence!.html' title='Expands to an expression implementing the `Iterator` trait, which yields successive elements of the given recurrence relationship.'>recurrence!</a><a class='macro ' href='macro.sequence!.html' title='Expands to an expression implementing the `Iterator` trait, which yields successive elements of the given closed-form sequence.'>sequence!</a></div>
+        <p class='location'><a href='index.html'>grabbag_macros</a></p><script>window.sidebarCurrent = {name: 'collect!', ty: 'macro', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </section>
 
     <nav class="sub">
@@ -41,13 +41,14 @@
     </nav>
 
     <section id='main' class="content macro">
-<h1 class='fqn'><span class='in-band'><a href='index.html'>grabbag_macros</a>::<wbr><a class='macro' href=''>collect!</a><wbr></span><span class='out-of-band'><span id='render-detail'>
-            <a id="collapse-all" href="#">[-]
-            </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-5' href='../src/grabbag_macros/lib.rs.html#55-115'>[src]</a></span></h1>
+<h1 class='fqn'><span class='in-band'><a href='index.html'>grabbag_macros</a>::<wbr><a class='macro' href=''>collect!</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-5' class='srclink' href='../src/grabbag_macros/lib.rs.html#55-121' title='goto source code'>[src]</a></span></h1>
 <pre class='rust macro'>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>collect</span> {
-    <span class='comment'>// Short-hands for initialising an empty collection.</span>
+    <span class='comment'>// Short-hands for initialising an empty collection.</span>
     [] <span class='op'>=&gt;</span> { <span class='macro'>collect</span><span class='macro'>!</span>[<span class='ident'>into</span> _] };
     [<span class='ident'>into</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>col_ty</span>:<span class='ident'>ty</span>] <span class='op'>=&gt;</span> { <span class='macro'>collect</span><span class='macro'>!</span>[<span class='ident'>into</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>col_ty</span>:] };
     [<span class='ident'>into</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>col_ty</span>:<span class='ident'>ty</span>:] <span class='op'>=&gt;</span> {
@@ -57,18 +58,22 @@
         }
     };
 
-    <span class='comment'>// Initialise a sequence with a constrained container type.</span>
-    [<span class='ident'>into</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>col_ty</span>:<span class='ident'>ty</span>: $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>:<span class='ident'>expr</span>),<span class='op'>+</span>] <span class='op'>=&gt;</span> {
-        {
-            <span class='kw'>const</span> <span class='ident'>NUM_ELEMS</span>: <span class='ident'>usize</span> <span class='op'>=</span> <span class='macro'>count_exprs</span><span class='macro'>!</span>($(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>),<span class='op'>+</span>);
+    <span class='comment'>// Initialise a sequence with a constrained container type.</span>
+    [<span class='ident'>into</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>col_ty</span>:<span class='ident'>ty</span>: <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>v0</span>:<span class='ident'>expr</span>] <span class='op'>=&gt;</span> { <span class='macro'>collect</span><span class='macro'>!</span>[<span class='ident'>into</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>col_ty</span>: <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>v0</span>,] };
 
-            <span class='comment'>// This trick is stolen from std::iter, and *should* serve to give the container enough information to pre-allocate sufficient storage for all the elements.</span>
-            <span class='kw'>struct</span> <span class='ident'>SizeHint</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span>;
+    [<span class='ident'>into</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>col_ty</span>:<span class='ident'>ty</span>: <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>v0</span>:<span class='ident'>expr</span>, $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>:<span class='ident'>expr</span>),<span class='op'>*</span> $(,)<span class='op'>*</span>] <span class='op'>=&gt;</span> {
+        {
+            <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>marker</span>::<span class='ident'>PhantomData</span>;
+
+            <span class='kw'>const</span> <span class='ident'>NUM_ELEMS</span>: <span class='ident'>usize</span> <span class='op'>=</span> <span class='macro'>count_exprs</span><span class='macro'>!</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>v0</span> $(, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>)<span class='op'>*</span>);
+
+            <span class='comment'>// This trick is stolen from std::iter, and *should* serve to give the container enough information to pre-allocate sufficient storage for all the elements.</span>
+            <span class='kw'>struct</span> <span class='ident'>SizeHint</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span>(<span class='ident'>PhantomData</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span>);
 
             <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span> <span class='ident'>SizeHint</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span> {
-                <span class='comment'>// This method is needed to help the compiler work out which `Extend` impl to use in cases where there is more than one (e.g. `String`).</span>
+                <span class='comment'>// This method is needed to help the compiler work out which `Extend` impl to use in cases where there is more than one (e.g. `String`).</span>
                 <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
-                <span class='kw'>fn</span> <span class='ident'>type_hint</span>(_: <span class='kw-2'>&amp;</span>[<span class='ident'>E</span>]) <span class='op'>-&gt;</span> <span class='ident'>SizeHint</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span> { <span class='ident'>SizeHint</span> }
+                <span class='kw'>fn</span> <span class='ident'>type_hint</span>(_: <span class='kw-2'>&amp;</span><span class='ident'>E</span>) <span class='op'>-&gt;</span> <span class='ident'>SizeHint</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span> { <span class='ident'>SizeHint</span>(<span class='ident'>PhantomData</span>) }
             }
 
             <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>SizeHint</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span> {
@@ -86,32 +91,34 @@
             }
 
             <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>col</span>: <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>col_ty</span> <span class='op'>=</span> ::<span class='ident'>std</span>::<span class='ident'>default</span>::<span class='ident'>Default</span>::<span class='ident'>default</span>();
+            <span class='kw'>let</span> <span class='ident'>v0</span> <span class='op'>=</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>v0</span>;
 
-            <span class='ident'>Extend</span>::<span class='ident'>extend</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>col</span>, <span class='ident'>SizeHint</span>::<span class='ident'>type_hint</span>(<span class='kw-2'>&amp;</span>[$(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>),<span class='op'>+</span>]));
+            <span class='ident'>Extend</span>::<span class='ident'>extend</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>col</span>, <span class='ident'>SizeHint</span>::<span class='ident'>type_hint</span>(<span class='kw-2'>&amp;</span><span class='ident'>v0</span>));
 
-            $(<span class='ident'>Extend</span>::<span class='ident'>extend</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>col</span>, <span class='prelude-val'>Some</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>).<span class='ident'>into_iter</span>());)<span class='op'>+</span>
+            <span class='ident'>Extend</span>::<span class='ident'>extend</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>col</span>, <span class='prelude-val'>Some</span>(<span class='ident'>v0</span>).<span class='ident'>into_iter</span>());
+            $(<span class='ident'>Extend</span>::<span class='ident'>extend</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>col</span>, <span class='prelude-val'>Some</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>).<span class='ident'>into_iter</span>());)<span class='op'>*</span>
 
             <span class='ident'>col</span>
         }
     };
 
-    <span class='comment'>// Initialise a sequence with a fully inferred contained type.</span>
+    <span class='comment'>// Initialise a sequence with a fully inferred contained type.</span>
     [$(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>:<span class='ident'>expr</span>),<span class='op'>+</span>] <span class='op'>=&gt;</span> { <span class='macro'>collect</span><span class='macro'>!</span>[<span class='ident'>into</span> _: $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>),<span class='op'>+</span>] };
 
-    <span class='comment'>// Initialise a map with a constrained container type.</span>
+    <span class='comment'>// Initialise a map with a constrained container type.</span>
     [<span class='ident'>into</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>col_ty</span>:<span class='ident'>ty</span>: $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>ks</span>:<span class='ident'>expr</span> <span class='op'>=&gt;</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>:<span class='ident'>expr</span>),<span class='op'>+</span>] <span class='op'>=&gt;</span> {
-        <span class='comment'>// Maps implement FromIterator by taking tuples, so we just need to rewrite each `a:b` as `(a,b)`.</span>
+        <span class='comment'>// Maps implement FromIterator by taking tuples, so we just need to rewrite each `a:b` as `(a,b)`.</span>
         <span class='macro'>collect</span><span class='macro'>!</span>[<span class='ident'>into</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>col_ty</span>: $((<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>ks</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>)),<span class='op'>+</span>]
     };
 
-    <span class='comment'>// Initialise a map with a fully inferred contained type.</span>
+    <span class='comment'>// Initialise a map with a fully inferred contained type.</span>
     [$(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>ks</span>:<span class='ident'>expr</span> <span class='op'>=&gt;</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>:<span class='ident'>expr</span>),<span class='op'>+</span>] <span class='op'>=&gt;</span> { <span class='macro'>collect</span><span class='macro'>!</span>[<span class='ident'>into</span> _: $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>ks</span> <span class='op'>=&gt;</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>vs</span>),<span class='op'>+</span>] };
 }
 </pre>
 <div class='docblock'><p>This macro provides a way to initialise any container for which there is a FromIterator implementation.  It allows for both sequence and map syntax to be used, as well as inline type ascription for the result.</p>
 
 <p>For example:</p>
-<pre id='rust-example-rendered' class='rust '>
+<pre class='rust rust-example-rendered'>
 <span class='comment'>// Initialise an empty collection.</span>
 <span class='kw'>let</span> <span class='ident'>a</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>int</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='macro'>collect</span><span class='macro'>!</span>[];
 <span class='kw'>let</span> <span class='ident'>b</span>: <span class='ident'>HashMap</span><span class='op'>&lt;</span><span class='ident'>String</span>, <span class='ident'>bool</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='macro'>collect</span><span class='macro'>!</span>[];
@@ -160,6 +167,10 @@
                 <code>struct</code>, <code>enum</code>,
                 <code>trait</code>, <code>typedef</code> (or
                 <code>tdef</code>).
+            </p>
+            <p>
+                Search functions by type signature (e.g.
+                <code>vec -> usize</code>)
             </p>
         </div>
     </div>

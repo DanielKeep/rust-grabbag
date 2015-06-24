@@ -26,7 +26,7 @@
 
     <section class="sidebar">
         
-        <p class='location'><a href='index.html'>grabbag_macros</a></p><div class='block macro'><h2>Macros</h2><a class='macro ' href='macro.collect!.html' title='This macro provides a way to initialise any container for which there is a FromIterator implementation.  It allows for both sequence and map syntax to be used, as well as inline type ascription for the result.'>collect!</a><a class='macro current' href='macro.count_exprs!.html' title='Counts the number of comma-delimited expressions passed to it.  The result is a compile-time evaluable expression, suitable for use as a static array size, or the value of a `const`.'>count_exprs!</a><a class='macro ' href='macro.recurrence!.html' title='Expands to an expression implementing the `Iterator` trait, which yields successive elements of the given recurrence relationship.'>recurrence!</a><a class='macro ' href='macro.sequence!.html' title='Expands to an expression implementing the `Iterator` trait, which yields successive elements of the given closed-form sequence.'>sequence!</a></div>
+        <p class='location'><a href='index.html'>grabbag_macros</a></p><script>window.sidebarCurrent = {name: 'count_exprs!', ty: 'macro', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </section>
 
     <nav class="sub">
@@ -41,10 +41,11 @@
     </nav>
 
     <section id='main' class="content macro">
-<h1 class='fqn'><span class='in-band'><a href='index.html'>grabbag_macros</a>::<wbr><a class='macro' href=''>count_exprs!</a><wbr></span><span class='out-of-band'><span id='render-detail'>
-            <a id="collapse-all" href="#">[-]
-            </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-4' href='../src/grabbag_macros/lib.rs.html#21-25'>[src]</a></span></h1>
+<h1 class='fqn'><span class='in-band'><a href='index.html'>grabbag_macros</a>::<wbr><a class='macro' href=''>count_exprs!</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-4' class='srclink' href='../src/grabbag_macros/lib.rs.html#21-25' title='goto source code'>[src]</a></span></h1>
 <pre class='rust macro'>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>count_exprs</span> {
     () <span class='op'>=&gt;</span> { <span class='number'>0</span> };
@@ -55,7 +56,7 @@
 <div class='docblock'><p>Counts the number of comma-delimited expressions passed to it.  The result is a compile-time evaluable expression, suitable for use as a static array size, or the value of a <code>const</code>.</p>
 
 <p>Example:</p>
-<pre id='rust-example-rendered' class='rust '>
+<pre class='rust rust-example-rendered'>
 <span class='kw'>const</span> <span class='ident'>COUNT</span>: <span class='ident'>usize</span> <span class='op'>=</span> <span class='macro'>count_exprs</span><span class='macro'>!</span>(<span class='ident'>a</span>, <span class='number'>5</span><span class='op'>+</span><span class='number'>1</span>, <span class='string'>&quot;hi there!&quot;</span>.<span class='ident'>into_string</span>());
 <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>COUNT</span>, <span class='number'>3</span>);
 </pre>
@@ -91,6 +92,10 @@
                 <code>struct</code>, <code>enum</code>,
                 <code>trait</code>, <code>typedef</code> (or
                 <code>tdef</code>).
+            </p>
+            <p>
+                Search functions by type signature (e.g.
+                <code>vec -> usize</code>)
             </p>
         </div>
     </div>

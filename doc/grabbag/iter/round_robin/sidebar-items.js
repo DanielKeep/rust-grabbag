@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["RoundRobin",""],["RoundRobinLongest",""]],"trait":[["RoundRobinIterator","(<em>a</em><sub>0</sub>, <em>a</em><sub>1</sub>, ...), (<em>b</em><sub>0</sub>, <em>b</em><sub>1</sub>, ...)  (<em>a</em><sub>0</sub>, <em>b</em><sub>0</sub>, <em>a</em><sub>1</sub>, <em>b</em><sub>1</sub>, ...)"]]});

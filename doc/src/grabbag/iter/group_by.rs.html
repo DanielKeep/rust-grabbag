@@ -281,6 +281,7 @@
 <span id="239">239</span>
 <span id="240">240</span>
 <span id="241">241</span>
+<span id="242">242</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>cell</span>::<span class='ident'>RefCell</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>cmp</span>::<span class='ident'>min</span>;
@@ -300,8 +301,8 @@ For example:
 # extern crate grabbag;
 # use grabbag::iter::GroupByIterator;
 # fn main () {
-let v = vec![7us, 5, 6, 2, 4, 7, 6, 1, 6, 4, 4, 6, 0, 0, 8, 8, 6, 1, 8, 7];
-let is_even = |&amp;: n: &amp;usize| if *n &amp; 1 == 0 { true } else { false };
+let v = vec![7usize, 5, 6, 2, 4, 7, 6, 1, 6, 4, 4, 6, 0, 0, 8, 8, 6, 1, 8, 7];
+let is_even = |n: &amp;usize| if *n &amp; 1 == 0 { true } else { false };
 for (even, mut ns) in v.into_iter().group_by(is_even) {
     println!(&quot;{}...&quot;, if even { &quot;Evens&quot; } else { &quot;Odds&quot; });
     for n in ns {
@@ -311,7 +312,7 @@ for (even, mut ns) in v.into_iter().group_by(is_even) {
 # }
 ```
     */</span>
-    <span class='kw'>fn</span> <span class='ident'>group_by</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>GroupFn</span>: <span class='ident'>FnMut</span>(<span class='kw-2'>&amp;</span><span class='ident'>E</span>) <span class='op'>-&gt;</span> <span class='ident'>G</span>, <span class='ident'>G</span><span class='op'>&gt;</span>(<span class='self'>self</span>, <span class='ident'>group</span>: <span class='ident'>GroupFn</span>) <span class='op'>-&gt;</span> <span class='ident'>GroupBy</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>Self</span>, <span class='ident'>GroupFn</span>, <span class='ident'>E</span>, <span class='ident'>G</span><span class='op'>&gt;</span> {
+    <span class='kw'>fn</span> <span class='ident'>group_by</span><span class='op'>&lt;</span><span class='ident'>GroupFn</span>: <span class='ident'>FnMut</span>(<span class='kw-2'>&amp;</span><span class='ident'>E</span>) <span class='op'>-&gt;</span> <span class='ident'>G</span>, <span class='ident'>G</span><span class='op'>&gt;</span>(<span class='self'>self</span>, <span class='ident'>group</span>: <span class='ident'>GroupFn</span>) <span class='op'>-&gt;</span> <span class='ident'>GroupBy</span><span class='op'>&lt;</span><span class='kw'>Self</span>, <span class='ident'>GroupFn</span>, <span class='ident'>E</span>, <span class='ident'>G</span><span class='op'>&gt;</span> {
         <span class='ident'>GroupBy</span> {
             <span class='ident'>state</span>: <span class='ident'>Rc</span>::<span class='ident'>new</span>(<span class='ident'>RefCell</span>::<span class='ident'>new</span>(<span class='ident'>GroupByShared</span> {
                 <span class='ident'>iter</span>: <span class='self'>self</span>,
@@ -325,27 +326,28 @@ for (even, mut ns) in v.into_iter().group_by(is_even) {
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>E</span>, <span class='ident'>It</span><span class='op'>&gt;</span> <span class='ident'>GroupByIterator</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>It</span> <span class='kw'>where</span> <span class='ident'>It</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>E</span><span class='op'>&gt;</span> {}
 
-<span class='comment'>// **NOTE**: Although `Clone` *can* be implemented for this, you *should not* do so, since you cannot clone the underlying `GroupByItemsShared` value.</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>GroupBy</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>It</span>, <span class='ident'>GroupFn</span>, <span class='ident'>E</span>, <span class='ident'>G</span><span class='op'>&gt;</span> {
-    <span class='ident'>state</span>: <span class='ident'>Rc</span><span class='op'>&lt;</span><span class='ident'>RefCell</span><span class='op'>&lt;</span><span class='ident'>GroupByShared</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>It</span>, <span class='ident'>GroupFn</span>, <span class='ident'>E</span>, <span class='ident'>G</span><span class='op'>&gt;&gt;</span><span class='op'>&gt;</span>,
+<span class='comment'>// **NOTE**: Although `Clone` *can* be implemented for this, you *should not* do so, since you cannot clone the underlying `GroupByItemsShared` value.</span>
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>GroupBy</span><span class='op'>&lt;</span><span class='ident'>It</span>, <span class='ident'>GroupFn</span>, <span class='ident'>E</span>, <span class='ident'>G</span><span class='op'>&gt;</span> {
+    <span class='ident'>state</span>: <span class='ident'>Rc</span><span class='op'>&lt;</span><span class='ident'>RefCell</span><span class='op'>&lt;</span><span class='ident'>GroupByShared</span><span class='op'>&lt;</span><span class='ident'>It</span>, <span class='ident'>GroupFn</span>, <span class='ident'>E</span>, <span class='ident'>G</span><span class='op'>&gt;&gt;</span><span class='op'>&gt;</span>,
 }
 
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>GroupByShared</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>It</span>, <span class='ident'>GroupFn</span>, <span class='ident'>E</span>, <span class='ident'>G</span><span class='op'>&gt;</span> {
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>GroupByShared</span><span class='op'>&lt;</span><span class='ident'>It</span>, <span class='ident'>GroupFn</span>, <span class='ident'>E</span>, <span class='ident'>G</span><span class='op'>&gt;</span> {
     <span class='ident'>iter</span>: <span class='ident'>It</span>,
     <span class='ident'>group</span>: <span class='ident'>GroupFn</span>,
     <span class='ident'>last_group</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>G</span><span class='op'>&gt;</span>,
     <span class='ident'>push_back</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span>(<span class='ident'>G</span>, <span class='ident'>E</span>)<span class='op'>&gt;</span>,
+
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>It</span>, <span class='ident'>GroupFn</span>, <span class='ident'>E</span>, <span class='ident'>G</span><span class='op'>&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>GroupBy</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>It</span>, <span class='ident'>GroupFn</span>, <span class='ident'>E</span>, <span class='ident'>G</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>GroupFn</span>: <span class='ident'>FnMut</span>(<span class='kw-2'>&amp;</span><span class='ident'>E</span>) <span class='op'>-&gt;</span> <span class='ident'>G</span>, <span class='ident'>It</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>E</span><span class='op'>&gt;</span>, <span class='ident'>G</span>: <span class='ident'>Clone</span> <span class='op'>+</span> <span class='ident'>Eq</span> {
-    <span class='kw'>type</span> <span class='ident'>Item</span> <span class='op'>=</span> (<span class='ident'>G</span>, <span class='ident'>Group</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>It</span>, <span class='ident'>GroupFn</span>, <span class='ident'>E</span>, <span class='ident'>G</span><span class='op'>&gt;</span>);
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>It</span>, <span class='ident'>GroupFn</span>, <span class='ident'>E</span>, <span class='ident'>G</span><span class='op'>&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>GroupBy</span><span class='op'>&lt;</span><span class='ident'>It</span>, <span class='ident'>GroupFn</span>, <span class='ident'>E</span>, <span class='ident'>G</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>GroupFn</span>: <span class='ident'>FnMut</span>(<span class='kw-2'>&amp;</span><span class='ident'>E</span>) <span class='op'>-&gt;</span> <span class='ident'>G</span>, <span class='ident'>It</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>E</span><span class='op'>&gt;</span>, <span class='ident'>G</span>: <span class='ident'>Clone</span> <span class='op'>+</span> <span class='ident'>Eq</span> {
+    <span class='kw'>type</span> <span class='ident'>Item</span> <span class='op'>=</span> (<span class='ident'>G</span>, <span class='ident'>Group</span><span class='op'>&lt;</span><span class='ident'>It</span>, <span class='ident'>GroupFn</span>, <span class='ident'>E</span>, <span class='ident'>G</span><span class='op'>&gt;</span>);
 
-    <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span>(<span class='ident'>G</span>, <span class='ident'>Group</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>It</span>, <span class='ident'>GroupFn</span>, <span class='ident'>E</span>, <span class='ident'>G</span><span class='op'>&gt;</span>)<span class='op'>&gt;</span> {
-        <span class='comment'>// First, get a mutable borrow to the underlying state.</span>
+    <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span>(<span class='ident'>G</span>, <span class='ident'>Group</span><span class='op'>&lt;</span><span class='ident'>It</span>, <span class='ident'>GroupFn</span>, <span class='ident'>E</span>, <span class='ident'>G</span><span class='op'>&gt;</span>)<span class='op'>&gt;</span> {
+        <span class='comment'>// First, get a mutable borrow to the underlying state.</span>
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>state</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>state</span>.<span class='ident'>borrow_mut</span>();
         <span class='kw'>let</span> <span class='ident'>state</span> <span class='op'>=</span> <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='op'>*</span><span class='ident'>state</span>;
 
-        <span class='comment'>// If we have a push-back element, immediately construct a sub iterator.</span>
+        <span class='comment'>// If we have a push-back element, immediately construct a sub iterator.</span>
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>((<span class='ident'>g</span>, <span class='ident'>e</span>)) <span class='op'>=</span> <span class='ident'>replace</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>state</span>.<span class='ident'>push_back</span>, <span class='prelude-val'>None</span>) {
             <span class='kw'>return</span> <span class='prelude-val'>Some</span>((
                 <span class='ident'>g</span>.<span class='ident'>clone</span>(),
@@ -357,11 +359,11 @@ for (even, mut ns) in v.into_iter().group_by(is_even) {
             ));
         }
 
-        <span class='comment'>// Otherwise, try to pull the next element from the input iterator.</span>
-        <span class='comment'>// Complication: a sub iterator *might* stop *before* the group is exhausted.  We need to account for this (so that users can easily skip groups).</span>
+        <span class='comment'>// Otherwise, try to pull the next element from the input iterator.</span>
+        <span class='comment'>// Complication: a sub iterator *might* stop *before* the group is exhausted.  We need to account for this (so that users can easily skip groups).</span>
         <span class='kw'>let</span> (<span class='ident'>e</span>, <span class='ident'>g</span>) <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>replace</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>state</span>.<span class='ident'>last_group</span>, <span class='prelude-val'>None</span>) {
             <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> {
-                <span class='comment'>// We don&#39;t *have* a previous group, just grab the next element.</span>
+                <span class='comment'>// We don&#39;t *have* a previous group, just grab the next element.</span>
                 <span class='kw'>let</span> <span class='ident'>e</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>state</span>.<span class='ident'>iter</span>.<span class='ident'>next</span>() {
                     <span class='prelude-val'>Some</span>(<span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='ident'>e</span>,
                     <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='kw'>return</span> <span class='prelude-val'>None</span>
@@ -370,7 +372,7 @@ for (even, mut ns) in v.into_iter().group_by(is_even) {
                 (<span class='ident'>e</span>, <span class='ident'>g</span>)
             },
             <span class='prelude-val'>Some</span>(<span class='ident'>last_g</span>) <span class='op'>=&gt;</span> {
-                <span class='comment'>// We have to keep pulling elements until the group changes.</span>
+                <span class='comment'>// We have to keep pulling elements until the group changes.</span>
                 <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>e</span>;
                 <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>g</span>;
                 <span class='kw'>loop</span> {
@@ -385,10 +387,10 @@ for (even, mut ns) in v.into_iter().group_by(is_even) {
             }
         };
 
-        <span class='comment'>// Remember this group.</span>
+        <span class='comment'>// Remember this group.</span>
         <span class='ident'>state</span>.<span class='ident'>last_group</span> <span class='op'>=</span> <span class='prelude-val'>Some</span>(<span class='ident'>g</span>.<span class='ident'>clone</span>());
 
-        <span class='comment'>// Construct the sub-iterator and yield it.</span>
+        <span class='comment'>// Construct the sub-iterator and yield it.</span>
         <span class='prelude-val'>Some</span>((
             <span class='ident'>g</span>.<span class='ident'>clone</span>(),
             <span class='ident'>Group</span> {
@@ -406,23 +408,23 @@ for (even, mut ns) in v.into_iter().group_by(is_even) {
     }
 }
 
-<span class='comment'>// **NOTE**: Although `Clone` *can* be implemented for this, you *should not* do so, since you cannot clone the underlying `GroupByShared` value.</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Group</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>It</span>, <span class='ident'>GroupFn</span>, <span class='ident'>E</span>, <span class='ident'>G</span><span class='op'>&gt;</span> {
-    <span class='ident'>state</span>: <span class='ident'>Rc</span><span class='op'>&lt;</span><span class='ident'>RefCell</span><span class='op'>&lt;</span><span class='ident'>GroupByShared</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>It</span>, <span class='ident'>GroupFn</span>, <span class='ident'>E</span>, <span class='ident'>G</span><span class='op'>&gt;&gt;</span><span class='op'>&gt;</span>,
+<span class='comment'>// **NOTE**: Although `Clone` *can* be implemented for this, you *should not* do so, since you cannot clone the underlying `GroupByShared` value.</span>
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Group</span><span class='op'>&lt;</span><span class='ident'>It</span>, <span class='ident'>GroupFn</span>, <span class='ident'>E</span>, <span class='ident'>G</span><span class='op'>&gt;</span> {
+    <span class='ident'>state</span>: <span class='ident'>Rc</span><span class='op'>&lt;</span><span class='ident'>RefCell</span><span class='op'>&lt;</span><span class='ident'>GroupByShared</span><span class='op'>&lt;</span><span class='ident'>It</span>, <span class='ident'>GroupFn</span>, <span class='ident'>E</span>, <span class='ident'>G</span><span class='op'>&gt;&gt;</span><span class='op'>&gt;</span>,
     <span class='ident'>group_value</span>: <span class='ident'>G</span>,
     <span class='ident'>first_value</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span>,
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>It</span>, <span class='ident'>GroupFn</span>, <span class='ident'>E</span>, <span class='ident'>G</span><span class='op'>&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>Group</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>It</span>, <span class='ident'>GroupFn</span>, <span class='ident'>E</span>, <span class='ident'>G</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>GroupFn</span>: <span class='ident'>FnMut</span>(<span class='kw-2'>&amp;</span><span class='ident'>E</span>) <span class='op'>-&gt;</span> <span class='ident'>G</span>, <span class='ident'>It</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>E</span><span class='op'>&gt;</span>, <span class='ident'>G</span>: <span class='ident'>Eq</span> {
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>It</span>, <span class='ident'>GroupFn</span>, <span class='ident'>E</span>, <span class='ident'>G</span><span class='op'>&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>Group</span><span class='op'>&lt;</span><span class='ident'>It</span>, <span class='ident'>GroupFn</span>, <span class='ident'>E</span>, <span class='ident'>G</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>GroupFn</span>: <span class='ident'>FnMut</span>(<span class='kw-2'>&amp;</span><span class='ident'>E</span>) <span class='op'>-&gt;</span> <span class='ident'>G</span>, <span class='ident'>It</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>E</span><span class='op'>&gt;</span>, <span class='ident'>G</span>: <span class='ident'>Eq</span> {
     <span class='kw'>type</span> <span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>E</span>;
 
     <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span> {
-        <span class='comment'>// If we have a first_value, consume and yield that.</span>
+        <span class='comment'>// If we have a first_value, consume and yield that.</span>
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>e</span>) <span class='op'>=</span> <span class='ident'>replace</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>.<span class='ident'>first_value</span>, <span class='prelude-val'>None</span>) {
             <span class='kw'>return</span> <span class='prelude-val'>Some</span>(<span class='ident'>e</span>)
         }
 
-        <span class='comment'>// Get a mutable borrow to the shared state.</span>
+        <span class='comment'>// Get a mutable borrow to the shared state.</span>
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>state</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>state</span>.<span class='ident'>borrow_mut</span>();
         <span class='kw'>let</span> <span class='ident'>state</span> <span class='op'>=</span> <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='op'>*</span><span class='ident'>state</span>;
 
@@ -435,11 +437,11 @@ for (even, mut ns) in v.into_iter().group_by(is_even) {
 
         <span class='kw'>match</span> <span class='ident'>g</span> <span class='op'>==</span> <span class='self'>self</span>.<span class='ident'>group_value</span> {
             <span class='boolval'>true</span> <span class='op'>=&gt;</span> {
-                <span class='comment'>// Still in the same group.</span>
+                <span class='comment'>// Still in the same group.</span>
                 <span class='prelude-val'>Some</span>(<span class='ident'>e</span>)
             },
             <span class='boolval'>false</span> <span class='op'>=&gt;</span> {
-                <span class='comment'>// Different group!  We need to push (g, e) back into the master iterator.</span>
+                <span class='comment'>// Different group!  We need to push (g, e) back into the master iterator.</span>
                 <span class='ident'>state</span>.<span class='ident'>push_back</span> <span class='op'>=</span> <span class='prelude-val'>Some</span>((<span class='ident'>g</span>, <span class='ident'>e</span>));
                 <span class='prelude-val'>None</span>
             }
@@ -458,7 +460,7 @@ for (even, mut ns) in v.into_iter().group_by(is_even) {
 <span class='attribute'>#[<span class='ident'>test</span>]</span>
 <span class='kw'>fn</span> <span class='ident'>test_group_by</span>() {
     {
-        <span class='kw'>let</span> <span class='ident'>v</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0us</span>, <span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>, <span class='number'>5</span>, <span class='number'>4</span>, <span class='number'>6</span>, <span class='number'>8</span>, <span class='number'>7</span>];
+        <span class='kw'>let</span> <span class='ident'>v</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0usize</span>, <span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>, <span class='number'>5</span>, <span class='number'>4</span>, <span class='number'>6</span>, <span class='number'>8</span>, <span class='number'>7</span>];
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>oi</span> <span class='op'>=</span> <span class='ident'>v</span>.<span class='ident'>into_iter</span>().<span class='ident'>group_by</span>(<span class='op'>|</span><span class='kw-2'>&amp;</span><span class='ident'>e</span><span class='op'>|</span> <span class='ident'>e</span> <span class='kw-2'>&amp;</span> <span class='number'>1</span>);
 
         <span class='kw'>let</span> (<span class='ident'>g</span>, <span class='kw-2'>mut</span> <span class='ident'>ii</span>) <span class='op'>=</span> <span class='ident'>oi</span>.<span class='ident'>next</span>().<span class='ident'>unwrap</span>();
@@ -497,7 +499,7 @@ for (even, mut ns) in v.into_iter().group_by(is_even) {
         <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>oi</span>.<span class='ident'>next</span>().<span class='ident'>is_none</span>());
     }
     {
-        <span class='kw'>let</span> <span class='ident'>v</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0us</span>, <span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>, <span class='number'>5</span>, <span class='number'>4</span>, <span class='number'>6</span>, <span class='number'>8</span>, <span class='number'>7</span>];
+        <span class='kw'>let</span> <span class='ident'>v</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0usize</span>, <span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>, <span class='number'>5</span>, <span class='number'>4</span>, <span class='number'>6</span>, <span class='number'>8</span>, <span class='number'>7</span>];
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>oi</span> <span class='op'>=</span> <span class='ident'>v</span>.<span class='ident'>into_iter</span>().<span class='ident'>group_by</span>(<span class='op'>|</span><span class='kw-2'>&amp;</span><span class='ident'>e</span><span class='op'>|</span> <span class='ident'>e</span> <span class='kw-2'>&amp;</span> <span class='number'>1</span>);
 
         <span class='kw'>let</span> (<span class='ident'>g</span>, _) <span class='op'>=</span> <span class='ident'>oi</span>.<span class='ident'>next</span>().<span class='ident'>unwrap</span>();
@@ -556,6 +558,10 @@ for (even, mut ns) in v.into_iter().group_by(is_even) {
                 <code>struct</code>, <code>enum</code>,
                 <code>trait</code>, <code>typedef</code> (or
                 <code>tdef</code>).
+            </p>
+            <p>
+                Search functions by type signature (e.g.
+                <code>vec -> usize</code>)
             </p>
         </div>
     </div>

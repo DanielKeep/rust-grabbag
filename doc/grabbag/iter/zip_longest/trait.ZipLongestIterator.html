@@ -26,7 +26,7 @@
 
     <section class="sidebar">
         
-        <p class='location'><a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>zip_longest</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.ZipLongest.html' title=''>ZipLongest</a></div><div class='block trait'><h2>Traits</h2><a class='trait current' href='trait.ZipLongestIterator.html' title='(..., &lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;m&lt;/em&gt;&lt;/sub&gt;), (..., &lt;em&gt;b&lt;/em&gt;&lt;sub&gt;&lt;em&gt;m&lt;/em&gt;&lt;/sub&gt;, &lt;em&gt;b&lt;/em&gt;&lt;sub&gt;&lt;em&gt;m&lt;/em&gt;+1&lt;/sub&gt;, ..., &lt;em&gt;b&lt;/em&gt;&lt;sub&gt;&lt;em&gt;n&lt;/em&gt;&lt;/sub&gt;) &amp;nbsp;&amp;rarr;&amp;nbsp; ( ..., (&lt;em&gt;Some&lt;/em&gt;(&lt;em&gt;a&lt;/em&gt;&lt;sub&gt;&lt;em&gt;m&lt;/em&gt;&lt;/sub&gt;), &lt;em&gt;Some&lt;/em&gt;(&lt;em&gt;b&lt;/em&gt;&lt;sub&gt;&lt;em&gt;m&lt;/em&gt;&lt;/sub&gt;)), (&lt;em&gt;None&lt;/em&gt;, &lt;em&gt;Some&lt;/em&gt;(&lt;em&gt;b&lt;/em&gt;&lt;sub&gt;&lt;em&gt;m&lt;/em&gt;+1&lt;/sub&gt;)), ..., (&lt;em&gt;None&lt;/em&gt;, &lt;em&gt;Some&lt;/em&gt;(&lt;em&gt;b&lt;/em&gt;&lt;sub&gt;&lt;em&gt;n&lt;/em&gt;&lt;/sub&gt;)) )'>ZipLongestIterator</a></div>
+        <p class='location'><a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>zip_longest</a></p><script>window.sidebarCurrent = {name: 'ZipLongestIterator', ty: 'trait', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </section>
 
     <nav class="sub">
@@ -41,10 +41,11 @@
     </nav>
 
     <section id='main' class="content trait">
-<h1 class='fqn'><span class='in-band'>Trait <a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>zip_longest</a>::<wbr><a class='trait' href=''>ZipLongestIterator</a><wbr></span><span class='out-of-band'><span id='render-detail'>
-            <a id="collapse-all" href="#">[-]
-            </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-6517' href='../../../src/grabbag/iter/zip_longest.rs.html#16-26'>[src]</a></span></h1>
+<h1 class='fqn'><span class='in-band'>Trait <a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>zip_longest</a>::<wbr><a class='trait' href=''>ZipLongestIterator</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-4036' class='srclink' href='../../../src/grabbag/iter/zip_longest.rs.html#16-26' title='goto source code'>[src]</a></span></h1>
 <pre class='rust trait'>pub trait ZipLongestIterator: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a> + <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a> {
     fn <a href='#method.zip_longest' class='fnname'>zip_longest</a>&lt;RightIt&gt;(self, right: RightIt) -&gt; <a class='struct' href='../../../grabbag/iter/zip_longest/struct.ZipLongest.html' title='grabbag::iter::zip_longest::ZipLongest'>ZipLongest</a>&lt;Self, RightIt&gt; { ... }
 }</pre><div class='docblock'><p>(..., <em>a</em><sub><em>m</em></sub>),
@@ -60,12 +61,11 @@
 </div>
             <h2 id='provided-methods'>Provided Methods</h2>
             <div class='methods'>
-        <h3 id='method.zip_longest' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.zip_longest' class='fnname'>zip_longest</a>&lt;RightIt&gt;(self, right: RightIt) -&gt; <a class='struct' href='../../../grabbag/iter/zip_longest/struct.ZipLongest.html' title='grabbag::iter::zip_longest::ZipLongest'>ZipLongest</a>&lt;Self, RightIt&gt;</code></h3><div class='docblock'><p>Creates an iterator which yields elements from both input iterators in lockstep.  If one iterator ends before the other, the elements from that iterator will be replaced with <code>None</code>.</p>
+        <h3 id='method.zip_longest' class='method stab '><code>fn <a href='#method.zip_longest' class='fnname'>zip_longest</a>&lt;RightIt&gt;(self, right: RightIt) -&gt; <a class='struct' href='../../../grabbag/iter/zip_longest/struct.ZipLongest.html' title='grabbag::iter::zip_longest::ZipLongest'>ZipLongest</a>&lt;Self, RightIt&gt;</code></h3><div class='docblock'><p>Creates an iterator which yields elements from both input iterators in lockstep.  If one iterator ends before the other, the elements from that iterator will be replaced with <code>None</code>.</p>
 </div></div>
         <h2 id='implementors'>Implementors</h2>
         <ul class='item-list' id='implementors-list'>
-    <li><a class='stability Unmarked' title='No stability level'></a><code>impl&lt;LeftIt&gt; <a class='trait' href='../../../grabbag/iter/trait.ZipLongestIterator.html' title='grabbag::iter::ZipLongestIterator'>ZipLongestIterator</a> for LeftIt <span class='where'>where LeftIt: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a></span></code></li>
-</ul><script type="text/javascript" async
+    </ul><script type="text/javascript" async
                               src="../../../implementors/grabbag/iter/zip_longest/trait.ZipLongestIterator.js">
                       </script></section>
     <section id='search' class="content hidden"></section>
@@ -99,6 +99,10 @@
                 <code>struct</code>, <code>enum</code>,
                 <code>trait</code>, <code>typedef</code> (or
                 <code>tdef</code>).
+            </p>
+            <p>
+                Search functions by type signature (e.g.
+                <code>vec -> usize</code>)
             </p>
         </div>
     </div>

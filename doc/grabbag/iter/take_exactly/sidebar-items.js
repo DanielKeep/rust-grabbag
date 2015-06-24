@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["TakeExactly",""]],"trait":[["TakeExactlyIterator","(<em>a</em><sub>0</sub>, ..., <em>a</em><sub><em>i</em>-1</sub>, <em>a</em><sub><em>i</em></sub>, <em>a</em><sub><em>i</em>+1</sub>, ...), <em>i</em>  (<em>a</em><sub>0</sub>, ..., <em>a</em><sub><em>i</em>-1</sub>)"]]});

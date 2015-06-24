@@ -118,16 +118,16 @@ Returns a `Vec` with the elements of the input iterator in sorted order, as spec
 
 <span class='attribute'>#[<span class='ident'>test</span>]</span>
 <span class='kw'>fn</span> <span class='ident'>test_sorted</span>() {
-    <span class='kw'>let</span> <span class='ident'>v</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>1us</span>, <span class='number'>3</span>, <span class='number'>2</span>, <span class='number'>0</span>, <span class='number'>4</span>];
+    <span class='kw'>let</span> <span class='ident'>v</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>1usize</span>, <span class='number'>3</span>, <span class='number'>2</span>, <span class='number'>0</span>, <span class='number'>4</span>];
     <span class='kw'>let</span> <span class='ident'>s</span> <span class='op'>=</span> <span class='ident'>v</span>.<span class='ident'>into_iter</span>().<span class='ident'>sorted</span>();
-    <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>s</span>, <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0us</span>, <span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>, <span class='number'>4</span>]);
+    <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>s</span>, <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0usize</span>, <span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>, <span class='number'>4</span>]);
 }
 
 <span class='attribute'>#[<span class='ident'>test</span>]</span>
 <span class='kw'>fn</span> <span class='ident'>test_sorted_by</span>() {
-    <span class='kw'>let</span> <span class='ident'>v</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>1us</span>, <span class='number'>3</span>, <span class='number'>2</span>, <span class='number'>0</span>, <span class='number'>4</span>];
+    <span class='kw'>let</span> <span class='ident'>v</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>1usize</span>, <span class='number'>3</span>, <span class='number'>2</span>, <span class='number'>0</span>, <span class='number'>4</span>];
     <span class='kw'>let</span> <span class='ident'>s</span> <span class='op'>=</span> <span class='ident'>v</span>.<span class='ident'>into_iter</span>().<span class='ident'>sorted_by</span>(<span class='op'>|</span><span class='ident'>a</span>,<span class='ident'>b</span><span class='op'>|</span> (<span class='op'>!</span><span class='op'>*</span><span class='ident'>a</span>).<span class='ident'>cmp</span>(<span class='kw-2'>&amp;</span><span class='op'>!</span><span class='op'>*</span><span class='ident'>b</span>));
-    <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>s</span>, <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>4</span>, <span class='number'>3</span>, <span class='number'>2</span>, <span class='number'>1</span>, <span class='number'>0us</span>]);
+    <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>s</span>, <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>4</span>, <span class='number'>3</span>, <span class='number'>2</span>, <span class='number'>1</span>, <span class='number'>0usize</span>]);
 }
 </pre>
 </section>
@@ -162,6 +162,10 @@ Returns a `Vec` with the elements of the input iterator in sorted order, as spec
                 <code>struct</code>, <code>enum</code>,
                 <code>trait</code>, <code>typedef</code> (or
                 <code>tdef</code>).
+            </p>
+            <p>
+                Search functions by type signature (e.g.
+                <code>vec -> usize</code>)
             </p>
         </div>
     </div>

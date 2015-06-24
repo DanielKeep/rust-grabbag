@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Accumulate",""]],"trait":[["AccumulateIterator","( <em>a</em><sub>0</sub>, <em>a</em><sub>1</sub>, <em>a</em><sub>2</sub>, ... ),   ( <em>a</em><sub>0</sub>, (<em>a</em><sub>0</sub>  <em>a</em><sub>1</sub>), ((<em>a</em><sub>0</sub>  <em>a</em><sub>1</sub>)  <em>a</em><sub>2</sub>), ... )"]]});

@@ -93,11 +93,11 @@
 </pre><pre class='rust '>
 <span class='attribute'>#[<span class='ident'>test</span>]</span>
 <span class='kw'>fn</span> <span class='ident'>test_skip</span>() {
-    <span class='kw'>let</span> <span class='ident'>v</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0is</span>, <span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>];
+    <span class='kw'>let</span> <span class='ident'>v</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0isize</span>, <span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>];
     <span class='kw'>let</span> <span class='ident'>r</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span>_<span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>v</span>.<span class='ident'>into_iter</span>().<span class='ident'>skip</span>(<span class='number'>3</span>).<span class='ident'>collect</span>();
     <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>r</span>, <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>3</span>]);
 
-    <span class='kw'>let</span> <span class='ident'>v</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0is</span>, <span class='number'>1</span>];
+    <span class='kw'>let</span> <span class='ident'>v</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0isize</span>, <span class='number'>1</span>];
     <span class='kw'>let</span> <span class='ident'>r</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span>_<span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>v</span>.<span class='ident'>into_iter</span>().<span class='ident'>skip</span>(<span class='number'>3</span>).<span class='ident'>collect</span>();
     <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>r</span>, <span class='macro'>vec</span><span class='macro'>!</span>[]);
 }
@@ -116,8 +116,8 @@ Skips *exactly* `n` elements from the iterator.
 
 This method will panic if there are less than `n` elements in the iterator.
     */</span>
-    <span class='kw'>fn</span> <span class='ident'>skip_exactly</span>(<span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>n</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>Self</span> {
-        <span class='kw'>for</span> <span class='ident'>i</span> <span class='kw'>in</span> <span class='ident'>range</span>(<span class='number'>0</span>, <span class='ident'>n</span>) {
+    <span class='kw'>fn</span> <span class='ident'>skip_exactly</span>(<span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>n</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span> {
+        <span class='kw'>for</span> <span class='ident'>i</span> <span class='kw'>in</span> <span class='number'>0</span>..<span class='ident'>n</span> {
             <span class='kw'>match</span> <span class='self'>self</span>.<span class='ident'>next</span>() {
                 <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='macro'>panic</span><span class='macro'>!</span>(<span class='string'>&quot;skip_exactly asked to skip {} elements, but only got {}&quot;</span>, <span class='ident'>n</span>, <span class='ident'>i</span>),
                 _ <span class='op'>=&gt;</span> ()
@@ -131,14 +131,14 @@ This method will panic if there are less than `n` elements in the iterator.
 
 <span class='attribute'>#[<span class='ident'>test</span>]</span>
 <span class='kw'>fn</span> <span class='ident'>test_skip_exactly</span>() {
-    <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>thread</span>::<span class='ident'>Thread</span>;
+    <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>thread</span>;
 
-    <span class='kw'>let</span> <span class='ident'>v</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0is</span>, <span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>];
+    <span class='kw'>let</span> <span class='ident'>v</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0isize</span>, <span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>];
     <span class='kw'>let</span> <span class='ident'>r</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span>_<span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>v</span>.<span class='ident'>into_iter</span>().<span class='ident'>skip_exactly</span>(<span class='number'>3</span>).<span class='ident'>collect</span>();
     <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>r</span>, <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>3</span>]);
 
-    <span class='kw'>let</span> <span class='ident'>v</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0is</span>, <span class='number'>1</span>];
-    <span class='kw'>let</span> <span class='ident'>r</span>: <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span>_<span class='op'>&gt;</span>, _<span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>Thread</span>::<span class='ident'>scoped</span>(<span class='kw'>move</span> <span class='op'>||</span> <span class='ident'>v</span>.<span class='ident'>into_iter</span>().<span class='ident'>skip_exactly</span>(<span class='number'>3</span>).<span class='ident'>collect</span>()).<span class='ident'>join</span>();
+    <span class='kw'>let</span> <span class='ident'>v</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0isize</span>, <span class='number'>1</span>];
+    <span class='kw'>let</span> <span class='ident'>r</span> <span class='op'>=</span> <span class='ident'>thread</span>::<span class='ident'>spawn</span>(<span class='kw'>move</span> <span class='op'>||</span> { <span class='ident'>v</span>.<span class='ident'>into_iter</span>().<span class='ident'>skip_exactly</span>(<span class='number'>3</span>).<span class='ident'>collect</span>::<span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span>_<span class='op'>&gt;&gt;</span>(); }).<span class='ident'>join</span>();
     <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>r</span>.<span class='ident'>is_err</span>());
 }
 </pre>
@@ -174,6 +174,10 @@ This method will panic if there are less than `n` elements in the iterator.
                 <code>struct</code>, <code>enum</code>,
                 <code>trait</code>, <code>typedef</code> (or
                 <code>tdef</code>).
+            </p>
+            <p>
+                Search functions by type signature (e.g.
+                <code>vec -> usize</code>)
             </p>
         </div>
     </div>

@@ -182,7 +182,7 @@ Creates an iterator that yields the cartesian product of two input iterators.
 
 The element type of the first input iterator must implement Clone, as must the second iterator type.
     */</span>
-    <span class='kw'>fn</span> <span class='ident'>cartesian_product</span><span class='op'>&lt;</span><span class='ident'>RightIt</span>, <span class='ident'>RightItem</span><span class='op'>&gt;</span>(<span class='self'>self</span>, <span class='ident'>right</span>: <span class='ident'>RightIt</span>) <span class='op'>-&gt;</span> <span class='ident'>CartesianProduct</span><span class='op'>&lt;</span><span class='ident'>Self</span>, <span class='ident'>RightIt</span>, <span class='ident'>LeftItem</span>, <span class='ident'>RightItem</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>RightIt</span>: <span class='ident'>Clone</span> <span class='op'>+</span> <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>RightItem</span><span class='op'>&gt;</span> {
+    <span class='kw'>fn</span> <span class='ident'>cartesian_product</span><span class='op'>&lt;</span><span class='ident'>RightIt</span>, <span class='ident'>RightItem</span><span class='op'>&gt;</span>(<span class='self'>self</span>, <span class='ident'>right</span>: <span class='ident'>RightIt</span>) <span class='op'>-&gt;</span> <span class='ident'>CartesianProduct</span><span class='op'>&lt;</span><span class='kw'>Self</span>, <span class='ident'>RightIt</span>, <span class='ident'>LeftItem</span>, <span class='ident'>RightItem</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>RightIt</span>: <span class='ident'>Clone</span> <span class='op'>+</span> <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>RightItem</span><span class='op'>&gt;</span> {
         <span class='ident'>CartesianProduct</span> {
             <span class='ident'>left</span>: <span class='self'>self</span>,
             <span class='ident'>right</span>: <span class='ident'>right</span>.<span class='ident'>clone</span>(),
@@ -196,7 +196,7 @@ The element type of the first input iterator must implement Clone, as must the s
 
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>, <span class='ident'>Debug</span>)]</span>
 <span class='attribute'>#[<span class='ident'>must_use</span> <span class='op'>=</span> <span class='string'>&quot;iterator adaptors are lazy and do nothing unless consumed&quot;</span>]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>CartesianProduct</span><span class='op'>&lt;</span><span class='ident'>LeftIt</span>, <span class='ident'>RightIt</span>, <span class='ident'>LeftItem</span>, <span class='ident'>RightItem</span><span class='op'>&gt;</span> {
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>CartesianProduct</span><span class='op'>&lt;</span><span class='ident'>LeftIt</span>, <span class='ident'>RightIt</span>, <span class='ident'>LeftItem</span>, <span class='ident'>RightItem</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>LeftIt</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>LeftItem</span><span class='op'>&gt;</span>, <span class='ident'>RightIt</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>RightItem</span><span class='op'>&gt;</span> {
     <span class='ident'>left</span>: <span class='ident'>LeftIt</span>,
     <span class='ident'>right</span>: <span class='ident'>RightIt</span>,
     <span class='ident'>right_checkpoint</span>: <span class='ident'>RightIt</span>,
@@ -262,8 +262,8 @@ The element type of the first input iterator must implement Clone, as must the s
 <span class='kw'>fn</span> <span class='ident'>test_cartesian_product</span>() {
     <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>CloneEachIterator</span>;
 
-    <span class='kw'>let</span> <span class='ident'>a</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0us</span>, <span class='number'>1</span>, <span class='number'>2</span>];
-    <span class='kw'>let</span> <span class='ident'>b</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>3us</span>, <span class='number'>4</span>];
+    <span class='kw'>let</span> <span class='ident'>a</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0usize</span>, <span class='number'>1</span>, <span class='number'>2</span>];
+    <span class='kw'>let</span> <span class='ident'>b</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>3usize</span>, <span class='number'>4</span>];
     <span class='kw'>let</span> <span class='ident'>r</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span>_<span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>a</span>.<span class='ident'>into_iter</span>().<span class='ident'>cartesian_product</span>(<span class='ident'>b</span>.<span class='ident'>iter</span>().<span class='ident'>clone_each</span>()).<span class='ident'>collect</span>();
     <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>r</span>, <span class='macro'>vec</span><span class='macro'>!</span>[(<span class='number'>0</span>,<span class='number'>3</span>),(<span class='number'>0</span>,<span class='number'>4</span>),(<span class='number'>1</span>,<span class='number'>3</span>),(<span class='number'>1</span>,<span class='number'>4</span>),(<span class='number'>2</span>,<span class='number'>3</span>),(<span class='number'>2</span>,<span class='number'>4</span>)]);
 }
@@ -300,6 +300,10 @@ The element type of the first input iterator must implement Clone, as must the s
                 <code>struct</code>, <code>enum</code>,
                 <code>trait</code>, <code>typedef</code> (or
                 <code>tdef</code>).
+            </p>
+            <p>
+                Search functions by type signature (e.g.
+                <code>vec -> usize</code>)
             </p>
         </div>
     </div>

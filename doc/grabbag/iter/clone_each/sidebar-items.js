@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CloneEach",""]],"trait":[["CloneEachIterator","( <em>a</em><sub>0</sub>, <em>a</em><sub>1</sub>, ... )  ( <em>a</em><sub>0</sub>`.clone()`, <em>a</em><sub>1</sub>`.clone()`, ... )"]]});

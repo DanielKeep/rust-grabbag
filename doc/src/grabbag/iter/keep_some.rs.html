@@ -121,7 +121,7 @@
     <span class='doccomment'>/**
 Creates an iterator that, given a sequence of `Option&lt;E&gt;` values, unwraps all `Some(E)`s, and discards all `None`s.
     */</span>
-    <span class='kw'>fn</span> <span class='ident'>keep_some</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>KeepSome</span><span class='op'>&lt;</span><span class='ident'>Self</span><span class='op'>&gt;</span>;
+    <span class='kw'>fn</span> <span class='ident'>keep_some</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>KeepSome</span><span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>;
 }
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>It</span><span class='op'>&gt;</span> <span class='ident'>KeepSomeIterator</span> <span class='kw'>for</span> <span class='ident'>It</span> <span class='kw'>where</span> <span class='ident'>It</span>: <span class='ident'>Iterator</span> {
@@ -179,7 +179,7 @@ Unwraps the iterator, returning the underlying iterator.
 
 <span class='attribute'>#[<span class='ident'>test</span>]</span>
 <span class='kw'>fn</span> <span class='ident'>test_keep_some</span>() {
-    <span class='kw'>let</span> <span class='ident'>v</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='prelude-val'>None</span>, <span class='prelude-val'>Some</span>(<span class='number'>0us</span>), <span class='prelude-val'>Some</span>(<span class='number'>1</span>), <span class='prelude-val'>None</span>, <span class='prelude-val'>Some</span>(<span class='number'>2</span>), <span class='prelude-val'>None</span>, <span class='prelude-val'>None</span>, <span class='prelude-val'>Some</span>(<span class='number'>3</span>), <span class='prelude-val'>None</span>];
+    <span class='kw'>let</span> <span class='ident'>v</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='prelude-val'>None</span>, <span class='prelude-val'>Some</span>(<span class='number'>0usize</span>), <span class='prelude-val'>Some</span>(<span class='number'>1</span>), <span class='prelude-val'>None</span>, <span class='prelude-val'>Some</span>(<span class='number'>2</span>), <span class='prelude-val'>None</span>, <span class='prelude-val'>None</span>, <span class='prelude-val'>Some</span>(<span class='number'>3</span>), <span class='prelude-val'>None</span>];
     <span class='kw'>let</span> <span class='ident'>r</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span>_<span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>v</span>.<span class='ident'>into_iter</span>().<span class='ident'>keep_some</span>().<span class='ident'>collect</span>();
     <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>r</span>, <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0</span>, <span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>]);
 }
@@ -216,6 +216,10 @@ Unwraps the iterator, returning the underlying iterator.
                 <code>struct</code>, <code>enum</code>,
                 <code>trait</code>, <code>typedef</code> (or
                 <code>tdef</code>).
+            </p>
+            <p>
+                Search functions by type signature (e.g.
+                <code>vec -> usize</code>)
             </p>
         </div>
     </div>

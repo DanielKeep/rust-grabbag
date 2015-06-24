@@ -26,7 +26,7 @@
 
     <section class="sidebar">
         
-        <p class='location'></p>
+        <p class='location'></p><script>window.sidebarCurrent = {name: 'grabbag_macros', ty: 'mod', relpath: '../'};</script>
     </section>
 
     <nav class="sub">
@@ -41,43 +41,52 @@
     </nav>
 
     <section id='main' class="content mod">
-<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>grabbag_macros</a><wbr></span><span class='out-of-band'><a href='stability.html'>[stability]</a> <span id='render-detail'>
-            <a id="collapse-all" href="#">[-]
-            </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-0' href='../src/grabbag_macros/lib.rs.html#1-294'>[src]</a></span></h1>
+<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>grabbag_macros</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-0' class='srclink' href='../src/grabbag_macros/lib.rs.html#1-300' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>This is a random grab-bag of macros that didn&#39;t really seem to deserve a separate home.</p>
 
 <p>If you see something you think you have a better place for, let me know!</p>
 </div><h2 id='macros' class='section-header'><a href="#macros">Macros</a></h2>
 <table>
-                    <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='macro' href='macro.collect!.html'
+                    <tr class=' module-item'>
+                        <td><a class='macro' href='macro.collect!.html'
                                title='grabbag_macros::collect!'>collect!</a></td>
-                        <td class='docblock short'><p>This macro provides a way to initialise any container for which there is a FromIterator implementation.  It allows for both sequence and map syntax to be used, as well as inline type ascription for the result.</p>
-</td>
+                        <td class='docblock short'>
+                             <p>This macro provides a way to initialise any container for which there is a FromIterator implementation.  It allows for both sequence and map syntax to be used, as well as inline type ascription for the result.</p>
+
+                        </td>
                     </tr>
                 
-                    <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='macro' href='macro.count_exprs!.html'
+                    <tr class=' module-item'>
+                        <td><a class='macro' href='macro.count_exprs!.html'
                                title='grabbag_macros::count_exprs!'>count_exprs!</a></td>
-                        <td class='docblock short'><p>Counts the number of comma-delimited expressions passed to it.  The result is a compile-time evaluable expression, suitable for use as a static array size, or the value of a <code>const</code>.</p>
-</td>
+                        <td class='docblock short'>
+                             <p>Counts the number of comma-delimited expressions passed to it.  The result is a compile-time evaluable expression, suitable for use as a static array size, or the value of a <code>const</code>.</p>
+
+                        </td>
                     </tr>
                 
-                    <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='macro' href='macro.recurrence!.html'
+                    <tr class=' module-item'>
+                        <td><a class='macro' href='macro.recurrence!.html'
                                title='grabbag_macros::recurrence!'>recurrence!</a></td>
-                        <td class='docblock short'><p>Expands to an expression implementing the <code>Iterator</code> trait, which yields successive
+                        <td class='docblock short'>
+                             <p>Expands to an expression implementing the <code>Iterator</code> trait, which yields successive
 elements of the given recurrence relationship.</p>
-</td>
+
+                        </td>
                     </tr>
                 
-                    <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='macro' href='macro.sequence!.html'
+                    <tr class=' module-item'>
+                        <td><a class='macro' href='macro.sequence!.html'
                                title='grabbag_macros::sequence!'>sequence!</a></td>
-                        <td class='docblock short'><p>Expands to an expression implementing the <code>Iterator</code> trait, which yields successive
+                        <td class='docblock short'>
+                             <p>Expands to an expression implementing the <code>Iterator</code> trait, which yields successive
 elements of the given closed-form sequence.</p>
-</td>
+
+                        </td>
                     </tr>
                 </table></section>
     <section id='search' class="content hidden"></section>
@@ -111,6 +120,10 @@ elements of the given closed-form sequence.</p>
                 <code>struct</code>, <code>enum</code>,
                 <code>trait</code>, <code>typedef</code> (or
                 <code>tdef</code>).
+            </p>
+            <p>
+                Search functions by type signature (e.g.
+                <code>vec -> usize</code>)
             </p>
         </div>
     </div>

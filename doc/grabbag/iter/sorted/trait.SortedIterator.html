@@ -26,7 +26,7 @@
 
     <section class="sidebar">
         
-        <p class='location'><a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>sorted</a></p><div class='block trait'><h2>Traits</h2><a class='trait current' href='trait.SortedIterator.html' title='Shorthand for collecting and sorting an iterator.'>SortedIterator</a></div>
+        <p class='location'><a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>sorted</a></p><script>window.sidebarCurrent = {name: 'SortedIterator', ty: 'trait', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </section>
 
     <nav class="sub">
@@ -41,10 +41,11 @@
     </nav>
 
     <section id='main' class="content trait">
-<h1 class='fqn'><span class='in-band'>Trait <a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>sorted</a>::<wbr><a class='trait' href=''>SortedIterator</a><wbr></span><span class='out-of-band'><span id='render-detail'>
-            <a id="collapse-all" href="#">[-]
-            </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-5229' href='../../../src/grabbag/iter/sorted.rs.html#6-16'>[src]</a></span></h1>
+<h1 class='fqn'><span class='in-band'>Trait <a href='../../index.html'>grabbag</a>::<wbr><a href='../index.html'>iter</a>::<wbr><a href='index.html'>sorted</a>::<wbr><a class='trait' href=''>SortedIterator</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-3063' class='srclink' href='../../../src/grabbag/iter/sorted.rs.html#6-16' title='goto source code'>[src]</a></span></h1>
 <pre class='rust trait'>pub trait SortedIterator&lt;E&gt;: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=E&gt; + <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a> <span class='where'>where E: <a class='trait' href='http://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html' title='core::cmp::Ord'>Ord</a></span> {
     fn <a href='#tymethod.sorted' class='fnname'>sorted</a>(self) -&gt; <a class='struct' href='http://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;E&gt;;
     fn <a href='#tymethod.sorted_by' class='fnname'>sorted_by</a>&lt;F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>(&amp;E, &amp;E) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html' title='core::cmp::Ordering'>Ordering</a>&gt;(self, compare: F) -&gt; <a class='struct' href='http://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;E&gt;;
@@ -52,13 +53,12 @@
 </div>
             <h2 id='required-methods'>Required Methods</h2>
             <div class='methods'>
-        <h3 id='tymethod.sorted' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#tymethod.sorted' class='fnname'>sorted</a>(self) -&gt; <a class='struct' href='http://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;E&gt;</code></h3><div class='docblock'><p>Returns a <code>Vec</code> with the elements of the input iterator in sorted order.</p>
-</div><h3 id='tymethod.sorted_by' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#tymethod.sorted_by' class='fnname'>sorted_by</a>&lt;F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>(&amp;E, &amp;E) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html' title='core::cmp::Ordering'>Ordering</a>&gt;(self, compare: F) -&gt; <a class='struct' href='http://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;E&gt;</code></h3><div class='docblock'><p>Returns a <code>Vec</code> with the elements of the input iterator in sorted order, as specified by a comparison function.</p>
+        <h3 id='tymethod.sorted' class='method stab '><code>fn <a href='#tymethod.sorted' class='fnname'>sorted</a>(self) -&gt; <a class='struct' href='http://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;E&gt;</code></h3><div class='docblock'><p>Returns a <code>Vec</code> with the elements of the input iterator in sorted order.</p>
+</div><h3 id='tymethod.sorted_by' class='method stab '><code>fn <a href='#tymethod.sorted_by' class='fnname'>sorted_by</a>&lt;F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>(&amp;E, &amp;E) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html' title='core::cmp::Ordering'>Ordering</a>&gt;(self, compare: F) -&gt; <a class='struct' href='http://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;E&gt;</code></h3><div class='docblock'><p>Returns a <code>Vec</code> with the elements of the input iterator in sorted order, as specified by a comparison function.</p>
 </div></div>
         <h2 id='implementors'>Implementors</h2>
         <ul class='item-list' id='implementors-list'>
-    <li><a class='stability Unmarked' title='No stability level'></a><code>impl&lt;It, E&gt; <a class='trait' href='../../../grabbag/iter/trait.SortedIterator.html' title='grabbag::iter::SortedIterator'>SortedIterator</a>&lt;E&gt; for It <span class='where'>where It: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=E&gt;, E: <a class='trait' href='http://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html' title='core::cmp::Ord'>Ord</a></span></code></li>
-</ul><script type="text/javascript" async
+    </ul><script type="text/javascript" async
                               src="../../../implementors/grabbag/iter/sorted/trait.SortedIterator.js">
                       </script></section>
     <section id='search' class="content hidden"></section>
@@ -92,6 +92,10 @@
                 <code>struct</code>, <code>enum</code>,
                 <code>trait</code>, <code>typedef</code> (or
                 <code>tdef</code>).
+            </p>
+            <p>
+                Search functions by type signature (e.g.
+                <code>vec -> usize</code>)
             </p>
         </div>
     </div>

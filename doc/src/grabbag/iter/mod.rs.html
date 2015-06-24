@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `src\iter\mod.rs`.">
+    <meta name="description" content="Source to the Rust file `src\iter/mod.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>mod.rs.html -- source</title>
@@ -112,13 +112,6 @@
 <span id="70">70</span>
 <span id="71">71</span>
 <span id="72">72</span>
-<span id="73">73</span>
-<span id="74">74</span>
-<span id="75">75</span>
-<span id="76">76</span>
-<span id="77">77</span>
-<span id="78">78</span>
-<span id="79">79</span>
 </pre><pre class='rust '>
 <span class='doccomment'>/*!
 This module contains a set of iterator extensions.  Rather than being named for the type of iterator they are implemented on, they are named for the method (or group of associated methods) being implemented.
@@ -132,7 +125,6 @@ The iterator extensions, where possible, should implement the following features
 - `Clone`, which produces an *independent* version of the iterator.
 - `DoubleEndedIterator`.
 - `ExactSizeIterator`.
-- `RandomAccessIterator`.
 - `Show`.
 - Accurate `size_hint` (depending on the transform being performed, and the accuracy of the underlying iterator).
 - An `unwrap` method, which returns any owned values passed into the iterator; typically, this is the original iterator.
@@ -144,12 +136,10 @@ The iterator extensions, where possible, should implement the following features
     <span class='ident'>CartesianProductIterator</span>,
     <span class='ident'>CloneEachIterator</span>,
     <span class='ident'>GroupByIterator</span>,
-    <span class='ident'>IndexedIterator</span>,
     <span class='ident'>FoldlIterator</span>, <span class='ident'>FoldrIterator</span>,
     <span class='ident'>IntersperseIterator</span>,
     <span class='ident'>KeepSomeIterator</span>,
     <span class='ident'>PadTailToIterator</span>,
-    <span class='ident'>PacingWalkIterator</span>,
     <span class='ident'>RoundRobinIterator</span>,
     <span class='ident'>SkipExactlyIterator</span>,
     <span class='ident'>SortedIterator</span>,
@@ -163,12 +153,10 @@ The iterator extensions, where possible, should implement the following features
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>cartesian_product</span>;
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>clone_each</span>;
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>group_by</span>;
-<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>indexed</span>;
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>fold</span>;
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>intersperse</span>;
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>keep_some</span>;
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>pad_tail_to</span>;
-<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>pacing_walk</span>;
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>round_robin</span>;
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>skip_exactly</span>;
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>sorted</span>;
@@ -185,12 +173,10 @@ This module just centralises all the iterator extension traits in one place, sui
     <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>cartesian_product</span>::<span class='ident'>CartesianProductIterator</span>;
     <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>clone_each</span>::<span class='ident'>CloneEachIterator</span>;
     <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>group_by</span>::<span class='ident'>GroupByIterator</span>;
-    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>indexed</span>::<span class='ident'>IndexedIterator</span>;
     <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>fold</span>::{<span class='ident'>FoldlIterator</span>, <span class='ident'>FoldrIterator</span>};
     <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>intersperse</span>::<span class='ident'>IntersperseIterator</span>;
     <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>keep_some</span>::<span class='ident'>KeepSomeIterator</span>;
     <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>pad_tail_to</span>::<span class='ident'>PadTailToIterator</span>;
-    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>pacing_walk</span>::<span class='ident'>PacingWalkIterator</span>;
     <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>round_robin</span>::<span class='ident'>RoundRobinIterator</span>;
     <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>skip_exactly</span>::<span class='ident'>SkipExactlyIterator</span>;
     <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>sorted</span>::<span class='ident'>SortedIterator</span>;
@@ -232,6 +218,10 @@ This module just centralises all the iterator extension traits in one place, sui
                 <code>struct</code>, <code>enum</code>,
                 <code>trait</code>, <code>typedef</code> (or
                 <code>tdef</code>).
+            </p>
+            <p>
+                Search functions by type signature (e.g.
+                <code>vec -> usize</code>)
             </p>
         </div>
     </div>

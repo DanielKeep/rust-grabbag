@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["iter","This module contains a set of iterator extensions.  Rather than being named for the type of iterator they are implemented on, they are named for the method (or group of associated methods) being implemented."]]});

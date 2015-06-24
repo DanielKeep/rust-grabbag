@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["KeepSome",""]],"trait":[["KeepSomeIterator","<em>a</em>  (<em>e</em> | <em>e</em>  <em>a</em> : <em>Some</em>(<em>e</em>))"]]});

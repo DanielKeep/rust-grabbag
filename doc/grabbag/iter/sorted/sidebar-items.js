@@ -1,0 +1,1 @@
+initSidebarItems({"trait":[["SortedIterator","Shorthand for collecting and sorting an iterator."]]});

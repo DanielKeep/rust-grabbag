@@ -229,7 +229,7 @@
     <span class='doccomment'>/**
 Creates an iterator that alternates between yielding elements of the two input iterators.  It stops as soon as either iterator is exhausted.
     */</span>
-    <span class='kw'>fn</span> <span class='ident'>round_robin</span><span class='op'>&lt;</span><span class='ident'>OtherIt</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='op'>&lt;</span><span class='ident'>Self</span> <span class='kw'>as</span> <span class='ident'>Iterator</span><span class='op'>&gt;</span>::<span class='ident'>Item</span><span class='op'>&gt;&gt;</span>(<span class='self'>self</span>, <span class='ident'>other_it</span>: <span class='ident'>OtherIt</span>) <span class='op'>-&gt;</span> <span class='ident'>RoundRobin</span><span class='op'>&lt;</span><span class='ident'>Self</span>, <span class='ident'>OtherIt</span><span class='op'>&gt;</span> {
+    <span class='kw'>fn</span> <span class='ident'>round_robin</span><span class='op'>&lt;</span><span class='ident'>OtherIt</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='op'>&lt;</span><span class='kw'>Self</span> <span class='kw'>as</span> <span class='ident'>Iterator</span><span class='op'>&gt;</span>::<span class='ident'>Item</span><span class='op'>&gt;&gt;</span>(<span class='self'>self</span>, <span class='ident'>other_it</span>: <span class='ident'>OtherIt</span>) <span class='op'>-&gt;</span> <span class='ident'>RoundRobin</span><span class='op'>&lt;</span><span class='kw'>Self</span>, <span class='ident'>OtherIt</span><span class='op'>&gt;</span> {
         <span class='ident'>RoundRobin</span> {
             <span class='ident'>it0</span>: <span class='self'>self</span>,
             <span class='ident'>it1</span>: <span class='ident'>other_it</span>,
@@ -240,7 +240,7 @@ Creates an iterator that alternates between yielding elements of the two input i
     <span class='doccomment'>/**
 Creates an iterator that alternates between yielding elements of the two input iterators.  If one iterator stops before the other, it is simply skipped.
     */</span>
-    <span class='kw'>fn</span> <span class='ident'>round_robin_longest</span><span class='op'>&lt;</span><span class='ident'>OtherIt</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='op'>&lt;</span><span class='ident'>Self</span> <span class='kw'>as</span> <span class='ident'>Iterator</span><span class='op'>&gt;</span>::<span class='ident'>Item</span><span class='op'>&gt;&gt;</span>(<span class='self'>self</span>, <span class='ident'>other_it</span>: <span class='ident'>OtherIt</span>) <span class='op'>-&gt;</span> <span class='ident'>RoundRobinLongest</span><span class='op'>&lt;</span><span class='ident'>Self</span>, <span class='ident'>OtherIt</span><span class='op'>&gt;</span> {
+    <span class='kw'>fn</span> <span class='ident'>round_robin_longest</span><span class='op'>&lt;</span><span class='ident'>OtherIt</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='op'>&lt;</span><span class='kw'>Self</span> <span class='kw'>as</span> <span class='ident'>Iterator</span><span class='op'>&gt;</span>::<span class='ident'>Item</span><span class='op'>&gt;&gt;</span>(<span class='self'>self</span>, <span class='ident'>other_it</span>: <span class='ident'>OtherIt</span>) <span class='op'>-&gt;</span> <span class='ident'>RoundRobinLongest</span><span class='op'>&lt;</span><span class='kw'>Self</span>, <span class='ident'>OtherIt</span><span class='op'>&gt;</span> {
         <span class='ident'>RoundRobinLongest</span> {
             <span class='ident'>it0</span>: <span class='self'>self</span>,
             <span class='ident'>it1</span>: <span class='ident'>other_it</span>,
@@ -365,8 +365,8 @@ Unwraps the iterator, returning the underlying iterators.
 
 <span class='attribute'>#[<span class='ident'>test</span>]</span>
 <span class='kw'>fn</span> <span class='ident'>test_round_robin</span>() {
-    <span class='kw'>let</span> <span class='ident'>v0</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0us</span>, <span class='number'>2</span>, <span class='number'>4</span>];
-    <span class='kw'>let</span> <span class='ident'>v1</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>1us</span>, <span class='number'>3</span>, <span class='number'>5</span>, <span class='number'>7</span>];
+    <span class='kw'>let</span> <span class='ident'>v0</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0usize</span>, <span class='number'>2</span>, <span class='number'>4</span>];
+    <span class='kw'>let</span> <span class='ident'>v1</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>1usize</span>, <span class='number'>3</span>, <span class='number'>5</span>, <span class='number'>7</span>];
     <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>it</span> <span class='op'>=</span> <span class='ident'>v0</span>.<span class='ident'>into_iter</span>().<span class='ident'>round_robin</span>(<span class='ident'>v1</span>.<span class='ident'>into_iter</span>());
     <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>it</span>.<span class='ident'>next</span>(), <span class='prelude-val'>Some</span>(<span class='number'>0</span>));
     <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>it</span>.<span class='ident'>next</span>(), <span class='prelude-val'>Some</span>(<span class='number'>1</span>));
@@ -379,8 +379,8 @@ Unwraps the iterator, returning the underlying iterators.
 
 <span class='attribute'>#[<span class='ident'>test</span>]</span>
 <span class='kw'>fn</span> <span class='ident'>test_round_robin_longest</span>() {
-    <span class='kw'>let</span> <span class='ident'>v0</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0us</span>, <span class='number'>2</span>, <span class='number'>4</span>];
-    <span class='kw'>let</span> <span class='ident'>v1</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>1us</span>, <span class='number'>3</span>, <span class='number'>5</span>, <span class='number'>7</span>];
+    <span class='kw'>let</span> <span class='ident'>v0</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0usize</span>, <span class='number'>2</span>, <span class='number'>4</span>];
+    <span class='kw'>let</span> <span class='ident'>v1</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>1usize</span>, <span class='number'>3</span>, <span class='number'>5</span>, <span class='number'>7</span>];
     <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>it</span> <span class='op'>=</span> <span class='ident'>v0</span>.<span class='ident'>into_iter</span>().<span class='ident'>round_robin_longest</span>(<span class='ident'>v1</span>.<span class='ident'>into_iter</span>());
     <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>it</span>.<span class='ident'>next</span>(), <span class='prelude-val'>Some</span>(<span class='number'>0</span>));
     <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>it</span>.<span class='ident'>next</span>(), <span class='prelude-val'>Some</span>(<span class='number'>1</span>));
@@ -424,6 +424,10 @@ Unwraps the iterator, returning the underlying iterators.
                 <code>struct</code>, <code>enum</code>,
                 <code>trait</code>, <code>typedef</code> (or
                 <code>tdef</code>).
+            </p>
+            <p>
+                Search functions by type signature (e.g.
+                <code>vec -> usize</code>)
             </p>
         </div>
     </div>
