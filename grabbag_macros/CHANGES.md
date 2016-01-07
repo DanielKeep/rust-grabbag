@@ -1,3 +1,7 @@
+# 0.1.0
+
+* Fixed double-eval in `collect!` macro.
+
 # 0.0.3
 
 * Update to recent rust nightly.
