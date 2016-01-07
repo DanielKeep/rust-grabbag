@@ -9,6 +9,11 @@ repository = "https://github.com/DanielKeep/rust-grabbag"
 documentation = "https://danielkeep.github.io/rust-grabbag/doc/grabbag/index.html"
 license = "MIT"
 
+exclude = [
+    "Project.sublime-project",
+    "update-docs.py",
+]
+
 [dependencies.grabbag_macros]
 
 version = "0.1.0"
