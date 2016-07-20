@@ -12,6 +12,8 @@ license = "MIT/Apache-2.0"
 exclude = [
     "Project.sublime-project",
     "update-docs.py",
+    "scripts/*",
+    ".travis.yml",
 ]
 
 [dependencies.grabbag_macros]
