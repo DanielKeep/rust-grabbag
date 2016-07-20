@@ -156,6 +156,7 @@ sequence![ a[n]: u64 = 1, 2... a[0]*(n as u64) + a[1] ]
 ```
 */
 #[macro_export]
+#[cfg(not(cannot_use_dotdotdot))]
 macro_rules! sequence {
     ( $ind:ident: $sty:ty = $closed_form:expr ) => {
         {
@@ -241,6 +242,7 @@ recurrence![ fib[n]: f64 = 0.0, 1.0 ... fib[n-1] + fib[n-2] ]
 ```
 */
 #[macro_export]
+#[cfg(not(cannot_use_dotdotdot))]
 macro_rules! recurrence {
     ( $seq:ident [ $ind:ident ]: $sty:ty = $($inits:expr),+ ... $recur:expr ) => {
         {

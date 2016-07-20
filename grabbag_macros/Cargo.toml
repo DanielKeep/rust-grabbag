@@ -9,7 +9,12 @@ repository = "https://github.com/DanielKeep/rust-grabbag"
 documentation = "https://danielkeep.github.io/rust-grabbag/doc/grabbag_macros/index.html"
 license = "MIT/Apache-2.0"
 
+build = "build.rs"
+
 [lib]
 
 name = "grabbag_macros"
 plugin = true
+
+[build-dependencies]
+rustc_version = "0.1.4"

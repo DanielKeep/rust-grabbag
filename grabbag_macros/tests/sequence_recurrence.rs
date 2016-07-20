@@ -1,3 +1,4 @@
+#![cfg(not(cannot_use_dotdotdot))]
 #[macro_use] extern crate grabbag_macros;
 
 macro_rules! iter_assert_eq {
