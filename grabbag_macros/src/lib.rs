@@ -1,5 +1,5 @@
 /*
-Copyright ⓒ 2015 grabbag contributors.
+Copyright ⓒ 2016 grabbag contributors.
 
 Licensed under the MIT license (see LICENSE or <http://opensource.org
 /licenses/MIT>) or the Apache License, Version 2.0 (see LICENSE of

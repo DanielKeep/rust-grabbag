@@ -1,3 +1,13 @@
+# 0.1.2
+
+* **Breaking change**: Removed `sequence!` and `recurrence!` for Rust 1.9.0+.  Due to language changes, these macros **cannot** be fixed in a backward-compatible fashion.  Existing working code should be unaffected.
+
+* Fixed `recurrence!` macro for Rust < 1.9.0.
+
+# 0.1.1
+
+* Updated to 1.7.0.
+
 # 0.1.0
 
 * Fixed double-eval in `collect!` macro.
