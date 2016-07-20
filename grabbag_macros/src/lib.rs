@@ -262,8 +262,8 @@ macro_rules! recurrence {
                 type Output = $sty;
 
                 #[inline(always)]
-                fn index<'b>(&'b self, index: &usize) -> &'b $sty {
-                    let real_index = *index - self.offset + MEMORY;
+                fn index<'b>(&'b self, index: usize) -> &'b $sty {
+                    let real_index = index + MEMORY - self.offset;
                     &self.slice[real_index]
                 }
             }
@@ -292,7 +292,7 @@ macro_rules! recurrence {
                             use std::mem::swap;
 
                             let mut swap_tmp = next_val;
-                            for i in range(0, MEMORY).rev() {
+                            for i in (0..MEMORY).rev() {
                                 swap(&mut swap_tmp, &mut self.mem[i]);
                             }
                         }
